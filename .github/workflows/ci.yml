@@ -1,0 +1,225 @@
+name: CI
+
+# Mismos disparadores, nombres de job y controles que los servicios NestJS
+# (ADR-022): los rulesets exigen `Calidad y pruebas` e `Imagen del servicio`
+# por nombre, y la CI de este servicio debe producir exactamente esos checks.
+on:
+  # Se valida TODO pull request, tambien los que apuntan a `develop`.
+  pull_request:
+  # El `push` se limita a `main`, que es la unica rama que publica imagen.
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: '3.13'
+  # `astral-sh/setup-uv` no esta en la lista blanca de acciones del
+  # repositorio; uv se instala con pip y su version se fija aqui.
+  UV_VERSION: '0.12.21'
+
+jobs:
+  quality:
+    name: Calidad y pruebas
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Instalar uv
+        run: pip install --no-cache-dir "uv==${UV_VERSION}"
+
+      - name: Instalar dependencias
+        run: uv sync --frozen
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Verificar formato
+        run: uv run ruff format --check .
+
+      - name: Verificacion de tipos
+        run: uv run mypy
+
+      # Equivale a las reglas `no-restricted-imports` de ESLint: el dominio no
+      # importa framework ni drivers y la aplicacion solo depende de sus puertos.
+      - name: Limites entre capas
+        run: uv run lint-imports
+
+      - name: Pruebas unitarias y de integracion, con cobertura
+        run: uv run pytest -m "not db" --cov --cov-config=.coveragerc-unit --cov-report=term-missing
+
+      # Levantan PostgreSQL con Testcontainers y ejercitan la persistencia contra
+      # el motor REAL. Miden SU propia superficie de cobertura.
+      - name: Pruebas contra PostgreSQL real
+        run: uv run pytest -m db --cov --cov-config=.coveragerc-db --cov-report=term-missing
+
+  docker:
+    name: Imagen del servicio
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Construir imagen
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: false
+          load: true
+          tags: nexus-battle-chatbot:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # La imagen corre con APP_ENV=production, y en produccion el servicio se
+      # NIEGA a arrancar sin verificacion de identidad (ADR-004).
+      - name: Verificar que la imagen se NIEGA a arrancar sin autenticacion
+        run: |
+          if docker run --rm nexus-battle-chatbot:ci 2>&1 | grep -q 'AUTH_MODE'; then
+            echo "Correcto: la imagen de produccion no arranca sin AUTH_MODE."
+          else
+            echo "FALLO: la imagen arranco sin verificacion de identidad."
+            exit 1
+          fi
+
+      # Una conversacion o un modelo entrenado que desaparecen al reiniciar no
+      # existen (ADR-022): la imagen se niega a arrancar con persistencia en memoria.
+      - name: Verificar que la imagen se NIEGA a arrancar sin persistencia duradera
+        run: |
+          if docker run --rm -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci nexus-battle-chatbot:ci 2>&1 | grep -q 'PERSISTENCE_DRIVER'; then
+            echo "Correcto: la imagen de produccion no arranca con persistencia en memoria."
+          else
+            echo "FALLO: la imagen arranco sin persistencia duradera."
+            exit 1
+          fi
+
+      - name: Verificar arranque del contenedor contra PostgreSQL real
+        run: |
+          docker network create chatbot-ci > /dev/null
+          docker run -d --name chatbot-ci-db --network chatbot-ci -e POSTGRES_USER=chatbot -e POSTGRES_PASSWORD=chatbot-ci -e POSTGRES_DB=chatbot postgres:17-alpine > /dev/null
+          for attempt in $(seq 1 30); do
+            if docker exec chatbot-ci-db pg_isready -U chatbot -d chatbot > /dev/null 2>&1; then
+              break
+            fi
+            sleep 2
+          done
+          url='postgresql://chatbot:chatbot-ci@chatbot-ci-db:5432/chatbot'
+          docker run --rm --network chatbot-ci -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" nexus-battle-chatbot:ci python -m chatbot.infrastructure.persistence.migrate
+          docker run -d --name chatbot-ci --network chatbot-ci -p 3011:3011 -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" nexus-battle-chatbot:ci
+          for attempt in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:3011/api/health/ready > /dev/null; then
+              echo "readiness correcta en el intento ${attempt}"
+              curl -fsS http://127.0.0.1:3011/api/health/ready
+              curl -fsS http://127.0.0.1:3011/api/version
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "El contenedor no alcanzo el estado ready"
+          docker logs chatbot-ci
+          exit 1
+
+      # Una ruta sin `@public` responde 401 sin testimonio dentro de la imagen
+      # real, no solo en las pruebas: la proteccion por defecto esta compuesta.
+      - name: Verificar que las rutas nacen protegidas en la imagen
+        run: |
+          status="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3011/api/docs/openapi.json)"
+          if [ "$status" = "404" ]; then
+            echo "Correcto: la documentacion no se expone en produccion."
+          else
+            echo "FALLO: /api/docs/openapi.json respondio '${status}' en produccion."
+            exit 1
+          fi
+
+      # Control de la readiness: sin motor DEBE responder 503, y el proceso debe
+      # seguir vivo. Si respondiera 200, la prueba de arriba pasaria por construccion.
+      - name: Verificar que la readiness falla cuando el motor cae
+        run: |
+          docker stop chatbot-ci-db > /dev/null
+          status="$(curl -s -m 15 -o /dev/null -w '%{http_code}' http://127.0.0.1:3011/api/health/ready || true)"
+          if [ "$status" = "503" ]; then
+            echo "Correcto: readiness 503 sin base de datos."
+          else
+            echo "FALLO: readiness respondio '${status}' sin base de datos."
+            docker logs chatbot-ci || true
+          fi
+          docker rm -f chatbot-ci chatbot-ci-db > /dev/null
+          docker network rm chatbot-ci > /dev/null
+          [ "$status" = "503" ]
+
+  publish:
+    name: Publicar imagen en GHCR
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: docker
+    # Solo desde `main`, nunca desde un pull request.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Iniciar sesion en GHCR
+        env:
+          REGISTRO_USUARIO: ${{ github.actor }}
+          REGISTRO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$REGISTRO_TOKEN" | docker login ghcr.io -u "$REGISTRO_USUARIO" --password-stdin
+
+      # latest, sha-<corto> y <semver> (la de pyproject.toml, la misma que sirve /version).
+      - name: Calcular etiquetas
+        id: etiquetas
+        env:
+          PROPIETARIO: ${{ github.repository_owner }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          imagen="ghcr.io/$(echo "$PROPIETARIO" | tr '[:upper:]' '[:lower:]')/nexus-battle-chatbot"
+          version="$(python3 -c "import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")"
+          {
+            echo 'lista<<FIN'
+            echo "${imagen}:latest"
+            echo "${imagen}:sha-${COMMIT:0:12}"
+            echo "${imagen}:${version}"
+            echo 'FIN'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Construir y publicar
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: .
+          push: true
+          # Los nodos son Graviton (arm64); los portatiles del equipo, amd64.
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.etiquetas.outputs.lista }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

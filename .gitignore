@@ -1,0 +1,40 @@
+# Entorno virtual y caches de Python
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.import_linter_cache/
+
+# Empaquetado
+dist/
+build/
+*.egg-info/
+
+# Pruebas y cobertura
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+credentials
+.aws/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+logs/
+*.log

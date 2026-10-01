@@ -1,0 +1,190 @@
+{
+  "secret": "secreto-de-conformidad",
+  "generatedFrom": "Nexus-Battle-Wallet 4d9f0e9 src/adapters/outbound/identity/internal-signature.ts",
+  "vectors": [
+    {
+      "request": {
+        "service": "combat",
+        "method": "post",
+        "path": "/api/internal/v1/chatbot/vector/0",
+        "timestamp": "1790000000000",
+        "body": {
+          "operationId": "op-1",
+          "amount": 5
+        }
+      },
+      "canonicalBody": "{\"amount\":5,\"operationId\":\"op-1\"}",
+      "canonicalString": "combat\nPOST\n/api/internal/v1/chatbot/vector/0\n1790000000000\n39a0ebb3c65e337106b4068c0cb8ad872a187f798e9b9af8ee0119d992d47cc1",
+      "signature": "a4e8f7599c36dc9fa59843b2e45a587da62d4b50c29f2ba01d012c0d1204c7eb"
+    },
+    {
+      "request": {
+        "service": "missions",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/1",
+        "timestamp": "1790000000001",
+        "body": {
+          "b": 1,
+          "a": [
+            2,
+            {
+              "d": null,
+              "c": 3
+            }
+          ],
+          "z": "último"
+        }
+      },
+      "canonicalBody": "{\"a\":[2,{\"c\":3,\"d\":null}],\"b\":1,\"z\":\"último\"}",
+      "canonicalString": "missions\nPUT\n/api/internal/v1/chatbot/vector/1\n1790000000001\nec3caffc4c7ab7d17c5dddad9617e8e417d7cc0dbc99efb8f3e612f60a641597",
+      "signature": "48f6424c8bc914eaee2470e4caf895397810a1ed2f0af322775576a93502c3ab"
+    },
+    {
+      "request": {
+        "service": "combat",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/2",
+        "timestamp": "1790000000002",
+        "body": {}
+      },
+      "canonicalBody": "{}",
+      "canonicalString": "combat\nPUT\n/api/internal/v1/chatbot/vector/2\n1790000000002\n44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "signature": "96d774f9abe6c1efed99b3292ad8658dd687ac3334664d50d27610098a14291f"
+    },
+    {
+      "request": {
+        "service": "missions",
+        "method": "post",
+        "path": "/api/internal/v1/chatbot/vector/3",
+        "timestamp": "1790000000003",
+        "body": []
+      },
+      "canonicalBody": "[]",
+      "canonicalString": "missions\nPOST\n/api/internal/v1/chatbot/vector/3\n1790000000003\n4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "signature": "c624f4d755e1130eaf4c206d796b877ac08b2a7f07a6b354a8358584b596587c"
+    },
+    {
+      "request": {
+        "service": "combat",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/4",
+        "timestamp": "1790000000004",
+        "body": null
+      },
+      "canonicalBody": "null",
+      "canonicalString": "combat\nPUT\n/api/internal/v1/chatbot/vector/4\n1790000000004\n74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "signature": "b39f4dc3ce9a791c95c8eca7958831aca3e92b029450ec3b23f943b4cc2ba258"
+    },
+    {
+      "request": {
+        "service": "missions",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/5",
+        "timestamp": "1790000000005",
+        "body": "texto"
+      },
+      "canonicalBody": "\"texto\"",
+      "canonicalString": "missions\nPUT\n/api/internal/v1/chatbot/vector/5\n1790000000005\nc74f5ca56068305fee1f6e060d2491699239ee44fd84f05f9a8a8afec75da65f",
+      "signature": "2b264ee356c992624bd870d8687a9d9373dbae40468625ae74d951463638474d"
+    },
+    {
+      "request": {
+        "service": "combat",
+        "method": "post",
+        "path": "/api/internal/v1/chatbot/vector/6",
+        "timestamp": "1790000000006",
+        "body": {
+          "entero": 42,
+          "negativo": -7,
+          "decimal": 5.5,
+          "pequeno": 1e-7,
+          "grande": 1e+21,
+          "casiGrande": 123456789012345680000,
+          "cero": 0,
+          "fraccion": 0.1
+        }
+      },
+      "canonicalBody": "{\"casiGrande\":123456789012345680000,\"cero\":0,\"decimal\":5.5,\"entero\":42,\"fraccion\":0.1,\"grande\":1e+21,\"negativo\":-7,\"pequeno\":1e-7}",
+      "canonicalString": "combat\nPOST\n/api/internal/v1/chatbot/vector/6\n1790000000006\n021f08fe9eeb9cd0a46ea463a0f4d0c1187a53932e4abcaf74ae4b6358d49ac5",
+      "signature": "4f751775b38d323d92054b822d9cf49fb719cbd0529ce35d71eac601e98031a0"
+    },
+    {
+      "request": {
+        "service": "missions",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/7",
+        "timestamp": "1790000000007",
+        "body": {
+          "verdadero": true,
+          "falso": false,
+          "nulo": null
+        }
+      },
+      "canonicalBody": "{\"falso\":false,\"nulo\":null,\"verdadero\":true}",
+      "canonicalString": "missions\nPUT\n/api/internal/v1/chatbot/vector/7\n1790000000007\n329a770c7fcdad71456864c0b42c38f659a25d24db42c129150f4c1ecedb5176",
+      "signature": "6118a0c913b28cd33560033e83c748c4eec0d204e05dcbf2871b8b619343a621"
+    },
+    {
+      "request": {
+        "service": "combat",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/8",
+        "timestamp": "1790000000008",
+        "body": {
+          "ñandú": "añil",
+          "emoji": "héroe 🛡️",
+          "comillas": "dice \"hola\"\\n",
+          "control": "\u0001\t\n"
+        }
+      },
+      "canonicalBody": "{\"comillas\":\"dice \\\"hola\\\"\\\\n\",\"control\":\"\\u0001\\t\\n\",\"emoji\":\"héroe 🛡️\",\"ñandú\":\"añil\"}",
+      "canonicalString": "combat\nPUT\n/api/internal/v1/chatbot/vector/8\n1790000000008\n32127ddee6b8601889b4fbbc98fabbe8d69206e913d116b1419a5fbcb0f9160b",
+      "signature": "f6ab4cad28842525fe08dcd8eb134cf8a75155f89acae45e1b3a00061ac5b018"
+    },
+    {
+      "request": {
+        "service": "missions",
+        "method": "post",
+        "path": "/api/internal/v1/chatbot/vector/9",
+        "timestamp": "1790000000009",
+        "body": {
+          "anidado": {
+            "y": [
+              1,
+              2,
+              {
+                "b": "x",
+                "a": "y"
+              }
+            ],
+            "x": {
+              "2": 2,
+              "10": 10,
+              "B": "b",
+              "a": "a"
+            }
+          }
+        }
+      },
+      "canonicalBody": "{\"anidado\":{\"x\":{\"10\":10,\"2\":2,\"B\":\"b\",\"a\":\"a\"},\"y\":[1,2,{\"a\":\"y\",\"b\":\"x\"}]}}",
+      "canonicalString": "missions\nPOST\n/api/internal/v1/chatbot/vector/9\n1790000000009\ncdee2aff0a6f39d9e98607fb8355baecbdd7cdb3ea5535861af62019b5f35c29",
+      "signature": "a6f68d22cc646fe93334b88e2ec4c9efaac699558dcd3e0ef9f3281a5ecd97ad"
+    },
+    {
+      "request": {
+        "service": "combat",
+        "method": "PUT",
+        "path": "/api/internal/v1/chatbot/vector/10",
+        "timestamp": "1790000000010",
+        "body": {
+          "exponente": 2.5e-8,
+          "enteroFlotante": 3,
+          "notacion": 1.5e+300
+        }
+      },
+      "canonicalBody": "{\"enteroFlotante\":3,\"exponente\":2.5e-8,\"notacion\":1.5e+300}",
+      "canonicalString": "combat\nPUT\n/api/internal/v1/chatbot/vector/10\n1790000000010\nc07900052a244f28bac64cdd36654211d930b5b886a26a058b84f4f5ac929dba",
+      "signature": "e4bf96853de54042c99743d3cf536fa09ccfea42e7bd6d9b2d815022295a0c23"
+    }
+  ]
+}

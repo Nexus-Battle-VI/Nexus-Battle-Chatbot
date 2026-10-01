@@ -1,0 +1,16 @@
+# Cobertura de la suite por defecto (unitarias e integracion HTTP).
+#
+# La persistencia queda fuera porque la mide la suite `db`, que si levanta un
+# motor real (`.coveragerc-db`). Contarla aqui como no cubierta seria enganoso;
+# entre las dos suites no queda codigo sin medir.
+[run]
+branch = true
+source = chatbot
+omit =
+    */chatbot/main.py
+    */chatbot/infrastructure/persistence/*
+
+[report]
+fail_under = 80
+show_missing = true
+skip_covered = true

@@ -1,0 +1,144 @@
+[project]
+name = "nexus-battle-chatbot"
+version = "0.1.0"
+description = "Servicio de asistencia conversacional de Nexus Battles VI (bounded context Chatbot)."
+readme = "README.md"
+license = { text = "Licensing pending project governance" }
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "fastapi==0.142.2",
+  "uvicorn==0.54.0",
+  "pydantic==2.13.5",
+  "pyjwt[crypto]==2.15.1",
+  "psycopg[binary]==3.3.6",
+  "psycopg-pool==3.3.3",
+]
+
+[dependency-groups]
+dev = [
+  "httpx2==2.13.1",
+  "import-linter==2.15",
+  "mypy==2.3.1",
+  "pytest==9.1.1",
+  "pytest-cov==7.1.0",
+  "ruff==0.16.9",
+  "testcontainers[postgres]==4.15.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/chatbot"]
+
+# ---------------------------------------------------------------------------
+# Lint y formato (equivalente a ESLint + Prettier del arquetipo NestJS)
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F", "I", "B", "UP", "N", "S", "SIM", "RUF", "PL", "PT", "RET", "ARG", "T20", "ASYNC",
+]
+ignore = [
+  "PLR2004", # Los valores literales en pruebas y limites de configuracion son legibles.
+  "PLR0913", # La raiz de composicion recibe dependencias explicitas a proposito.
+  # Falso positivo: confunde `JsonLogger.info(mensaje, contexto)` con `logging`,
+  # cuyo segundo argumento seria un parametro de formato.
+  "PLE1205",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# `print` solo se permite en el registro estructurado y en el punto de entrada,
+# que escribe el motivo de un arranque fallido cuando el registro aun no existe.
+# ARG002: los dobles implementan un puerto y conservan su firma aunque no usen un argumento.
+"tests/**" = ["S101", "S105", "S106", "PLR0915", "ARG001", "ARG002"]
+"src/chatbot/infrastructure/observability/logger.py" = ["T201"]
+"src/chatbot/main.py" = ["T201"]
+"src/chatbot/infrastructure/persistence/migrate.py" = ["T201"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+# ---------------------------------------------------------------------------
+# Tipos (equivalente a `tsc --noEmit` estricto)
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.13"
+strict = true
+mypy_path = "src"
+packages = ["chatbot"]
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["testcontainers.*"]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Limites entre capas (equivalente a `no-restricted-imports` de ESLint).
+# Romperlos hace fallar la CI: no dependen de la disciplina de nadie.
+# ---------------------------------------------------------------------------
+[tool.importlinter]
+root_packages = ["chatbot"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "El dominio no importa framework, drivers, HTTP ni adaptadores"
+type = "forbidden"
+source_modules = ["chatbot.domain"]
+forbidden_modules = [
+  "chatbot.application",
+  "chatbot.adapters",
+  "chatbot.infrastructure",
+  "fastapi",
+  "starlette",
+  "uvicorn",
+  "pydantic",
+  "psycopg",
+  "psycopg_pool",
+  "jwt",
+  "httpx",
+  "sklearn",
+]
+
+[[tool.importlinter.contracts]]
+name = "La aplicacion solo depende de sus puertos y del dominio"
+type = "forbidden"
+source_modules = ["chatbot.application"]
+forbidden_modules = [
+  "chatbot.adapters",
+  "chatbot.infrastructure",
+  "fastapi",
+  "starlette",
+  "uvicorn",
+  "psycopg",
+  "psycopg_pool",
+  "jwt",
+  "httpx",
+  "sklearn",
+]
+
+# ---------------------------------------------------------------------------
+# Pruebas. Dos suites, cada una con su propia superficie de cobertura, como
+# `jest.config.ts` y `jest.db.config.ts` en los servicios NestJS.
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+  "db: necesita un PostgreSQL real (Testcontainers, requiere Docker)",
+]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["chatbot"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_covered = true
