@@ -1,13 +1,40 @@
 """Alta, edicion, baja y listado del diccionario por HTTP."""
 
 from collections.abc import Iterator
+from typing import ClassVar
 
 import pytest
 from fastapi.testclient import TestClient
-from tests.integration.test_service_http import JWT_ENV, FakeVerifier
 
+from chatbot.application.ports.token_verifier import (
+    Role,
+    TokenVerificationError,
+    VerifiedIdentity,
+)
 from chatbot.infrastructure.bootstrap.app import create_app
 from chatbot.infrastructure.config.env import load_config
+
+JWT_ENV = {
+    "AUTH_MODE": "jwt",
+    "COGNITO_USER_POOL_ID": "us-east-1_p",
+    "COGNITO_CLIENT_ID": "c",
+    "INTERNAL_SERVICE_AUTH_SECRET": "secreto-de-pruebas",
+}
+
+
+class FakeVerifier:
+    IDENTITIES: ClassVar[dict[str, VerifiedIdentity]] = {
+        "token-jugador": VerifiedIdentity("jugador", roles=frozenset({Role.PLAYER})),
+        "token-admin": VerifiedIdentity("admin", roles=frozenset({Role.ADMINISTRATOR})),
+        "token-super": VerifiedIdentity("super", roles=frozenset({Role.SUPER_ADMINISTRATOR})),
+    }
+
+    async def verify(self, token: str) -> VerifiedIdentity:
+        identity = self.IDENTITIES.get(token)
+        if identity is None:
+            raise TokenVerificationError()
+        return identity
+
 
 PATH = "/api/v1/chatbot/admin/knowledge"
 BODY = {
