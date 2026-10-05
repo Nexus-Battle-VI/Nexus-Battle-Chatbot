@@ -8,3 +8,7 @@ sus errores; el andamiaje solo declara la raiz.
 
 class DomainError(Exception):
     """Raiz de los errores de negocio de este contexto."""
+
+
+class InvalidKnowledgeEntryError(DomainError):
+    """Una entrada del diccionario no cumple su forma."""

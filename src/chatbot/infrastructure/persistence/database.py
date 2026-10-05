@@ -69,9 +69,30 @@ class Migration:
     sql: str
 
 
-# Vacio a proposito: el andamiaje no inventa tablas. Cada Historia de Usuario
-# anade aqui su migracion, en orden.
-MIGRATIONS: Sequence[Migration] = ()
+# Cada Historia de Usuario anade aqui su migracion, en orden de nombre.
+MIGRATIONS: Sequence[Migration] = (
+    Migration(
+        "001-knowledge-entries",
+        """
+        create table knowledge_entries (
+          id uuid primary key,
+          intent text not null,
+          language text not null,
+          priority integer not null,
+          answer text not null,
+          variations jsonb not null,
+          constraint knowledge_entries_idioma check (language in ('es', 'en')),
+          constraint knowledge_entries_intencion
+            check (intent ~ '^[a-z][a-z0-9_]{0,63}$'),
+          constraint knowledge_entries_respuesta
+            check (char_length(btrim(answer)) > 0 and char_length(answer) <= 8000),
+          constraint knowledge_entries_variaciones check (
+            jsonb_typeof(variations) = 'array' and jsonb_array_length(variations) >= 1
+          )
+        )
+        """,
+    ),
+)
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")
 # Clave del bloqueo consultivo que serializa dos migradores concurrentes.
