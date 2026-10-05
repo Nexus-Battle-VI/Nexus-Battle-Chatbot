@@ -12,6 +12,7 @@ dependencies = [
   "pyjwt[crypto]==2.15.1",
   "psycopg[binary]==3.3.6",
   "psycopg-pool==3.3.3",
+  "scikit-learn==1.9.1",
 ]
 
 [dependency-groups]
@@ -75,7 +76,7 @@ packages = ["chatbot"]
 warn_unreachable = true
 
 [[tool.mypy.overrides]]
-module = ["testcontainers.*"]
+module = ["testcontainers.*", "sklearn.*"]
 ignore_missing_imports = true
 
 # ---------------------------------------------------------------------------

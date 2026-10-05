@@ -16,6 +16,7 @@ _LANGUAGES = frozenset({"es", "en"})
 _MAX_ANSWER = 8_000
 _MAX_VARIATIONS = 30
 _MAX_VARIATION = 500
+_VIEW = re.compile(r"^[a-z][a-z0-9_-]{0,39}$")
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,18 @@ class KnowledgeEntry:
     priority: int
     answer: str
     variations: tuple[str, ...]
+    view: str | None = None
+
+
+def question_view(view: str | None) -> str | None:
+    """Vista de la consulta. Vacia significa que no hay vista."""
+    if view is None:
+        return None
+    if not isinstance(view, str) or _VIEW.fullmatch(view) is None:
+        raise InvalidKnowledgeEntryError(
+            "La vista debe ser minusculas, numeros, guion o guion bajo."
+        )
+    return view
 
 
 def knowledge_entry(
@@ -36,6 +49,7 @@ def knowledge_entry(
     priority: int,
     answer: str,
     variations: tuple[str, ...] | list[str],
+    view: str | None = None,
 ) -> KnowledgeEntry:
     """Valida y congela una entrada. No recorta en silencio un dato invalido."""
     try:
@@ -51,6 +65,8 @@ def knowledge_entry(
         raise InvalidKnowledgeEntryError("El idioma debe ser es o en.")
     if isinstance(priority, bool) or not isinstance(priority, int):
         raise InvalidKnowledgeEntryError("La prioridad debe ser un entero.")
+
+    parsed_view = question_view(view)
 
     if not isinstance(answer, str) or answer.strip() == "":
         raise InvalidKnowledgeEntryError("La respuesta no puede estar vacia.")
@@ -82,4 +98,5 @@ def knowledge_entry(
         priority=priority,
         answer=answer,
         variations=tuple(cleaned),
+        view=parsed_view,
     )

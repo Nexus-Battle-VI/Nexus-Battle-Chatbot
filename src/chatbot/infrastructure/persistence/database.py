@@ -92,6 +92,16 @@ MIGRATIONS: Sequence[Migration] = (
         )
         """,
     ),
+    Migration(
+        "002-knowledge-entry-view",
+        """
+        alter table knowledge_entries
+          add column view text,
+          add constraint knowledge_entries_vista check (
+            view is null or view ~ '^[a-z][a-z0-9_-]{0,39}$'
+          )
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")
