@@ -15,12 +15,26 @@ from psycopg_pool import AsyncConnectionPool
 from chatbot.adapters.inbound.http import health
 from chatbot.adapters.inbound.http.auth.guards import AuthSettings, authenticate
 from chatbot.adapters.inbound.http.errors import register_error_handlers
+from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifier,
     CognitoTokenVerifierOptions,
 )
+from chatbot.adapters.outbound.persistence.in_memory_knowledge import (
+    InMemoryKnowledgeEntryRepository,
+)
+from chatbot.adapters.outbound.persistence.postgres_knowledge import (
+    PostgresKnowledgeEntryRepository,
+)
 from chatbot.adapters.outbound.system.clock import SystemClock
+from chatbot.application.knowledge import (
+    CreateKnowledgeEntry,
+    DeleteKnowledgeEntry,
+    ListKnowledgeEntries,
+    UpdateKnowledgeEntry,
+)
 from chatbot.application.ports.clock import ClockPort
+from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
 from chatbot.application.ports.token_verifier import TokenVerifierPort, VerifiedIdentity
 from chatbot.infrastructure.config.env import AppConfig, AuthMode
 from chatbot.infrastructure.health.health import ReadinessCheck
@@ -131,7 +145,23 @@ def create_app(
         readiness.append(ReadinessCheck(name="database", check=database_ready))
     app.state.readiness_checks = readiness
 
+    entries: KnowledgeEntryRepositoryPort = (
+        PostgresKnowledgeEntryRepository(pool)
+        if pool is not None
+        else InMemoryKnowledgeEntryRepository()
+    )
     app.include_router(health.router, prefix=prefix)
+    # La ruta publica del contexto es /api/v1/chatbot* (ADR-022, Caddy). No
+    # depende de GLOBAL_PREFIX, que las sondas siguen usando (`/api/health/*`).
+    app.include_router(
+        knowledge_router(
+            create=CreateKnowledgeEntry(entries),
+            update=UpdateKnowledgeEntry(entries),
+            delete=DeleteKnowledgeEntry(entries),
+            list_entries=ListKnowledgeEntries(entries),
+        ),
+        prefix="/api/v1/chatbot",
+    )
     for router in extra_routers:
         app.include_router(router, prefix=prefix)
     return app
