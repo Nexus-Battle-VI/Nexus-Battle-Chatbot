@@ -29,7 +29,9 @@ from chatbot.adapters.outbound.persistence.postgres_knowledge import (
     PostgresKnowledgeEntryRepository,
 )
 from chatbot.adapters.outbound.system.clock import SystemClock
+from chatbot.adapters.outbound.system.fernet_cipher import FernetTextCipher
 from chatbot.application.answer import AnswerQuestion
+from chatbot.application.conversation import ConversationSession
 from chatbot.application.knowledge import (
     CreateKnowledgeEntry,
     DeleteKnowledgeEntry,
@@ -82,6 +84,7 @@ def create_app(
             {"detail": "PERSISTENCE_DRIVER=memory: el estado se pierde al reiniciar el servicio."},
         )
 
+    app_clock = clock or SystemClock()
     verifier: TokenVerifierPort
     if token_verifier is not None:
         verifier = token_verifier
@@ -129,7 +132,7 @@ def create_app(
         verifier=verifier,
         internal_secret=config.internal_service_auth_secret,
         internal_callers=internal_callers,
-        clock=clock or SystemClock(),
+        clock=app_clock,
         logger=log,
     )
     app.state.version_info = {
@@ -166,7 +169,13 @@ def create_app(
         prefix="/api/v1/chatbot",
     )
     app.include_router(
-        messages_router(AnswerQuestion(entries, SklearnIntentModelFactory())),
+        messages_router(
+            ConversationSession(
+                AnswerQuestion(entries, SklearnIntentModelFactory()),
+                app_clock,
+                FernetTextCipher(FernetTextCipher.generate_key()),
+            )
+        ),
         prefix="/api/v1/chatbot",
     )
     for router in extra_routers:
