@@ -18,7 +18,7 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 
 - **Clasificador**: `TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5))` + `LogisticRegression`.
   - Los n-gramas de caracteres toleran errores ortográficos y no necesitan un tokenizador por idioma.
-  - `max_features` acotado, para que el modelo y su memoria tengan techo.
+  - `max_features` acotado, para que el modelo y su memoria tengan techo. Los números del primer entreno (`max_features` 20000, confianza 0,55, exactitud mínima 0,80) están en [parametros-entrenamiento-v1.md](parametros-entrenamiento-v1.md). La semilla de intenciones de texto está en [diccionario/semilla-v1.json](diccionario/semilla-v1.json).
 - **Datos de entrenamiento**: las variaciones de pregunta de la base de conocimiento (HU-53) y las conversaciones etiquetadas tras revisión (HU-51). **Ninguna conversación entra al entrenamiento sin revisión.**
 - **Ciclo de vida (HU-54)**:
   1. Entrenar produce una versión `CANDIDATE`, con métricas sobre un conjunto de validación separado: exactitud, F1 por intención y matriz de confusión.
