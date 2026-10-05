@@ -29,6 +29,7 @@ class CreateKnowledgeEntry:
         priority: int,
         answer: str,
         variations: list[str],
+        view: str | None = None,
     ) -> KnowledgeEntry:
         entry = knowledge_entry(
             entry_id=str(uuid4()),
@@ -37,6 +38,7 @@ class CreateKnowledgeEntry:
             priority=priority,
             answer=answer,
             variations=variations,
+            view=view,
         )
         await self._entries.add(entry)
         return entry
@@ -55,6 +57,7 @@ class UpdateKnowledgeEntry:
         priority: int,
         answer: str,
         variations: list[str],
+        view: str | None = None,
     ) -> KnowledgeEntry:
         current = await self._entries.get(entry_id)
         if current is None:
@@ -66,6 +69,7 @@ class UpdateKnowledgeEntry:
             priority=priority,
             answer=answer,
             variations=variations,
+            view=view,
         )
         saved = await self._entries.save(entry)
         if not saved:

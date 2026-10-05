@@ -29,6 +29,7 @@ class KnowledgeEntryBody(BaseModel):
     priority: int
     answer: str
     variations: list[str]
+    view: str | None = None
 
 
 def _view(entry: KnowledgeEntry) -> dict[str, object]:
@@ -39,6 +40,7 @@ def _view(entry: KnowledgeEntry) -> dict[str, object]:
         "priority": entry.priority,
         "answer": entry.answer,
         "variations": list(entry.variations),
+        "view": entry.view,
     }
 
 
@@ -69,6 +71,7 @@ def knowledge_router(
                 priority=body.priority,
                 answer=body.answer,
                 variations=body.variations,
+                view=body.view,
             )
         except InvalidKnowledgeEntryError as error:
             raise _invalid(error) from error
@@ -84,6 +87,7 @@ def knowledge_router(
                 priority=body.priority,
                 answer=body.answer,
                 variations=body.variations,
+                view=body.view,
             )
         except InvalidKnowledgeEntryError as error:
             raise _invalid(error) from error

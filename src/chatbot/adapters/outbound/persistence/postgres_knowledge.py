@@ -31,6 +31,7 @@ def _entry(row: tuple[object, ...]) -> KnowledgeEntry:
         priority=priority,
         answer=str(row[4]),
         variations=_variations(row[5]),
+        view=None if row[6] is None else str(row[6]),
     )
 
 
@@ -42,8 +43,8 @@ class PostgresKnowledgeEntryRepository:
         async with self._pool.connection() as connection:
             await connection.execute(
                 "insert into knowledge_entries"
-                " (id, intent, language, priority, answer, variations)"
-                " values (%s, %s, %s, %s, %s, %s::jsonb)",
+                " (id, intent, language, priority, answer, variations, view)"
+                " values (%s, %s, %s, %s, %s, %s::jsonb, %s)",
                 (
                     entry.id,
                     entry.intent,
@@ -51,6 +52,7 @@ class PostgresKnowledgeEntryRepository:
                     entry.priority,
                     entry.answer,
                     json.dumps(list(entry.variations)),
+                    entry.view,
                 ),
             )
 
@@ -59,7 +61,7 @@ class PostgresKnowledgeEntryRepository:
             cursor = await connection.execute(
                 "update knowledge_entries"
                 " set intent = %s, language = %s, priority = %s,"
-                " answer = %s, variations = %s::jsonb"
+                " answer = %s, variations = %s::jsonb, view = %s"
                 " where id = %s",
                 (
                     entry.intent,
@@ -67,6 +69,7 @@ class PostgresKnowledgeEntryRepository:
                     entry.priority,
                     entry.answer,
                     json.dumps(list(entry.variations)),
+                    entry.view,
                     entry.id,
                 ),
             )
@@ -83,7 +86,7 @@ class PostgresKnowledgeEntryRepository:
     async def get(self, entry_id: str) -> KnowledgeEntry | None:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id::text, intent, language, priority, answer, variations"
+                "select id::text, intent, language, priority, answer, variations, view"
                 " from knowledge_entries where id = %s",
                 (entry_id,),
             )
@@ -93,7 +96,7 @@ class PostgresKnowledgeEntryRepository:
     async def list_all(self) -> tuple[KnowledgeEntry, ...]:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id::text, intent, language, priority, answer, variations"
+                "select id::text, intent, language, priority, answer, variations, view"
                 " from knowledge_entries"
                 " order by intent, language, priority desc, id"
             )

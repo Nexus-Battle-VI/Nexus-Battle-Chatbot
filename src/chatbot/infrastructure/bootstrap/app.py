@@ -16,10 +16,12 @@ from chatbot.adapters.inbound.http import health
 from chatbot.adapters.inbound.http.auth.guards import AuthSettings, authenticate
 from chatbot.adapters.inbound.http.errors import register_error_handlers
 from chatbot.adapters.inbound.http.knowledge import knowledge_router
+from chatbot.adapters.inbound.http.messages import messages_router
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifier,
     CognitoTokenVerifierOptions,
 )
+from chatbot.adapters.outbound.nlp.sklearn_intent import SklearnIntentModelFactory
 from chatbot.adapters.outbound.persistence.in_memory_knowledge import (
     InMemoryKnowledgeEntryRepository,
 )
@@ -27,6 +29,7 @@ from chatbot.adapters.outbound.persistence.postgres_knowledge import (
     PostgresKnowledgeEntryRepository,
 )
 from chatbot.adapters.outbound.system.clock import SystemClock
+from chatbot.application.answer import AnswerQuestion
 from chatbot.application.knowledge import (
     CreateKnowledgeEntry,
     DeleteKnowledgeEntry,
@@ -160,6 +163,10 @@ def create_app(
             delete=DeleteKnowledgeEntry(entries),
             list_entries=ListKnowledgeEntries(entries),
         ),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
+        messages_router(AnswerQuestion(entries, SklearnIntentModelFactory())),
         prefix="/api/v1/chatbot",
     )
     for router in extra_routers:
