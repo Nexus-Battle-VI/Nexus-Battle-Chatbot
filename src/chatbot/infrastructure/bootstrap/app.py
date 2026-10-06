@@ -18,6 +18,7 @@ from chatbot.adapters.inbound.http.errors import register_error_handlers
 from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.inbound.http.messages import messages_router
 from chatbot.adapters.inbound.http.precision import precision_router
+from chatbot.adapters.inbound.http.tickets import tickets_router
 from chatbot.adapters.inbound.http.training import training_router
 from chatbot.adapters.outbound.http.player_data import HttpPlayerData
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
@@ -29,12 +30,14 @@ from chatbot.adapters.outbound.persistence.empty_reviews import EmptyReviewedCon
 from chatbot.adapters.outbound.persistence.in_memory_knowledge import (
     InMemoryKnowledgeEntryRepository,
 )
+from chatbot.adapters.outbound.persistence.in_memory_tickets import InMemorySupportTicketRepository
 from chatbot.adapters.outbound.persistence.in_memory_versions import (
     InMemoryModelVersionRepository,
 )
 from chatbot.adapters.outbound.persistence.postgres_knowledge import (
     PostgresKnowledgeEntryRepository,
 )
+from chatbot.adapters.outbound.persistence.postgres_tickets import PostgresSupportTicketRepository
 from chatbot.adapters.outbound.persistence.postgres_versions import (
     PostgresModelVersionRepository,
 )
@@ -54,6 +57,7 @@ from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryR
 from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerifierPort, VerifiedIdentity
 from chatbot.application.precision import ReadModelPrecision
+from chatbot.application.support_ticket import ListSupportTickets, OpenSupportTicket
 from chatbot.application.train_model import RetrainModel
 from chatbot.infrastructure.config.env import AppConfig, AuthMode
 from chatbot.infrastructure.health.health import ReadinessCheck
@@ -122,6 +126,11 @@ def create_app(
         PostgresModelVersionRepository(pool)
         if pool is not None
         else InMemoryModelVersionRepository()
+    )
+    support_tickets = (
+        PostgresSupportTicketRepository(pool)
+        if pool is not None
+        else InMemorySupportTicketRepository()
     )
     model_factory = SklearnIntentModelFactory()
     retrain = RetrainModel(
@@ -215,6 +224,10 @@ def create_app(
         prefix="/api/v1/chatbot",
     )
     app.include_router(
+        tickets_router(ListSupportTickets(support_tickets)),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
         messages_router(
             ConversationSession(
                 AnswerQuestion(
@@ -235,7 +248,8 @@ def create_app(
                 ),
                 app_clock,
                 FernetTextCipher(FernetTextCipher.generate_key()),
-            )
+            ),
+            OpenSupportTicket(support_tickets, app_clock),
         ),
         prefix="/api/v1/chatbot",
     )

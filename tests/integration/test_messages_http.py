@@ -100,11 +100,17 @@ def test_un_visitante_recibe_la_respuesta_del_diccionario(client: TestClient) ->
     assert response.status_code == 200
     body = response.json()
     assert body["answered"] is True
+    assert body["ticketId"] is None
     assert body["intent"] == "regla_turno"
     assert body["language"] == "es"
     assert body["confidence"] >= 0.55
     assert "30 segundos" in body["answer"]
     assert "subject" not in body
+    listed = client.get(
+        "/api/v1/chatbot/admin/tickets",
+        headers={"authorization": "Bearer token-admin"},
+    )
+    assert listed.json() == []
 
 
 def test_otra_formulacion_reconoce_la_misma_intencion(client: TestClient) -> None:
@@ -120,6 +126,48 @@ def test_por_debajo_del_umbral_no_inventa_y_sugiere(client: TestClient) -> None:
     assert body["answered"] is False
     assert body["answer"] is None
     assert body["intent"] is None
+    assert body["ticketId"] is not None
+    listed = client.get(
+        "/api/v1/chatbot/admin/tickets",
+        headers={"authorization": "Bearer token-admin"},
+    )
+    assert listed.status_code == 200
+    assert listed.json()[0]["question"] == "????"
+    denied = client.get(
+        "/api/v1/chatbot/admin/tickets",
+        headers={"authorization": "Bearer token-jugador"},
+    )
+    assert denied.status_code == 403
+
+
+def test_transferir_redacta_la_pregunta(client: TestClient) -> None:
+    extra = client.post(
+        "/api/v1/chatbot/tickets",
+        json={"text": "password: secreto123", "userId": "otro"},
+    )
+    assert extra.status_code == 400
+    opened = client.post("/api/v1/chatbot/tickets", json={"text": "password: secreto123"})
+    assert opened.status_code == 200
+    assert opened.json()["sessionId"]
+    listed = client.get(
+        "/api/v1/chatbot/admin/tickets",
+        headers={"authorization": "Bearer token-admin"},
+    )
+    stored = listed.json()[0]
+    assert stored["id"] == opened.json()["id"]
+    assert stored["question"] == "[redactado]"
+    assert stored["actor"].startswith("visitor:")
+    offensive = client.post("/api/v1/chatbot/tickets", json={"text": "esto es una mierda"})
+    assert offensive.status_code == 400
+    assert (
+        len(
+            client.get(
+                "/api/v1/chatbot/admin/tickets",
+                headers={"authorization": "Bearer token-admin"},
+            ).json()
+        )
+        == 1
+    )
 
 
 def test_la_vista_cambia_la_respuesta(client: TestClient) -> None:
