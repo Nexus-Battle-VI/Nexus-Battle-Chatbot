@@ -16,7 +16,8 @@ class PostgresTranscriptRepository:
             await connection.execute(
                 "insert into conversation_turns ("
                 " id, actor, question, answer, language, intent, model_version,"
-                " useful, created_at) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                " useful, created_at, duration_ms) values"
+                " (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     turn.id,
                     actor,
@@ -27,14 +28,15 @@ class PostgresTranscriptRepository:
                     turn.model_version,
                     turn.useful,
                     turn.created_at,
+                    turn.duration_ms,
                 ),
             )
 
     async def list_active(self, actor: str) -> tuple[StoredTurn, ...]:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id, question, answer, language, intent, model_version, useful, created_at"
-                " from conversation_turns"
+                "select id, question, answer, language, intent, model_version,"
+                " useful, created_at, duration_ms from conversation_turns"
                 " where actor = %s and deleted = false"
                 " order by created_at, id",
                 (actor,),
@@ -45,8 +47,8 @@ class PostgresTranscriptRepository:
     async def get(self, actor: str, turn_id: str) -> StoredTurn | None:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id, question, answer, language, intent, model_version, useful, created_at"
-                " from conversation_turns"
+                "select id, question, answer, language, intent, model_version,"
+                " useful, created_at, duration_ms from conversation_turns"
                 " where actor = %s and id = %s and deleted = false",
                 (actor, turn_id),
             )
@@ -66,7 +68,7 @@ class PostgresTranscriptRepository:
                 "update conversation_turns set useful = %s"
                 " where actor = %s and id = %s and deleted = false"
                 " returning id, question, answer, language, intent,"
-                " model_version, useful, created_at",
+                " model_version, useful, created_at, duration_ms",
                 (useful, actor, turn_id),
             )
             row = await cursor.fetchone()
@@ -75,13 +77,39 @@ class PostgresTranscriptRepository:
     async def list_rated(self) -> tuple[StoredTurn, ...]:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id, question, answer, language, intent, model_version, useful, created_at"
-                " from conversation_turns"
+                "select id, question, answer, language, intent, model_version,"
+                " useful, created_at, duration_ms from conversation_turns"
                 " where deleted = false and useful is not null"
                 " order by created_at, id"
             )
             rows = await cursor.fetchall()
         return tuple(_turn(row) for row in rows)
+
+    async def list_between(self, start: datetime, end: datetime) -> tuple[StoredTurn, ...]:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select id, question, answer, language, intent, model_version,"
+                " useful, created_at, duration_ms from conversation_turns"
+                " where deleted = false and created_at >= %s and created_at <= %s"
+                " order by created_at, id",
+                (start, end),
+            )
+            rows = await cursor.fetchall()
+        return tuple(_turn(row) for row in rows)
+
+    async def count_started(self, start: datetime, end: datetime) -> int:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select count(*) from ("
+                " select actor from conversation_turns"
+                " where deleted = false"
+                " group by actor"
+                " having min(created_at) >= %s and min(created_at) <= %s"
+                ") started",
+                (start, end),
+            )
+            row = await cursor.fetchone()
+        return 0 if row is None else int(row[0])
 
     async def remember_visitor(self, session_id: str) -> None:
         async with self._pool.connection() as connection:
@@ -123,6 +151,9 @@ def _turn(row: tuple[object, ...]) -> StoredTurn:
     if not isinstance(created, datetime):
         raise TypeError("La fecha del turno no es una fecha.")
     useful = row[6]
+    duration = row[8]
+    if duration is not None and not isinstance(duration, int):
+        raise TypeError("La duracion del turno no es un entero.")
     return StoredTurn(
         id=str(row[0]),
         question=str(row[1]),
@@ -132,4 +163,5 @@ def _turn(row: tuple[object, ...]) -> StoredTurn:
         model_version=None if row[5] is None else str(row[5]),
         useful=None if useful is None else bool(useful),
         created_at=created,
+        duration_ms=None if duration is None else duration,
     )

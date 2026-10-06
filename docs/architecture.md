@@ -33,6 +33,10 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 
 Cada consulta se guarda cifrada, ligada al `player:{sub}` o al `visitor:{sesión}` que el servicio emitió. `GET /api/v1/chatbot/messages/history` devuelve solo ese historial. `POST /api/v1/chatbot/messages/{id}/rating` con `{useful}` califica esa respuesta una vez: útil entra al siguiente entrenamiento con su intención; no útil queda revisada y no se suma como ejemplo. Borrar el historial lo saca del conjunto. La preferencia que ya existe, mostrar la hora, se guarda por persona en `PUT /api/v1/chatbot/preferences`. El diccionario no tiene una variante breve y otra extensa, así que el texto de la respuesta no cambia de longitud. Una pregunta sin resolver sigue siendo el ticket de HU-49; no se inserta sola en el diccionario.
 
+## Analíticas (HU-52)
+
+`GET /api/v1/chatbot/admin/analytics` exige `ADMINISTRATOR` y un periodo `from`/`to` de hasta 366 días. Cuenta conversaciones cuyo primer turno cae en el periodo, las preguntas y las intenciones más repetidas, la tasa de turnos que sí trajeron respuesta, el promedio de los milisegundos medidos al responder, la satisfacción entre valoraciones útiles y no útiles, los tickets de HU-49 y, por día UTC, las consultas y las resueltas. Las palabras salen del texto ya normalizado, sin partículas gramaticales. No hay cifra cuando no hay turnos, duraciones o valoraciones. El listado no incluye al actor.
+
 ## Tickets (HU-49)
 
 Si `answered` es falso, la respuesta incluye `ticketId` y el servicio guarda la pregunta ya redactada, la vista y el actor (`player:{sub}` o `visitor:{sesión}`). `POST /api/v1/chatbot/tickets` abre un ticket con el texto que envía el widget al transferir. `GET /api/v1/chatbot/admin/tickets` lista esos tickets y exige `ADMINISTRATOR`. No se envía correo y la pregunta no entra al diccionario.

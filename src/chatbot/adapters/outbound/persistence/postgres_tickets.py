@@ -28,6 +28,15 @@ class PostgresSupportTicketRepository:
             rows = await cursor.fetchall()
         return tuple(_ticket(row) for row in rows)
 
+    async def count_between(self, start: datetime, end: datetime) -> int:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select count(*) from support_tickets where created_at >= %s and created_at <= %s",
+                (start, end),
+            )
+            row = await cursor.fetchone()
+        return 0 if row is None else int(row[0])
+
 
 def _ticket(row: tuple[object, ...]) -> SupportTicket:
     created = row[4]

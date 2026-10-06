@@ -1,6 +1,7 @@
 """Historial en memoria. Se pierde al reiniciar el proceso."""
 
 from collections import defaultdict
+from datetime import datetime
 
 from chatbot.application.ports.transcript_repository import StoredTurn
 
@@ -42,6 +43,7 @@ class InMemoryTranscriptRepository:
                 turn.model_version,
                 useful,
                 turn.created_at,
+                turn.duration_ms,
             )
             rows[index] = updated
             return updated
@@ -54,6 +56,27 @@ class InMemoryTranscriptRepository:
                 if turn.id not in self._deleted and turn.useful is not None:
                     rated.append(turn)
         return tuple(rated)
+
+    async def list_between(self, start: datetime, end: datetime) -> tuple[StoredTurn, ...]:
+        found = [turn for _actor, turn in self._visible() if start <= turn.created_at <= end]
+        found.sort(key=lambda turn: (turn.created_at, turn.id))
+        return tuple(found)
+
+    async def count_started(self, start: datetime, end: datetime) -> int:
+        first: dict[str, datetime] = {}
+        for actor, turn in self._visible():
+            current = first.get(actor)
+            if current is None or turn.created_at < current:
+                first[actor] = turn.created_at
+        return sum(1 for moment in first.values() if start <= moment <= end)
+
+    def _visible(self) -> tuple[tuple[str, StoredTurn], ...]:
+        rows: list[tuple[str, StoredTurn]] = []
+        for actor, turns in self._turns.items():
+            for turn in turns:
+                if turn.id not in self._deleted:
+                    rows.append((actor, turn))
+        return tuple(rows)
 
     async def remember_visitor(self, session_id: str) -> None:
         self._visitors.add(session_id)
