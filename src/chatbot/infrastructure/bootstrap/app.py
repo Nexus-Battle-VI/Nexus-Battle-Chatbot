@@ -22,14 +22,22 @@ from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifierOptions,
 )
 from chatbot.adapters.outbound.nlp.sklearn_intent import SklearnIntentModelFactory
+from chatbot.adapters.outbound.persistence.empty_reviews import EmptyReviewedConversations
 from chatbot.adapters.outbound.persistence.in_memory_knowledge import (
     InMemoryKnowledgeEntryRepository,
+)
+from chatbot.adapters.outbound.persistence.in_memory_versions import (
+    InMemoryModelVersionRepository,
 )
 from chatbot.adapters.outbound.persistence.postgres_knowledge import (
     PostgresKnowledgeEntryRepository,
 )
+from chatbot.adapters.outbound.persistence.postgres_versions import (
+    PostgresModelVersionRepository,
+)
 from chatbot.adapters.outbound.system.clock import SystemClock
 from chatbot.adapters.outbound.system.fernet_cipher import FernetTextCipher
+from chatbot.adapters.outbound.system.training_scheduler import TrainingScheduler
 from chatbot.application.answer import AnswerQuestion
 from chatbot.application.conversation import ConversationSession
 from chatbot.application.knowledge import (
@@ -40,7 +48,9 @@ from chatbot.application.knowledge import (
 )
 from chatbot.application.ports.clock import ClockPort
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
+from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerifierPort, VerifiedIdentity
+from chatbot.application.train_model import RetrainModel
 from chatbot.infrastructure.config.env import AppConfig, AuthMode
 from chatbot.infrastructure.health.health import ReadinessCheck
 from chatbot.infrastructure.observability.logger import JsonLogger, Logger
@@ -99,6 +109,33 @@ def create_app(
         )
         verifier = _UnconfiguredVerifier()
 
+    entries: KnowledgeEntryRepositoryPort = (
+        PostgresKnowledgeEntryRepository(pool)
+        if pool is not None
+        else InMemoryKnowledgeEntryRepository()
+    )
+    versions: ModelVersionRepository = (
+        PostgresModelVersionRepository(pool)
+        if pool is not None
+        else InMemoryModelVersionRepository()
+    )
+    model_factory = SklearnIntentModelFactory()
+    scheduler = (
+        TrainingScheduler(
+            RetrainModel(
+                entries,
+                EmptyReviewedConversations(),
+                model_factory,
+                versions,
+                app_clock,
+            ),
+            config.training_interval_seconds,
+            log,
+        )
+        if config.training_scheduler_enabled
+        else None
+    )
+
     @asynccontextmanager
     async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         # El esquema NO se migra aqui: es un paso explicito (`chatbot-migrate`).
@@ -106,9 +143,13 @@ def create_app(
         # la readiness lo dira con 503 en vez de impedir el arranque.
         if pool is not None:
             await pool.open(wait=False)
+        if scheduler is not None:
+            scheduler.start()
         try:
             yield
         finally:
+            if scheduler is not None:
+                await scheduler.stop()
             if pool is not None:
                 await pool.close()
 
@@ -151,11 +192,6 @@ def create_app(
         readiness.append(ReadinessCheck(name="database", check=database_ready))
     app.state.readiness_checks = readiness
 
-    entries: KnowledgeEntryRepositoryPort = (
-        PostgresKnowledgeEntryRepository(pool)
-        if pool is not None
-        else InMemoryKnowledgeEntryRepository()
-    )
     app.include_router(health.router, prefix=prefix)
     # La ruta publica del contexto es /api/v1/chatbot* (ADR-022, Caddy). No
     # depende de GLOBAL_PREFIX, que las sondas siguen usando (`/api/health/*`).
@@ -171,7 +207,7 @@ def create_app(
     app.include_router(
         messages_router(
             ConversationSession(
-                AnswerQuestion(entries, SklearnIntentModelFactory()),
+                AnswerQuestion(entries, model_factory, versions, model_factory),
                 app_clock,
                 FernetTextCipher(FernetTextCipher.generate_key()),
             )

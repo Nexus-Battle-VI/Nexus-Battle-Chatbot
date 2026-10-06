@@ -8,6 +8,8 @@ from dataclasses import dataclass
 
 from chatbot.application.ports.intent_model import IntentModel, IntentModelFactory
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
+from chatbot.application.ports.model_trainer import ModelTrainer
+from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.domain.knowledge_entry import KnowledgeEntry
 from chatbot.domain.normalize import normalize_question
 
@@ -68,12 +70,21 @@ def _kind(entry: KnowledgeEntry, view: str | None) -> str:
 
 
 class AnswerQuestion:
-    def __init__(self, entries: KnowledgeEntryRepositoryPort, models: IntentModelFactory) -> None:
+    def __init__(
+        self,
+        entries: KnowledgeEntryRepositoryPort,
+        models: IntentModelFactory,
+        versions: ModelVersionRepository | None = None,
+        loader: ModelTrainer | None = None,
+    ) -> None:
         self._entries = entries
         self._models = models
+        self._versions = versions
+        self._loader = loader
         self._fingerprint: tuple[object, ...] | None = None
+        self._served_version: str | None = None
         self._model: IntentModel | None = None
-        self._cache: dict[tuple[str, str | None], Answer] = {}
+        self._cache: dict[tuple[str | None, str, str | None], Answer] = {}
 
     async def execute(self, text: str, view: str | None) -> Answer:
         entries = await self._entries.list_all()
@@ -89,18 +100,31 @@ class AnswerQuestion:
             )
             for entry in entries
         )
-        if fingerprint != self._fingerprint:
-            examples = tuple(
-                (_label(entry), normalize_question(variation))
-                for entry in entries
-                for variation in entry.variations
-            )
-            self._model = self._models.train(examples)
-            self._fingerprint = fingerprint
-            self._cache.clear()
+        active = None if self._versions is None else await self._versions.active()
+        if active is None:
+            if fingerprint != self._fingerprint:
+                examples = tuple(
+                    (_label(entry), normalize_question(variation))
+                    for entry in entries
+                    for variation in entry.variations
+                )
+                self._model = self._models.train(examples)
+                self._fingerprint = fingerprint
+                self._served_version = None
+                self._cache.clear()
+        else:
+            if active.id != self._served_version:
+                if self._loader is None:
+                    raise RuntimeError("No hay cargador para la version activa.")
+                self._model = self._loader.load(active.artifact)
+                self._served_version = active.id
+                self._cache.clear()
+            if fingerprint != self._fingerprint:
+                self._fingerprint = fingerprint
+                self._cache.clear()
 
         normalized = normalize_question(text)
-        key = (normalized, view)
+        key = (self._served_version, normalized, view)
         cached = self._cache.get(key)
         if cached is not None:
             return cached

@@ -76,7 +76,7 @@ packages = ["chatbot"]
 warn_unreachable = true
 
 [[tool.mypy.overrides]]
-module = ["testcontainers.*", "sklearn.*"]
+module = ["testcontainers.*", "sklearn.*", "joblib.*"]
 ignore_missing_imports = true
 
 # ---------------------------------------------------------------------------
