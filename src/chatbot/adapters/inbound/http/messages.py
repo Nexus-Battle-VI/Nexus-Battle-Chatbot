@@ -38,7 +38,15 @@ def _payload(answer: Answer, session_id: str | None) -> dict[str, object]:
         "view": answer.view,
         "sessionId": session_id,
         "modelVersion": answer.model_version,
+        "assistedAction": _assisted(answer),
     }
+
+
+def _assisted(answer: Answer) -> dict[str, str] | None:
+    if answer.assisted_action is None:
+        return None
+    name, path = answer.assisted_action
+    return {"name": name, "path": path}
 
 
 async def _identity(request: Request) -> VerifiedIdentity | None:

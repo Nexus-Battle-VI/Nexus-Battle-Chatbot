@@ -14,6 +14,7 @@ from chatbot.application.ports.model_version_repository import (
     ModelVersionRepository,
 )
 from chatbot.application.ports.player_data import PlayerDataPort
+from chatbot.domain.assisted_action import assisted_action
 from chatbot.domain.experiment import sees_candidate
 from chatbot.domain.knowledge_entry import KnowledgeEntry
 from chatbot.domain.live_query import SIGN_IN, UNAVAILABLE, live_source
@@ -41,6 +42,7 @@ class Answer:
     suggestions: tuple[str, ...]
     view: str | None
     model_version: str | None = None
+    assisted_action: tuple[str, str] | None = None
 
 
 _SUMMARIES = {
@@ -179,7 +181,11 @@ class AnswerQuestion:
             source = live_source(label)
         if source is not None:
             result = await self._live(source, access_token, label)
-            result = replace(result, model_version=version_id)
+            result = replace(
+                result,
+                model_version=version_id,
+                assisted_action=assisted_action(label),
+            )
             await self._note(version_id)
             return result
         key = (version_id, normalized, view)
@@ -188,7 +194,11 @@ class AnswerQuestion:
             await self._note(version_id)
             return cached
 
-        result = replace(self._resolve(normalized, view, entries), model_version=version_id)
+        result = replace(
+            self._resolve(normalized, view, entries),
+            model_version=version_id,
+            assisted_action=assisted_action(label),
+        )
         if len(self._cache) >= _CACHE_LIMIT:
             self._cache.pop(next(iter(self._cache)))
         self._cache[key] = result
