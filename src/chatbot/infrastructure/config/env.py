@@ -14,6 +14,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
 
+from cryptography.fernet import Fernet
+
 
 class ConfigurationError(Exception):
     pass
@@ -59,6 +61,7 @@ class AppConfig:
     missions_base_url: str | None
     auction_base_url: str | None
     notifications_base_url: str | None
+    conversation_cipher_key: str | None
 
 
 RawEnv = Mapping[str, str | None]
@@ -145,6 +148,24 @@ def load_config(env: RawEnv) -> AppConfig:
             'PERSISTENCE_DRIVER no puede ser "memory" con APP_ENV=production. Vease ADR-022.'
         )
 
+    cipher_key = _read_string(env, "CONVERSATION_CIPHER_KEY", "")
+    if cipher_key == "":
+        if app_env == "production" and persistence_driver is PersistenceDriver.POSTGRES:
+            raise ConfigurationError(
+                "CONVERSATION_CIPHER_KEY es obligatorio con APP_ENV=production y "
+                'PERSISTENCE_DRIVER="postgres". Sin esa clave el historial no sobrevive '
+                "al reinicio."
+            )
+        parsed_cipher_key = None
+    else:
+        try:
+            Fernet(cipher_key.encode())
+        except ValueError as error:
+            raise ConfigurationError(
+                "CONVERSATION_CIPHER_KEY debe ser una clave Fernet."
+            ) from error
+        parsed_cipher_key = cipher_key
+
     secret = _read_string(env, "INTERNAL_SERVICE_AUTH_SECRET", "")
     training_enabled = _read_boolean(env, "TRAINING_SCHEDULER_ENABLED", False)
     training_interval = _read_integer(env, "TRAINING_INTERVAL_SECONDS", 0, 0, 366 * 24 * 60 * 60)
@@ -181,4 +202,5 @@ def load_config(env: RawEnv) -> AppConfig:
         missions_base_url=_optional("MISSIONS_BASE_URL"),
         auction_base_url=_optional("AUCTION_BASE_URL"),
         notifications_base_url=_optional("NOTIFICATIONS_BASE_URL"),
+        conversation_cipher_key=parsed_cipher_key,
     )

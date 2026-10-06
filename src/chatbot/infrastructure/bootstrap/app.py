@@ -15,6 +15,7 @@ from psycopg_pool import AsyncConnectionPool
 from chatbot.adapters.inbound.http import health
 from chatbot.adapters.inbound.http.auth.guards import AuthSettings, authenticate
 from chatbot.adapters.inbound.http.errors import register_error_handlers
+from chatbot.adapters.inbound.http.feedback import feedback_router
 from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.inbound.http.messages import messages_router
 from chatbot.adapters.inbound.http.precision import precision_router
@@ -26,11 +27,13 @@ from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifierOptions,
 )
 from chatbot.adapters.outbound.nlp.sklearn_intent import SklearnIntentModelFactory
-from chatbot.adapters.outbound.persistence.empty_reviews import EmptyReviewedConversations
 from chatbot.adapters.outbound.persistence.in_memory_knowledge import (
     InMemoryKnowledgeEntryRepository,
 )
 from chatbot.adapters.outbound.persistence.in_memory_tickets import InMemorySupportTicketRepository
+from chatbot.adapters.outbound.persistence.in_memory_transcript import (
+    InMemoryTranscriptRepository,
+)
 from chatbot.adapters.outbound.persistence.in_memory_versions import (
     InMemoryModelVersionRepository,
 )
@@ -38,6 +41,7 @@ from chatbot.adapters.outbound.persistence.postgres_knowledge import (
     PostgresKnowledgeEntryRepository,
 )
 from chatbot.adapters.outbound.persistence.postgres_tickets import PostgresSupportTicketRepository
+from chatbot.adapters.outbound.persistence.postgres_transcript import PostgresTranscriptRepository
 from chatbot.adapters.outbound.persistence.postgres_versions import (
     PostgresModelVersionRepository,
 )
@@ -57,6 +61,7 @@ from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryR
 from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerifierPort, VerifiedIdentity
 from chatbot.application.precision import ReadModelPrecision
+from chatbot.application.reviewed_transcript import ReviewedTranscript
 from chatbot.application.support_ticket import ListSupportTickets, OpenSupportTicket
 from chatbot.application.train_model import RetrainModel
 from chatbot.infrastructure.config.env import AppConfig, AuthMode
@@ -80,6 +85,52 @@ class _UnconfiguredVerifier:
     async def verify(self, token: str) -> VerifiedIdentity:
         del token  # Conserva la firma del puerto; nunca se examina.
         raise RuntimeError("No hay verificador de testimonios configurado.")
+
+
+def _stores(
+    pool: AsyncConnectionPool | None,
+    config: AppConfig,
+    clock: ClockPort,
+) -> tuple[
+    KnowledgeEntryRepositoryPort,
+    ModelVersionRepository,
+    InMemorySupportTicketRepository | PostgresSupportTicketRepository,
+    InMemoryTranscriptRepository | PostgresTranscriptRepository,
+    FernetTextCipher,
+    SklearnIntentModelFactory,
+    RetrainModel,
+]:
+    entries: KnowledgeEntryRepositoryPort = (
+        PostgresKnowledgeEntryRepository(pool)
+        if pool is not None
+        else InMemoryKnowledgeEntryRepository()
+    )
+    versions: ModelVersionRepository = (
+        PostgresModelVersionRepository(pool)
+        if pool is not None
+        else InMemoryModelVersionRepository()
+    )
+    support_tickets = (
+        PostgresSupportTicketRepository(pool)
+        if pool is not None
+        else InMemorySupportTicketRepository()
+    )
+    transcripts = (
+        PostgresTranscriptRepository(pool) if pool is not None else InMemoryTranscriptRepository()
+    )
+    cipher_key = config.conversation_cipher_key
+    cipher = FernetTextCipher(
+        cipher_key.encode() if cipher_key is not None else FernetTextCipher.generate_key()
+    )
+    model_factory = SklearnIntentModelFactory()
+    retrain = RetrainModel(
+        entries,
+        ReviewedTranscript(transcripts, cipher),
+        model_factory,
+        versions,
+        clock,
+    )
+    return entries, versions, support_tickets, transcripts, cipher, model_factory, retrain
 
 
 def create_app(
@@ -117,28 +168,8 @@ def create_app(
         )
         verifier = _UnconfiguredVerifier()
 
-    entries: KnowledgeEntryRepositoryPort = (
-        PostgresKnowledgeEntryRepository(pool)
-        if pool is not None
-        else InMemoryKnowledgeEntryRepository()
-    )
-    versions: ModelVersionRepository = (
-        PostgresModelVersionRepository(pool)
-        if pool is not None
-        else InMemoryModelVersionRepository()
-    )
-    support_tickets = (
-        PostgresSupportTicketRepository(pool)
-        if pool is not None
-        else InMemorySupportTicketRepository()
-    )
-    model_factory = SklearnIntentModelFactory()
-    retrain = RetrainModel(
-        entries,
-        EmptyReviewedConversations(),
-        model_factory,
-        versions,
-        app_clock,
+    entries, versions, support_tickets, transcripts, cipher, model_factory, retrain = _stores(
+        pool, config, app_clock
     )
     scheduler = (
         TrainingScheduler(retrain, config.training_interval_seconds, log)
@@ -227,30 +258,33 @@ def create_app(
         tickets_router(ListSupportTickets(support_tickets)),
         prefix="/api/v1/chatbot",
     )
-    app.include_router(
-        messages_router(
-            ConversationSession(
-                AnswerQuestion(
-                    entries,
-                    model_factory,
-                    versions,
-                    model_factory,
-                    config.ab_candidate_percent,
-                    player_data=HttpPlayerData(
-                        {
-                            "inventory": config.inventory_base_url,
-                            "missions": config.missions_base_url,
-                            "auction": config.auction_base_url,
-                            "notifications": config.notifications_base_url,
-                            "transactions": config.auction_base_url,
-                        }
-                    ),
-                ),
-                app_clock,
-                FernetTextCipher(FernetTextCipher.generate_key()),
+    conversation = ConversationSession(
+        AnswerQuestion(
+            entries,
+            model_factory,
+            versions,
+            model_factory,
+            config.ab_candidate_percent,
+            player_data=HttpPlayerData(
+                {
+                    "inventory": config.inventory_base_url,
+                    "missions": config.missions_base_url,
+                    "auction": config.auction_base_url,
+                    "notifications": config.notifications_base_url,
+                    "transactions": config.auction_base_url,
+                }
             ),
-            OpenSupportTicket(support_tickets, app_clock),
         ),
+        app_clock,
+        cipher,
+        transcripts,
+    )
+    app.include_router(
+        messages_router(conversation, OpenSupportTicket(support_tickets, app_clock)),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
+        feedback_router(conversation, versions),
         prefix="/api/v1/chatbot",
     )
     for router in extra_routers:

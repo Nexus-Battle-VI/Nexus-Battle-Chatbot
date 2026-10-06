@@ -156,6 +156,34 @@ MIGRATIONS: Sequence[Migration] = (
         );
         """,
     ),
+    Migration(
+        "006-conversation-history",
+        """
+        create table conversation_turns (
+          id uuid primary key,
+          actor text not null,
+          question text not null,
+          answer text,
+          language text,
+          intent text,
+          model_version text,
+          useful boolean,
+          deleted boolean not null default false,
+          created_at timestamptz not null,
+          constraint conversation_turns_pregunta check (char_length(btrim(question)) > 0)
+        );
+        create index conversation_turns_actor
+          on conversation_turns (actor, created_at);
+        create table visitor_sessions (
+          id text primary key,
+          constraint visitor_sessions_id check (char_length(id) between 1 and 80)
+        );
+        create table chat_preferences (
+          actor text primary key,
+          show_time boolean not null
+        );
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")

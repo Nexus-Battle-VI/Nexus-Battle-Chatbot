@@ -1,7 +1,7 @@
-"""Historial de una sola sesion y limite de consultas (HU-47.3).
+"""Historial por persona y limite de consultas (HU-47.3 y HU-51).
 
-No conserva la conversacion entre sesiones: eso es HU-51. Lo que se guarda
-esta cifrado. El limite es en memoria, una sola replica (ADR-019).
+El texto se guarda cifrado. El limite es en memoria, una sola replica
+(ADR-019). El historial de una persona no se lee para otra.
 """
 
 from collections import defaultdict
@@ -11,6 +11,7 @@ from uuid import uuid4
 
 from chatbot.application.answer import Answer, AnswerQuestion
 from chatbot.application.ports.clock import ClockPort
+from chatbot.application.ports.transcript_repository import StoredTurn, TranscriptRepository
 from chatbot.domain.errors import DomainError
 from chatbot.domain.message_guard import assert_acceptable, redact_sensitive
 
@@ -27,9 +28,22 @@ class TextCipherPort(Protocol):
 
 @dataclass(frozen=True)
 class TranscriptTurn:
+    id: str
     question: str
     answer: str | None
     model_version: str | None = None
+    useful: bool | None = None
+    language: str | None = None
+    intent: str | None = None
+
+
+@dataclass(frozen=True)
+class RatingOutcome:
+    found: bool
+    conflict: bool
+    newly_rated: bool
+    useful: bool | None
+    model_version: str | None
 
 
 class ConversationSession:
@@ -38,6 +52,7 @@ class ConversationSession:
         answers: AnswerQuestion,
         clock: ClockPort,
         cipher: TextCipherPort,
+        transcripts: TranscriptRepository,
         *,
         limit: int = 30,
         window_seconds: int = 60,
@@ -45,17 +60,16 @@ class ConversationSession:
         self._answers = answers
         self._clock = clock
         self._cipher = cipher
+        self._transcripts = transcripts
         self._limit = limit
         self._window = window_seconds
         self._hits: dict[str, list[float]] = defaultdict(list)
-        self._issued: set[str] = set()
-        self._turns: dict[str, list[str]] = defaultdict(list)
 
-    def open_visitor_session(self, session_id: str | None) -> str:
-        if session_id is not None and session_id in self._issued:
+    async def open_visitor_session(self, session_id: str | None) -> str:
+        if session_id is not None and await self._transcripts.visitor_known(session_id):
             return session_id
         fresh = str(uuid4())
-        self._issued.add(fresh)
+        await self._transcripts.remember_visitor(fresh)
         return fresh
 
     def allow(self, actor: str) -> None:
@@ -73,7 +87,7 @@ class ConversationSession:
         text: str,
         view: str | None,
         access_token: str | None = None,
-    ) -> Answer:
+    ) -> tuple[Answer, str]:
         self.allow(actor)
         assert_acceptable(text)
         stored_question = redact_sensitive(text)
@@ -83,41 +97,58 @@ class ConversationSession:
             actor,
             access_token=access_token,
         )
-        self._remember(actor, stored_question, answer.answer, answer.model_version)
-        return answer
+        turn_id = str(uuid4())
+        await self._transcripts.add(
+            actor,
+            StoredTurn(
+                id=turn_id,
+                question=self._cipher.encrypt(stored_question),
+                answer=None if answer.answer is None else self._cipher.encrypt(answer.answer),
+                language=answer.language,
+                intent=answer.intent,
+                model_version=answer.model_version,
+                useful=None,
+                created_at=self._clock.now(),
+            ),
+        )
+        return answer, turn_id
 
-    def history(self, actor: str) -> tuple[TranscriptTurn, ...]:
+    async def history(self, actor: str) -> tuple[TranscriptTurn, ...]:
         turns: list[TranscriptTurn] = []
-        for token in self._turns.get(actor, []):
-            plain = self._cipher.decrypt(token)
-            question, separator, rest = plain.partition("\n---\n")
-            if separator == "":
-                turns.append(TranscriptTurn(question, None))
-                continue
-            reply, version_separator, version = rest.partition("\n---\n")
-            stored_answer = None if version_separator and reply == "" else reply
+        for stored in await self._transcripts.list_active(actor):
+            answer = None if stored.answer is None else self._cipher.decrypt(stored.answer)
             turns.append(
                 TranscriptTurn(
-                    question,
-                    stored_answer,
-                    version if version_separator else None,
+                    stored.id,
+                    self._cipher.decrypt(stored.question),
+                    answer,
+                    stored.model_version,
+                    stored.useful,
+                    stored.language,
+                    stored.intent,
                 )
             )
         return tuple(turns)
 
-    def clear(self, actor: str) -> None:
-        self._turns.pop(actor, None)
+    async def clear(self, actor: str) -> None:
+        await self._transcripts.clear(actor)
 
-    def _remember(
-        self,
-        actor: str,
-        question: str,
-        answer: str | None,
-        model_version: str | None,
-    ) -> None:
-        if model_version is None:
-            payload = question if answer is None else f"{question}\n---\n{answer}"
-        else:
-            reply = "" if answer is None else answer
-            payload = f"{question}\n---\n{reply}\n---\n{model_version}"
-        self._turns[actor].append(self._cipher.encrypt(payload))
+    async def rate(self, actor: str, turn_id: str, useful: bool) -> RatingOutcome:
+        current = await self._transcripts.get(actor, turn_id)
+        if current is None:
+            return RatingOutcome(False, False, False, None, None)
+        if current.useful is not None and current.useful != useful:
+            return RatingOutcome(True, True, False, current.useful, current.model_version)
+        if current.useful == useful:
+            return RatingOutcome(True, False, False, useful, current.model_version)
+        updated = await self._transcripts.set_useful(actor, turn_id, useful)
+        if updated is None:
+            return RatingOutcome(False, False, False, None, None)
+        return RatingOutcome(True, False, True, useful, updated.model_version)
+
+    async def show_time(self, actor: str) -> bool:
+        stored = await self._transcripts.show_time(actor)
+        return True if stored is None else stored
+
+    async def set_show_time(self, actor: str, show_time: bool) -> None:
+        await self._transcripts.set_show_time(actor, show_time)

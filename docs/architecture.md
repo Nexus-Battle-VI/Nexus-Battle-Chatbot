@@ -29,6 +29,10 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 - **Entrenamiento dentro del proceso**, en segundo plano. Sigue el patrón de temporizadores de ADR-019: estado en la base y una sola ejecución a la vez.
 - **Caché de respuestas frecuentes**: LRU en proceso, con clave (versión del modelo, pregunta normalizada). Cambiar de versión la invalida.
 
+## Historial y valoración (HU-51)
+
+Cada consulta se guarda cifrada, ligada al `player:{sub}` o al `visitor:{sesión}` que el servicio emitió. `GET /api/v1/chatbot/messages/history` devuelve solo ese historial. `POST /api/v1/chatbot/messages/{id}/rating` con `{useful}` califica esa respuesta una vez: útil entra al siguiente entrenamiento con su intención; no útil queda revisada y no se suma como ejemplo. Borrar el historial lo saca del conjunto. La preferencia que ya existe, mostrar la hora, se guarda por persona en `PUT /api/v1/chatbot/preferences`. El diccionario no tiene una variante breve y otra extensa, así que el texto de la respuesta no cambia de longitud. Una pregunta sin resolver sigue siendo el ticket de HU-49; no se inserta sola en el diccionario.
+
 ## Tickets (HU-49)
 
 Si `answered` es falso, la respuesta incluye `ticketId` y el servicio guarda la pregunta ya redactada, la vista y el actor (`player:{sub}` o `visitor:{sesión}`). `POST /api/v1/chatbot/tickets` abre un ticket con el texto que envía el widget al transferir. `GET /api/v1/chatbot/admin/tickets` lista esos tickets y exige `ADMINISTRATOR`. No se envía correo y la pregunta no entra al diccionario.
