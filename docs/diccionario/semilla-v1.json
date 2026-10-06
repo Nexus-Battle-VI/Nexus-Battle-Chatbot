@@ -994,6 +994,38 @@
         "tell me my tournament"
       ],
       "answer": "The player's tournament is read at the moment of the question."
+    },
+    {
+      "intent": "reporte_actividad",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "reporte_actividad",
+      "question": "¿Dónde veo mi reporte de actividad?",
+      "variations": [
+        "quiero ver mi historial de misiones",
+        "genera el reporte de lo que jugue",
+        "donde esta mi actividad",
+        "muestrame el historial de partidas de mision",
+        "reporte de mi actividad"
+      ],
+      "answer": "El historial de misiones está en su pantalla. Puedo llevarte ahí. No genero otro reporte desde el chat."
+    },
+    {
+      "intent": "reporte_actividad",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "reporte_actividad",
+      "question": "Where is my activity report?",
+      "variations": [
+        "i want my mission history",
+        "generate the report of what i played",
+        "where is my activity",
+        "show my mission match history",
+        "report of my activity"
+      ],
+      "answer": "Mission history is on its own screen. I can take you there. I do not generate another report from the chat."
     }
   ]
 }

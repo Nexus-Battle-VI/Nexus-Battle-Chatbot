@@ -6,6 +6,7 @@ from uuid import uuid4
 
 import pytest
 
+from chatbot.domain.assisted_action import ASSISTED_ACTIONS
 from chatbot.domain.errors import InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import knowledge_entry
 from chatbot.domain.live_query import LIVE_SOURCES
@@ -68,4 +69,5 @@ def test_la_semilla_es_un_conjunto_valido_de_entradas() -> None:
         key = (entry.intent, entry.language)
         assert key not in seen
         seen.add(key)
-    assert len(seen) == 50 + len(LIVE_SOURCES) * 2
+    assert len(seen) == 50 + len(LIVE_SOURCES) * 2 + 2
+    assert "reporte_actividad" in ASSISTED_ACTIONS
