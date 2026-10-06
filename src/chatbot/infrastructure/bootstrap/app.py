@@ -19,6 +19,7 @@ from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.inbound.http.messages import messages_router
 from chatbot.adapters.inbound.http.precision import precision_router
 from chatbot.adapters.inbound.http.training import training_router
+from chatbot.adapters.outbound.http.player_data import HttpPlayerData
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifier,
     CognitoTokenVerifierOptions,
@@ -222,6 +223,15 @@ def create_app(
                     versions,
                     model_factory,
                     config.ab_candidate_percent,
+                    player_data=HttpPlayerData(
+                        {
+                            "inventory": config.inventory_base_url,
+                            "missions": config.missions_base_url,
+                            "auction": config.auction_base_url,
+                            "notifications": config.notifications_base_url,
+                            "transactions": config.auction_base_url,
+                        }
+                    ),
                 ),
                 app_clock,
                 FernetTextCipher(FernetTextCipher.generate_key()),

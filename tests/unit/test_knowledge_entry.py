@@ -8,6 +8,7 @@ import pytest
 
 from chatbot.domain.errors import InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import knowledge_entry
+from chatbot.domain.live_query import LIVE_SOURCES
 
 _SEED = Path(__file__).resolve().parents[2] / "docs" / "diccionario" / "semilla-v1.json"
 
@@ -63,8 +64,8 @@ def test_la_semilla_es_un_conjunto_valido_de_entradas() -> None:
             answer=raw["answer"],
             variations=phrases,
         )
-        assert raw["liveData"] is None
+        assert raw["liveData"] == LIVE_SOURCES.get(raw["intent"])
         key = (entry.intent, entry.language)
         assert key not in seen
         seen.add(key)
-    assert len(seen) == 50
+    assert len(seen) == 50 + len(LIVE_SOURCES) * 2
