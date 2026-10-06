@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Semilla de intenciones de texto para el primer entrenamiento. Sin datos vivos: liveData es null en todas las entradas. Las plantillas de inventario, mision, torneo, subasta, notificaciones y transacciones quedan para HU-48.",
+  "description": "Semilla de intenciones de texto. Las intenciones mi_* leen el /me del jugador (HU-48); su respuesta de aqui no se usa: la sustituye el dato vigente.",
   "parameters": "docs/parametros-entrenamiento-v1.md",
   "entries": [
     {
@@ -802,6 +802,198 @@
         "the assistant privacy policy"
       ],
       "answer": "You can delete your conversation history. I do not store passwords or payment data. Without a session I only use this public knowledge base. With a session, when that lookup exists, I will only see what you can already see. Never another person's data."
+    },
+    {
+      "intent": "mi_inventario",
+      "language": "es",
+      "priority": 10,
+      "liveData": "inventory",
+      "assistedAction": null,
+      "question": "¿Qué tengo en el inventario?",
+      "variations": [
+        "que tengo en el inventario",
+        "cuantos objetos tengo",
+        "muestra mi inventario",
+        "que heroes tengo",
+        "lista lo que poseo"
+      ],
+      "answer": "El inventario se consulta en el momento."
+    },
+    {
+      "intent": "mi_inventario",
+      "language": "en",
+      "priority": 10,
+      "liveData": "inventory",
+      "assistedAction": null,
+      "question": "What is in my inventory?",
+      "variations": [
+        "what do i have in my inventory",
+        "how many items do i own",
+        "show my inventory",
+        "which heroes do i have",
+        "list what i own"
+      ],
+      "answer": "Inventory is read at the moment of the question."
+    },
+    {
+      "intent": "mi_mision",
+      "language": "es",
+      "priority": 10,
+      "liveData": "missions",
+      "assistedAction": null,
+      "question": "¿Cómo van mis misiones?",
+      "variations": [
+        "que misiones tengo activas",
+        "como va mi mision",
+        "progreso de mis misiones",
+        "tengo alguna mision en curso",
+        "cuanto falta de mi mision"
+      ],
+      "answer": "Las misiones en curso se consultan en el momento."
+    },
+    {
+      "intent": "mi_mision",
+      "language": "en",
+      "priority": 10,
+      "liveData": "missions",
+      "assistedAction": null,
+      "question": "How are my missions going?",
+      "variations": [
+        "which missions are active",
+        "how is my mission going",
+        "progress of my missions",
+        "do i have a mission in progress",
+        "how much is left on my mission"
+      ],
+      "answer": "Active missions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_subasta",
+      "language": "es",
+      "priority": 10,
+      "liveData": "auction",
+      "assistedAction": null,
+      "question": "¿Cómo van mis subastas?",
+      "variations": [
+        "que subastas tengo publicadas",
+        "estado de mis subastas",
+        "mis publicaciones de subasta",
+        "tengo alguna subasta abierta",
+        "como van mis ventas"
+      ],
+      "answer": "Las subastas propias se consultan en el momento."
+    },
+    {
+      "intent": "mi_subasta",
+      "language": "en",
+      "priority": 10,
+      "liveData": "auction",
+      "assistedAction": null,
+      "question": "How are my auctions?",
+      "variations": [
+        "which auctions did i publish",
+        "status of my auctions",
+        "my auction listings",
+        "do i have an open auction",
+        "how are my sales"
+      ],
+      "answer": "Own auctions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_notificacion",
+      "language": "es",
+      "priority": 10,
+      "liveData": "notifications",
+      "assistedAction": null,
+      "question": "¿Tengo notificaciones?",
+      "variations": [
+        "tengo avisos pendientes",
+        "que notificaciones tengo",
+        "hay alertas para mi",
+        "muestra mis notificaciones",
+        "tengo algo sin leer"
+      ],
+      "answer": "Las notificaciones pendientes se consultan en el momento."
+    },
+    {
+      "intent": "mi_notificacion",
+      "language": "en",
+      "priority": 10,
+      "liveData": "notifications",
+      "assistedAction": null,
+      "question": "Do I have notifications?",
+      "variations": [
+        "do i have pending alerts",
+        "what notifications do i have",
+        "are there alerts for me",
+        "show my notifications",
+        "do i have anything unread"
+      ],
+      "answer": "Pending notifications are read at the moment of the question."
+    },
+    {
+      "intent": "mi_transaccion",
+      "language": "es",
+      "priority": 10,
+      "liveData": "transactions",
+      "assistedAction": null,
+      "question": "¿Cuáles son mis transacciones?",
+      "variations": [
+        "historial de mis transacciones",
+        "mis movimientos de subasta",
+        "que transacciones tengo",
+        "movimientos recientes de creditos en subasta",
+        "lista mis operaciones"
+      ],
+      "answer": "Las transacciones de subasta se consultan en el momento."
+    },
+    {
+      "intent": "mi_transaccion",
+      "language": "en",
+      "priority": 10,
+      "liveData": "transactions",
+      "assistedAction": null,
+      "question": "What are my transactions?",
+      "variations": [
+        "my transaction history",
+        "my auction movements",
+        "which transactions do i have",
+        "recent auction credit movements",
+        "list my operations"
+      ],
+      "answer": "Auction transactions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_torneo",
+      "language": "es",
+      "priority": 10,
+      "liveData": "tournament",
+      "assistedAction": null,
+      "question": "¿Cómo va mi torneo?",
+      "variations": [
+        "en que torneo estoy",
+        "estado de mi torneo",
+        "tengo un torneo en curso",
+        "como va mi justa",
+        "informa mi torneo"
+      ],
+      "answer": "El torneo propio se consulta en el momento."
+    },
+    {
+      "intent": "mi_torneo",
+      "language": "en",
+      "priority": 10,
+      "liveData": "tournament",
+      "assistedAction": null,
+      "question": "How is my tournament?",
+      "variations": [
+        "which tournament am i in",
+        "status of my tournament",
+        "do i have a tournament in progress",
+        "how is my match",
+        "tell me my tournament"
+      ],
+      "answer": "The player's tournament is read at the moment of the question."
     }
   ]
 }

@@ -67,11 +67,22 @@ class ConversationSession:
         recent.append(now)
         self._hits[actor] = recent
 
-    async def ask(self, actor: str, text: str, view: str | None) -> Answer:
+    async def ask(
+        self,
+        actor: str,
+        text: str,
+        view: str | None,
+        access_token: str | None = None,
+    ) -> Answer:
         self.allow(actor)
         assert_acceptable(text)
         stored_question = redact_sensitive(text)
-        answer = await self._answers.execute(stored_question, view, actor)
+        answer = await self._answers.execute(
+            stored_question,
+            view,
+            actor,
+            access_token=access_token,
+        )
         self._remember(actor, stored_question, answer.answer, answer.model_version)
         return answer
 

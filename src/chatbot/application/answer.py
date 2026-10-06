@@ -13,8 +13,17 @@ from chatbot.application.ports.model_version_repository import (
     ModelVersion,
     ModelVersionRepository,
 )
+from chatbot.application.ports.player_data import PlayerDataPort
 from chatbot.domain.experiment import sees_candidate
 from chatbot.domain.knowledge_entry import KnowledgeEntry
+from chatbot.domain.live_query import SIGN_IN, UNAVAILABLE, live_source
+from chatbot.domain.live_summary import (
+    summarize_auctions,
+    summarize_inventory,
+    summarize_missions,
+    summarize_notifications,
+    summarize_transactions,
+)
 from chatbot.domain.normalize import normalize_question
 
 CONFIDENCE_THRESHOLD = 0.55
@@ -32,6 +41,22 @@ class Answer:
     suggestions: tuple[str, ...]
     view: str | None
     model_version: str | None = None
+
+
+_SUMMARIES = {
+    "inventory": summarize_inventory,
+    "missions": summarize_missions,
+    "auction": summarize_auctions,
+    "notifications": summarize_notifications,
+    "transactions": summarize_transactions,
+}
+
+
+def _summary(source: str, payload: dict[str, object]) -> str | None:
+    summarize = _SUMMARIES.get(source)
+    if summarize is None:
+        return None
+    return summarize(payload)
 
 
 def _fingerprint(entries: tuple[KnowledgeEntry, ...]) -> tuple[object, ...]:
@@ -97,19 +122,29 @@ class AnswerQuestion:
         versions: ModelVersionRepository | None = None,
         loader: ModelTrainer | None = None,
         candidate_percent: int = 0,
+        *,
+        player_data: PlayerDataPort | None = None,
     ) -> None:
         self._entries = entries
         self._models = models
         self._versions = versions
         self._loader = loader
         self._percent = candidate_percent
+        self._player_data = player_data
         self._fingerprint: tuple[object, ...] | None = None
         self._served_version: str | None = None
         self._model: IntentModel | None = None
         self._loaded: dict[str, IntentModel] = {}
         self._cache: dict[tuple[str | None, str, str | None], Answer] = {}
 
-    async def execute(self, text: str, view: str | None, actor: str | None = None) -> Answer:
+    async def execute(
+        self,
+        text: str,
+        view: str | None,
+        actor: str | None = None,
+        *,
+        access_token: str | None = None,
+    ) -> Answer:
         entries = await self._entries.list_all()
         fingerprint = _fingerprint(entries)
         chosen = await self._choose_version(actor)
@@ -137,6 +172,16 @@ class AnswerQuestion:
 
         normalized = normalize_question(text)
         version_id = None if chosen is None else chosen.id
+        source = None
+        label = None
+        if self._model is not None and normalized != "":
+            label = self._model.predict(normalized)[0]
+            source = live_source(label)
+        if source is not None:
+            result = await self._live(source, access_token, label)
+            result = replace(result, model_version=version_id)
+            await self._note(version_id)
+            return result
         key = (version_id, normalized, view)
         cached = self._cache.get(key)
         if cached is not None:
@@ -167,6 +212,21 @@ class AnswerQuestion:
         if version_id is None or self._versions is None:
             return
         await self._versions.record_answer(version_id)
+
+    async def _live(self, source: str, access_token: str | None, label: str | None) -> Answer:
+        language, _, intent = (label or "").partition(":")
+        blank = Answer(True, intent or None, language or None, 1.0, UNAVAILABLE, "direct", (), None)
+        if access_token is None:
+            return Answer(True, intent or None, language or None, 1.0, SIGN_IN, "direct", (), None)
+        if self._player_data is None or source == "tournament":
+            return blank
+        payload = await self._player_data.fetch(source, access_token)
+        if payload is None:
+            return blank
+        summary = _summary(source, payload)
+        if summary is None:
+            return blank
+        return Answer(True, intent or None, language or None, 1.0, summary, "direct", (), None)
 
     def _resolve(
         self,

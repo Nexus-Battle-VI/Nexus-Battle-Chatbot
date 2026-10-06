@@ -86,7 +86,9 @@ def messages_router(session: ConversationSession) -> APIRouter:
         try:
             view = question_view(body.view)
             actor, visitor_id = _actor(identity, session, body.session_id)
-            answer = await session.ask(actor, body.text, view)
+            token = read_bearer_token(request.headers.get("authorization"))
+            forwarded = token if identity is not None and identity.subject != "anonymous" else None
+            answer = await session.ask(actor, body.text, view, forwarded)
         except (RateLimitExceededError, InjectionAttemptError, InappropriateContentError) as error:
             raise _reject(error) from error
         except InvalidKnowledgeEntryError as error:

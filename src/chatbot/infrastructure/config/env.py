@@ -55,6 +55,10 @@ class AppConfig:
     training_scheduler_enabled: bool
     training_interval_seconds: int
     ab_candidate_percent: int
+    inventory_base_url: str | None
+    missions_base_url: str | None
+    auction_base_url: str | None
+    notifications_base_url: str | None
 
 
 RawEnv = Mapping[str, str | None]
@@ -151,6 +155,10 @@ def load_config(env: RawEnv) -> AppConfig:
         )
     candidate_percent = _read_integer(env, "AB_CANDIDATE_PERCENT", 0, 0, 100)
 
+    def _optional(key: str) -> str | None:
+        value = _read_string(env, key, "")
+        return None if value == "" else value.rstrip("/")
+
     return AppConfig(
         app_env=app_env,
         service_name=_read_string(env, "SERVICE_NAME", "nexus-battle-chatbot"),
@@ -169,4 +177,8 @@ def load_config(env: RawEnv) -> AppConfig:
         training_scheduler_enabled=training_enabled,
         training_interval_seconds=training_interval,
         ab_candidate_percent=candidate_percent,
+        inventory_base_url=_optional("INVENTORY_BASE_URL"),
+        missions_base_url=_optional("MISSIONS_BASE_URL"),
+        auction_base_url=_optional("AUCTION_BASE_URL"),
+        notifications_base_url=_optional("NOTIFICATIONS_BASE_URL"),
     )
