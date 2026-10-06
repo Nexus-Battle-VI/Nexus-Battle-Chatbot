@@ -1,4 +1,5 @@
 import pytest
+from cryptography.fernet import Fernet
 
 from chatbot.infrastructure.config.env import (
     AuthMode,
@@ -10,6 +11,7 @@ from chatbot.infrastructure.config.env import (
 
 JWT = {"AUTH_MODE": "jwt", "COGNITO_USER_POOL_ID": "us-east-1_p", "COGNITO_CLIENT_ID": "c"}
 POSTGRES = {"PERSISTENCE_DRIVER": "postgres", "DATABASE_URL": "postgresql://db/chatbot"}
+CIPHER = Fernet.generate_key().decode()
 
 
 def test_valores_por_defecto_de_desarrollo() -> None:
@@ -30,7 +32,13 @@ def test_valores_por_defecto_de_desarrollo() -> None:
 
 def test_configuracion_de_produccion_completa() -> None:
     config = load_config(
-        {"APP_ENV": "production", **JWT, **POSTGRES, "INTERNAL_SERVICE_AUTH_SECRET": "s"}
+        {
+            "APP_ENV": "production",
+            **JWT,
+            **POSTGRES,
+            "INTERNAL_SERVICE_AUTH_SECRET": "s",
+            "CONVERSATION_CIPHER_KEY": CIPHER,
+        }
     )
     assert config.cognito == CognitoConfig("us-east-1_p", "c")
     assert config.database_url == "postgresql://db/chatbot"
@@ -42,6 +50,11 @@ def test_configuracion_de_produccion_completa() -> None:
 def test_produccion_no_arranca_sin_verificacion_de_identidad() -> None:
     with pytest.raises(ConfigurationError, match="AUTH_MODE"):
         load_config({"APP_ENV": "production", **POSTGRES})
+
+
+def test_produccion_exige_la_clave_del_historial() -> None:
+    with pytest.raises(ConfigurationError, match="CONVERSATION_CIPHER_KEY"):
+        load_config({"APP_ENV": "production", **JWT, **POSTGRES})
 
 
 def test_produccion_no_arranca_con_persistencia_en_memoria() -> None:

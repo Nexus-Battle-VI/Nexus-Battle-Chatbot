@@ -11,7 +11,12 @@ from pydantic import BaseModel, ConfigDict, Field
 from chatbot.adapters.inbound.http.auth.guards import read_bearer_token
 from chatbot.adapters.inbound.http.auth.markers import public
 from chatbot.application.answer import Answer
-from chatbot.application.conversation import ConversationSession, RateLimitExceededError
+from chatbot.application.conversation import (
+    ConversationSession,
+    RateLimitExceededError,
+    RatingOutcome,
+)
+from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerificationError, VerifiedIdentity
 from chatbot.application.support_ticket import OpenSupportTicket
 from chatbot.domain.errors import InvalidKnowledgeEntryError
@@ -32,8 +37,25 @@ class AskBody(BaseModel):
     session_id: str | None = Field(default=None, alias="sessionId")
 
 
+class RatingBody(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    useful: bool
+    session_id: str | None = Field(default=None, alias="sessionId")
+
+
+class PreferenceBody(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    show_time: bool = Field(alias="showTime")
+    session_id: str | None = Field(default=None, alias="sessionId")
+
+
 def _payload(
-    answer: Answer, session_id: str | None, ticket_id: str | None = None
+    answer: Answer,
+    session_id: str | None,
+    ticket_id: str | None = None,
+    turn_id: str | None = None,
 ) -> dict[str, object]:
     return {
         "answered": answer.answered,
@@ -48,6 +70,7 @@ def _payload(
         "modelVersion": answer.model_version,
         "assistedAction": _assisted(answer),
         "ticketId": ticket_id,
+        "turnId": turn_id,
     }
 
 
@@ -74,14 +97,14 @@ async def _identity(request: Request) -> VerifiedIdentity | None:
     return verified
 
 
-def _actor(
+async def _actor(
     identity: VerifiedIdentity | None,
     session: ConversationSession,
     session_id: str | None,
 ) -> tuple[str, str | None]:
     if identity is not None and identity.subject != "anonymous":
         return f"player:{identity.subject}", None
-    visitor = session.open_visitor_session(session_id)
+    visitor = await session.open_visitor_session(session_id)
     return f"visitor:{visitor}", visitor
 
 
@@ -93,6 +116,21 @@ def _reject(error: Exception) -> HTTPException:
     return HTTPException(status.HTTP_400_BAD_REQUEST, str(error))
 
 
+async def _rating_response(
+    outcome: RatingOutcome,
+    turn_id: str,
+    useful: bool,
+    versions: ModelVersionRepository,
+) -> dict[str, object]:
+    if not outcome.found:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "No hay esa respuesta.")
+    if outcome.conflict:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Esa respuesta ya tiene otra valoracion.")
+    if outcome.newly_rated and outcome.model_version is not None:
+        await versions.record_answer(outcome.model_version, useful)
+    return {"id": turn_id, "useful": useful}
+
+
 def messages_router(session: ConversationSession, tickets: OpenSupportTicket) -> APIRouter:
     router = APIRouter(tags=["conversation"])
 
@@ -101,12 +139,13 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
     async def ask(body: AskBody, request: Request) -> dict[str, object]:
         identity = await _identity(request)
         ticket_id = None
+        turn_id = ""
         try:
             view = question_view(body.view)
-            actor, visitor_id = _actor(identity, session, body.session_id)
+            actor, visitor_id = await _actor(identity, session, body.session_id)
             token = read_bearer_token(request.headers.get("authorization"))
             forwarded = token if identity is not None and identity.subject != "anonymous" else None
-            answer = await session.ask(actor, body.text, view, forwarded)
+            answer, turn_id = await session.ask(actor, body.text, view, forwarded)
             ticket_id = None
             if not answer.answered:
                 opened = await tickets.execute(actor, redact_sensitive(body.text), view)
@@ -115,7 +154,7 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
             raise _reject(error) from error
         except InvalidKnowledgeEntryError as error:
             raise HTTPException(status.HTTP_400_BAD_REQUEST, str(error)) from error
-        return _payload(answer, visitor_id, ticket_id)
+        return _payload(answer, visitor_id, ticket_id, turn_id)
 
     @router.post("/tickets")
     @public
@@ -123,7 +162,7 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
         identity = await _identity(request)
         try:
             view = question_view(body.view)
-            actor, visitor_id = _actor(identity, session, body.session_id)
+            actor, visitor_id = await _actor(identity, session, body.session_id)
             session.allow(actor)
             assert_acceptable(body.text)
             opened = await tickets.execute(actor, redact_sensitive(body.text), view)
@@ -140,14 +179,16 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
         session_id: str | None = Query(default=None, alias="sessionId"),
     ) -> dict[str, object]:
         identity = await _identity(request)
-        actor, visitor_id = _actor(identity, session, session_id)
+        actor, visitor_id = await _actor(identity, session, session_id)
         turns = [
             {
+                "id": turn.id,
                 "question": turn.question,
                 "answer": turn.answer,
                 "modelVersion": turn.model_version,
+                "useful": turn.useful,
             }
-            for turn in session.history(actor)
+            for turn in await session.history(actor)
         ]
         return {"sessionId": visitor_id, "turns": turns}
 
@@ -158,7 +199,7 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
         session_id: str | None = Query(default=None, alias="sessionId"),
     ) -> None:
         identity = await _identity(request)
-        actor, _visitor_id = _actor(identity, session, session_id)
-        session.clear(actor)
+        actor, _visitor_id = await _actor(identity, session, session_id)
+        await session.clear(actor)
 
     return router

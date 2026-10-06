@@ -25,6 +25,7 @@ ADMIN = "/api/v1/chatbot/admin/knowledge"
 class FakeVerifier:
     IDENTITIES: ClassVar[dict[str, VerifiedIdentity]] = {
         "token-jugador": VerifiedIdentity("jugador", roles=frozenset({Role.PLAYER})),
+        "token-otro": VerifiedIdentity("otro", roles=frozenset({Role.PLAYER})),
         "token-admin": VerifiedIdentity("admin", roles=frozenset({Role.ADMINISTRATOR})),
     }
 
@@ -199,3 +200,28 @@ def test_la_semilla_de_dominio_sigue_aceptando_la_entrada_sin_vista() -> None:
         variations=["pregunta"],
     )
     assert entry.view is None
+
+
+def test_el_historial_queda_en_su_dueno_y_la_valoracion_no_cambia(client: TestClient) -> None:
+    own = {"authorization": "Bearer token-jugador"}
+    other = {"authorization": "Bearer token-otro"}
+    asked = client.post(PATH, json={"text": "hola"}, headers=own)
+    assert asked.status_code == 200
+    turn_id = asked.json()["turnId"]
+    history = client.get(f"{PATH}/history", headers=own)
+    assert history.json()["turns"][0]["id"] == turn_id
+    assert history.json()["turns"][0]["question"] == "hola"
+    assert client.get(f"{PATH}/history", headers=other).json()["turns"] == []
+    denied = client.post(f"{PATH}/{turn_id}/rating", json={"useful": True}, headers=other)
+    assert denied.status_code == 404
+    rated = client.post(f"{PATH}/{turn_id}/rating", json={"useful": True}, headers=own)
+    assert rated.status_code == 200
+    conflict = client.post(f"{PATH}/{turn_id}/rating", json={"useful": False}, headers=own)
+    assert conflict.status_code == 409
+    saved = client.put(
+        "/api/v1/chatbot/preferences",
+        json={"showTime": False},
+        headers=own,
+    )
+    assert saved.json()["showTime"] is False
+    assert client.get("/api/v1/chatbot/preferences", headers=other).json()["showTime"] is True
