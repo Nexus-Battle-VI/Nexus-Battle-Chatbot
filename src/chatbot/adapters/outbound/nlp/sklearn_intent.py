@@ -5,6 +5,9 @@ La etiqueta es `idioma:intencion`, para no mezclar la respuesta en espanol
 con la de ingles.
 """
 
+import io
+import json
+
 _MAX_FEATURES = 20_000
 
 
@@ -17,6 +20,10 @@ class _SingleIntent:
         if self._label is None:
             return None, 0.0, ()
         return self._label, 1.0, ()
+
+    def artifact(self) -> bytes:
+        label = "" if self._label is None else self._label
+        return json.dumps({"kind": "single", "label": label}).encode()
 
 
 class _SklearnIntent:
@@ -36,6 +43,13 @@ class _SklearnIntent:
         classes = self._classifier.classes_  # type: ignore[attr-defined]
         others = tuple(str(classes[index]) for index in order[1:4])
         return str(classes[best]), float(probabilities[best]), others
+
+    def artifact(self) -> bytes:
+        from joblib import dump  # noqa: PLC0415
+
+        buffer = io.BytesIO()
+        dump({"vectorizer": self._vectorizer, "classifier": self._classifier}, buffer)
+        return buffer.getvalue()
 
 
 class SklearnIntentModelFactory:
@@ -58,3 +72,14 @@ class SklearnIntentModelFactory:
         classifier = LogisticRegression(C=1.0, class_weight="balanced", max_iter=1000)
         classifier.fit(matrix, [label for label, _text in usable])
         return _SklearnIntent(vectorizer, classifier)
+
+    def load(self, artifact: bytes) -> _SingleIntent | _SklearnIntent:
+        if artifact.startswith(b"{"):
+            raw = json.loads(artifact)
+            if isinstance(raw, dict) and raw.get("kind") == "single":
+                label = raw.get("label")
+                return _SingleIntent(None if not isinstance(label, str) or label == "" else label)
+        from joblib import load as joblib_load  # noqa: PLC0415
+
+        loaded = joblib_load(io.BytesIO(artifact))
+        return _SklearnIntent(loaded["vectorizer"], loaded["classifier"])

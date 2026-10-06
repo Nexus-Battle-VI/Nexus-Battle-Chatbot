@@ -52,6 +52,8 @@ class AppConfig:
     auth_mode: AuthMode
     cognito: CognitoConfig | None
     internal_service_auth_secret: str | None
+    training_scheduler_enabled: bool
+    training_interval_seconds: int
 
 
 RawEnv = Mapping[str, str | None]
@@ -139,6 +141,13 @@ def load_config(env: RawEnv) -> AppConfig:
         )
 
     secret = _read_string(env, "INTERNAL_SERVICE_AUTH_SECRET", "")
+    training_enabled = _read_boolean(env, "TRAINING_SCHEDULER_ENABLED", False)
+    training_interval = _read_integer(env, "TRAINING_INTERVAL_SECONDS", 0, 0, 366 * 24 * 60 * 60)
+    if training_enabled and training_interval < 60:
+        raise ConfigurationError(
+            "TRAINING_INTERVAL_SECONDS debe ser al menos 60 cuando "
+            "TRAINING_SCHEDULER_ENABLED es true."
+        )
 
     return AppConfig(
         app_env=app_env,
@@ -155,4 +164,6 @@ def load_config(env: RawEnv) -> AppConfig:
         auth_mode=auth_mode,
         cognito=CognitoConfig(user_pool_id, client_id) if auth_mode is AuthMode.JWT else None,
         internal_service_auth_secret=None if secret == "" else secret,
+        training_scheduler_enabled=training_enabled,
+        training_interval_seconds=training_interval,
     )

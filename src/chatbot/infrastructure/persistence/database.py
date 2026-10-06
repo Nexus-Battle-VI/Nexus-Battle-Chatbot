@@ -102,6 +102,29 @@ MIGRATIONS: Sequence[Migration] = (
           )
         """,
     ),
+    Migration(
+        "003-model-versions",
+        """
+        create table model_versions (
+          id uuid primary key,
+          state text not null,
+          accuracy double precision not null,
+          macro_f1 double precision not null,
+          report jsonb not null,
+          artifact bytea not null,
+          created_at timestamptz not null,
+          constraint model_versions_estado check (state in ('CANDIDATE', 'ACTIVE'))
+        );
+        create unique index model_versions_one_active
+          on model_versions (state) where state = 'ACTIVE';
+        create table model_training_lease (
+          id integer primary key,
+          until timestamptz not null,
+          constraint model_training_lease_unica check (id = 1)
+        );
+        insert into model_training_lease (id, until) values (1, '-infinity');
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")
