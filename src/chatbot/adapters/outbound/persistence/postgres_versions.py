@@ -16,7 +16,7 @@ class PostgresModelVersionRepository:
     async def active(self) -> ModelVersion | None:
         async with self._pool.connection() as connection:
             cursor = await connection.execute(
-                "select id, state, accuracy, macro_f1, report, artifact, created_at"
+                "select id, state, accuracy, macro_f1, report, artifact, created_at, in_experiment"
                 " from model_versions where state = 'ACTIVE'"
             )
             row = await cursor.fetchone()
@@ -28,8 +28,8 @@ class PostgresModelVersionRepository:
         async with self._pool.connection() as connection:
             await connection.execute(
                 "insert into model_versions"
-                " (id, state, accuracy, macro_f1, report, artifact, created_at)"
-                " values (%s, 'CANDIDATE', %s, %s, %s::jsonb, %s, %s)",
+                " (id, state, accuracy, macro_f1, report, artifact, created_at, in_experiment)"
+                " values (%s, 'CANDIDATE', %s, %s, %s::jsonb, %s, %s, %s)",
                 (
                     version.id,
                     version.accuracy,
@@ -37,16 +37,19 @@ class PostgresModelVersionRepository:
                     json.dumps(_report(version)),
                     version.artifact,
                     version.created_at,
+                    version.in_experiment,
                 ),
             )
 
     async def promote(self, version_id: str) -> bool:
         async with self._pool.connection() as connection, connection.transaction():
             await connection.execute(
-                "update model_versions set state = 'CANDIDATE' where state = 'ACTIVE'"
+                "update model_versions set state = 'CANDIDATE', in_experiment = false"
+                " where state = 'ACTIVE'"
             )
             cursor = await connection.execute(
-                "update model_versions set state = 'ACTIVE' where id = %s and state = 'CANDIDATE'",
+                "update model_versions set state = 'ACTIVE', in_experiment = false"
+                " where id = %s and state = 'CANDIDATE'",
                 (version_id,),
             )
             return cursor.rowcount == 1
@@ -66,6 +69,58 @@ class PostgresModelVersionRepository:
             await connection.execute(
                 "update model_training_lease set until = '-infinity' where id = 1"
             )
+
+    async def experiment_candidate(self) -> ModelVersion | None:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select id, state, accuracy, macro_f1, report, artifact, created_at, in_experiment"
+                " from model_versions where state = 'CANDIDATE' and in_experiment"
+            )
+            row = await cursor.fetchone()
+        if row is None:
+            return None
+        return _version(row)
+
+    async def mark_experiment(self, version_id: str) -> bool:
+        async with self._pool.connection() as connection, connection.transaction():
+            await connection.execute("update model_versions set in_experiment = false")
+            cursor = await connection.execute(
+                "update model_versions set in_experiment = true"
+                " where id = %s and state = 'CANDIDATE'",
+                (version_id,),
+            )
+            return cursor.rowcount == 1
+
+    async def list_versions(self) -> tuple[ModelVersion, ...]:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select id, state, accuracy, macro_f1, report, artifact, created_at, in_experiment"
+                " from model_versions order by created_at"
+            )
+            rows = await cursor.fetchall()
+        return tuple(_version(row) for row in rows)
+
+    async def record_answer(self, version_id: str, useful: bool | None = None) -> None:
+        async with self._pool.connection() as connection:
+            await connection.execute(
+                "insert into model_answer_outcomes (id, version_id, useful)"
+                " values (gen_random_uuid(), %s, %s)",
+                (version_id, useful),
+            )
+
+    async def rating_counts(self) -> dict[str, tuple[int, int]]:
+        async with self._pool.connection() as connection:
+            cursor = await connection.execute(
+                "select version_id,"
+                " count(*) filter (where useful is true),"
+                " count(*) filter (where useful is false)"
+                " from model_answer_outcomes group by version_id"
+            )
+            rows = await cursor.fetchall()
+        counts: dict[str, tuple[int, int]] = {}
+        for row in rows:
+            counts[str(row[0])] = (int(row[1]), int(row[2]))
+        return counts
 
 
 def _report(version: ModelVersion) -> dict[str, object]:
@@ -97,6 +152,7 @@ def _version(row: tuple[object, ...]) -> ModelVersion:
         single_example_labels=_labels(report.get("singleExampleLabels")),
         artifact=bytes(row[5]) if isinstance(row[5], bytes | memoryview) else b"",
         created_at=created,
+        in_experiment=row[7] is True,
     )
 
 

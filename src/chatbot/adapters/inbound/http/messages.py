@@ -37,6 +37,7 @@ def _payload(answer: Answer, session_id: str | None) -> dict[str, object]:
         "suggestions": list(answer.suggestions),
         "view": answer.view,
         "sessionId": session_id,
+        "modelVersion": answer.model_version,
     }
 
 
@@ -101,7 +102,12 @@ def messages_router(session: ConversationSession) -> APIRouter:
         identity = await _identity(request)
         actor, visitor_id = _actor(identity, session, session_id)
         turns = [
-            {"question": turn.question, "answer": turn.answer} for turn in session.history(actor)
+            {
+                "question": turn.question,
+                "answer": turn.answer,
+                "modelVersion": turn.model_version,
+            }
+            for turn in session.history(actor)
         ]
         return {"sessionId": visitor_id, "turns": turns}
 

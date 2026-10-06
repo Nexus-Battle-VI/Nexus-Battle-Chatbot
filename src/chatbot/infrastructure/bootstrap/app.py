@@ -17,6 +17,7 @@ from chatbot.adapters.inbound.http.auth.guards import AuthSettings, authenticate
 from chatbot.adapters.inbound.http.errors import register_error_handlers
 from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.inbound.http.messages import messages_router
+from chatbot.adapters.inbound.http.precision import precision_router
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifier,
     CognitoTokenVerifierOptions,
@@ -50,6 +51,7 @@ from chatbot.application.ports.clock import ClockPort
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
 from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerifierPort, VerifiedIdentity
+from chatbot.application.precision import ReadModelPrecision
 from chatbot.application.train_model import RetrainModel
 from chatbot.infrastructure.config.env import AppConfig, AuthMode
 from chatbot.infrastructure.health.health import ReadinessCheck
@@ -191,6 +193,7 @@ def create_app(
 
         readiness.append(ReadinessCheck(name="database", check=database_ready))
     app.state.readiness_checks = readiness
+    app.state.model_versions = versions
 
     app.include_router(health.router, prefix=prefix)
     # La ruta publica del contexto es /api/v1/chatbot* (ADR-022, Caddy). No
@@ -205,9 +208,19 @@ def create_app(
         prefix="/api/v1/chatbot",
     )
     app.include_router(
+        precision_router(ReadModelPrecision(versions)),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
         messages_router(
             ConversationSession(
-                AnswerQuestion(entries, model_factory, versions, model_factory),
+                AnswerQuestion(
+                    entries,
+                    model_factory,
+                    versions,
+                    model_factory,
+                    config.ab_candidate_percent,
+                ),
                 app_clock,
                 FernetTextCipher(FernetTextCipher.generate_key()),
             )
