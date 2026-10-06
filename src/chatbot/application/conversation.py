@@ -91,12 +91,15 @@ class ConversationSession:
         self.allow(actor)
         assert_acceptable(text)
         stored_question = redact_sensitive(text)
+        started = self._clock.now()
         answer = await self._answers.execute(
             stored_question,
             view,
             actor,
             access_token=access_token,
         )
+        finished = self._clock.now()
+        duration_ms = int((finished - started).total_seconds() * 1000)
         turn_id = str(uuid4())
         await self._transcripts.add(
             actor,
@@ -108,7 +111,8 @@ class ConversationSession:
                 intent=answer.intent,
                 model_version=answer.model_version,
                 useful=None,
-                created_at=self._clock.now(),
+                created_at=finished,
+                duration_ms=duration_ms,
             ),
         )
         return answer, turn_id

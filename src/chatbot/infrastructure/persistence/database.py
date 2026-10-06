@@ -184,6 +184,17 @@ MIGRATIONS: Sequence[Migration] = (
         );
         """,
     ),
+    Migration(
+        "007-response-time",
+        """
+        alter table conversation_turns
+          add column duration_ms integer;
+        alter table conversation_turns
+          add constraint conversation_turns_duracion check (
+            duration_ms is null or duration_ms >= 0
+          );
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")

@@ -13,6 +13,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from psycopg_pool import AsyncConnectionPool
 
 from chatbot.adapters.inbound.http import health
+from chatbot.adapters.inbound.http.analytics import analytics_router
 from chatbot.adapters.inbound.http.auth.guards import AuthSettings, authenticate
 from chatbot.adapters.inbound.http.errors import register_error_handlers
 from chatbot.adapters.inbound.http.feedback import feedback_router
@@ -48,6 +49,7 @@ from chatbot.adapters.outbound.persistence.postgres_versions import (
 from chatbot.adapters.outbound.system.clock import SystemClock
 from chatbot.adapters.outbound.system.fernet_cipher import FernetTextCipher
 from chatbot.adapters.outbound.system.training_scheduler import TrainingScheduler
+from chatbot.application.analytics import ReadUsageAnalytics
 from chatbot.application.answer import AnswerQuestion
 from chatbot.application.conversation import ConversationSession
 from chatbot.application.knowledge import (
@@ -256,6 +258,10 @@ def create_app(
     )
     app.include_router(
         tickets_router(ListSupportTickets(support_tickets)),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
+        analytics_router(ReadUsageAnalytics(transcripts, support_tickets, cipher)),
         prefix="/api/v1/chatbot",
     )
     conversation = ConversationSession(

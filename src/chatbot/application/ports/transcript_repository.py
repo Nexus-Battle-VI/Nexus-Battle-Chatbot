@@ -15,6 +15,7 @@ class StoredTurn:
     model_version: str | None
     useful: bool | None
     created_at: datetime
+    duration_ms: int | None = None
 
 
 class TranscriptRepository(Protocol):
@@ -29,6 +30,10 @@ class TranscriptRepository(Protocol):
     async def set_useful(self, actor: str, turn_id: str, useful: bool) -> StoredTurn | None: ...
 
     async def list_rated(self) -> tuple[StoredTurn, ...]: ...
+
+    async def list_between(self, start: datetime, end: datetime) -> tuple[StoredTurn, ...]: ...
+
+    async def count_started(self, start: datetime, end: datetime) -> int: ...
 
     async def remember_visitor(self, session_id: str) -> None: ...
 
