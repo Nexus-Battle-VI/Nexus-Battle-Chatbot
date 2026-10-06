@@ -29,6 +29,10 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 - **Entrenamiento dentro del proceso**, en segundo plano. Sigue el patrón de temporizadores de ADR-019: estado en la base y una sola ejecución a la vez.
 - **Caché de respuestas frecuentes**: LRU en proceso, con clave (versión del modelo, pregunta normalizada). Cambiar de versión la invalida.
 
+## Tickets (HU-49)
+
+Si `answered` es falso, la respuesta incluye `ticketId` y el servicio guarda la pregunta ya redactada, la vista y el actor (`player:{sub}` o `visitor:{sesión}`). `POST /api/v1/chatbot/tickets` abre un ticket con el texto que envía el widget al transferir. `GET /api/v1/chatbot/admin/tickets` lista esos tickets y exige `ADMINISTRATOR`. No se envía correo y la pregunta no entra al diccionario.
+
 ## Datos del jugador y acciones (HU-48, HU-50)
 
 Chatbot llama por la red interna a las rutas `/me` **públicas** de Player/Inventory, Missions, Auction, Wallet, Notifications y Tournament. Reenvía el **testimonio del propio usuario**.
@@ -62,7 +66,7 @@ HU-53 → HU-47 → HU-54 → HU-48 → HU-50 → HU-49 → HU-51 → HU-52.
 
 ## Decisiones abiertas (Product Owner)
 
-- Destino de los tickets de HU-49. La propuesta: los guarda este servicio, un administrador los atiende desde su panel y Notifications avisa por correo.
+- Aviso por correo de los tickets de HU-49. El servicio ya guarda el ticket y un administrador lo lista; Notifications sigue sin un destino definido.
 - Qué es «generar reportes de actividad» (HU-50).
 - Retención del historial de conversaciones.
 - Alcance mínimo aceptable de A/B y reentrenamiento en este sprint.

@@ -13,9 +13,15 @@ from chatbot.adapters.inbound.http.auth.markers import public
 from chatbot.application.answer import Answer
 from chatbot.application.conversation import ConversationSession, RateLimitExceededError
 from chatbot.application.ports.token_verifier import TokenVerificationError, VerifiedIdentity
+from chatbot.application.support_ticket import OpenSupportTicket
 from chatbot.domain.errors import InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import question_view
-from chatbot.domain.message_guard import InappropriateContentError, InjectionAttemptError
+from chatbot.domain.message_guard import (
+    InappropriateContentError,
+    InjectionAttemptError,
+    assert_acceptable,
+    redact_sensitive,
+)
 
 
 class AskBody(BaseModel):
@@ -26,7 +32,9 @@ class AskBody(BaseModel):
     session_id: str | None = Field(default=None, alias="sessionId")
 
 
-def _payload(answer: Answer, session_id: str | None) -> dict[str, object]:
+def _payload(
+    answer: Answer, session_id: str | None, ticket_id: str | None = None
+) -> dict[str, object]:
     return {
         "answered": answer.answered,
         "intent": answer.intent,
@@ -39,6 +47,7 @@ def _payload(answer: Answer, session_id: str | None) -> dict[str, object]:
         "sessionId": session_id,
         "modelVersion": answer.model_version,
         "assistedAction": _assisted(answer),
+        "ticketId": ticket_id,
     }
 
 
@@ -84,24 +93,45 @@ def _reject(error: Exception) -> HTTPException:
     return HTTPException(status.HTTP_400_BAD_REQUEST, str(error))
 
 
-def messages_router(session: ConversationSession) -> APIRouter:
+def messages_router(session: ConversationSession, tickets: OpenSupportTicket) -> APIRouter:
     router = APIRouter(tags=["conversation"])
 
     @router.post("/messages")
     @public
     async def ask(body: AskBody, request: Request) -> dict[str, object]:
         identity = await _identity(request)
+        ticket_id = None
         try:
             view = question_view(body.view)
             actor, visitor_id = _actor(identity, session, body.session_id)
             token = read_bearer_token(request.headers.get("authorization"))
             forwarded = token if identity is not None and identity.subject != "anonymous" else None
             answer = await session.ask(actor, body.text, view, forwarded)
+            ticket_id = None
+            if not answer.answered:
+                opened = await tickets.execute(actor, redact_sensitive(body.text), view)
+                ticket_id = opened.id
         except (RateLimitExceededError, InjectionAttemptError, InappropriateContentError) as error:
             raise _reject(error) from error
         except InvalidKnowledgeEntryError as error:
             raise HTTPException(status.HTTP_400_BAD_REQUEST, str(error)) from error
-        return _payload(answer, visitor_id)
+        return _payload(answer, visitor_id, ticket_id)
+
+    @router.post("/tickets")
+    @public
+    async def open_ticket(body: AskBody, request: Request) -> dict[str, object]:
+        identity = await _identity(request)
+        try:
+            view = question_view(body.view)
+            actor, visitor_id = _actor(identity, session, body.session_id)
+            session.allow(actor)
+            assert_acceptable(body.text)
+            opened = await tickets.execute(actor, redact_sensitive(body.text), view)
+        except (RateLimitExceededError, InjectionAttemptError, InappropriateContentError) as error:
+            raise _reject(error) from error
+        except InvalidKnowledgeEntryError as error:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, str(error)) from error
+        return {"id": opened.id, "sessionId": visitor_id}
 
     @router.get("/messages/history")
     @public

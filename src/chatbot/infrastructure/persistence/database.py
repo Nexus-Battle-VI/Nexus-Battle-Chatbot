@@ -140,6 +140,22 @@ MIGRATIONS: Sequence[Migration] = (
         );
         """,
     ),
+    Migration(
+        "005-support-tickets",
+        """
+        create table support_tickets (
+          id uuid primary key,
+          actor text not null,
+          question text not null,
+          view text,
+          created_at timestamptz not null,
+          constraint support_tickets_pregunta check (char_length(btrim(question)) > 0),
+          constraint support_tickets_vista check (
+            view is null or view ~ '^[a-z][a-z0-9_-]{0,39}$'
+          )
+        );
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")
