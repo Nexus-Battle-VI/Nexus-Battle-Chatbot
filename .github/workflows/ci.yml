@@ -115,6 +115,16 @@ jobs:
             exit 1
           fi
 
+      # El historial va cifrado. Sin la clave, un reinicio no podria leerlo.
+      - name: Verificar que la imagen se NIEGA a arrancar sin la clave del historial
+        run: |
+          if docker run --rm -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL=postgresql://chatbot:chatbot@127.0.0.1:5432/chatbot nexus-battle-chatbot:ci 2>&1 | grep -q 'CONVERSATION_CIPHER_KEY'; then
+            echo "Correcto: la imagen de produccion no arranca sin la clave del historial."
+          else
+            echo "FALLO: la imagen arranco sin la clave del historial."
+            exit 1
+          fi
+
       - name: Verificar arranque del contenedor contra PostgreSQL real
         run: |
           docker network create chatbot-ci > /dev/null
@@ -126,8 +136,10 @@ jobs:
             sleep 2
           done
           url='postgresql://chatbot:chatbot-ci@chatbot-ci-db:5432/chatbot'
-          docker run --rm --network chatbot-ci -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" nexus-battle-chatbot:ci python -m chatbot.infrastructure.persistence.migrate
-          docker run -d --name chatbot-ci --network chatbot-ci -p 3011:3011 -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" nexus-battle-chatbot:ci
+          # Clave solo de esta base desechable. No es un secreto de produccion.
+          key='xjJa4XFPAnQIqjEHO2T4QYUW7-iuAC6v3j0ic3qDWH4='
+          docker run --rm --network chatbot-ci -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" -e CONVERSATION_CIPHER_KEY="$key" nexus-battle-chatbot:ci python -m chatbot.infrastructure.persistence.migrate
+          docker run -d --name chatbot-ci --network chatbot-ci -p 3011:3011 -e AUTH_MODE=jwt -e COGNITO_USER_POOL_ID=us-east-1_ci -e COGNITO_CLIENT_ID=cliente-ci -e PERSISTENCE_DRIVER=postgres -e DATABASE_URL="$url" -e CONVERSATION_CIPHER_KEY="$key" nexus-battle-chatbot:ci
           for attempt in $(seq 1 20); do
             if curl -fsS http://127.0.0.1:3011/api/health/ready > /dev/null; then
               echo "readiness correcta en el intento ${attempt}"
