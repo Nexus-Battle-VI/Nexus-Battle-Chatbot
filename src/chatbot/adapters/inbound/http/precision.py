@@ -14,6 +14,8 @@ def _view(row: VersionPrecision) -> dict[str, object]:
         "versionId": row.version_id,
         "state": row.state,
         "inExperiment": row.in_experiment,
+        "accuracy": row.accuracy,
+        "macroF1": row.macro_f1,
         "useful": row.useful,
         "notUseful": row.not_useful,
         "precision": row.precision,

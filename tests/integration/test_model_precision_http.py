@@ -63,6 +63,22 @@ def test_un_jugador_no_consulta_la_precision(client: TestClient) -> None:
     assert denied.status_code == 403
 
 
+def test_el_administrador_puede_lanzar_el_reentrenamiento(client: TestClient) -> None:
+    headers = {"authorization": "Bearer token-admin"}
+    denied = client.post(
+        "/api/v1/chatbot/admin/model-training",
+        headers={"authorization": "Bearer token-jugador"},
+    )
+    assert denied.status_code == 403
+    started = client.post("/api/v1/chatbot/admin/model-training", headers=headers)
+    assert started.status_code == 200
+    body = started.json()
+    assert body["started"] is True
+    assert body["promoted"] is False
+    assert body["versionId"] is None
+    assert "userId" not in body
+
+
 def test_el_administrador_ve_la_precision_de_cada_version(client: TestClient) -> None:
     headers = {"authorization": "Bearer token-admin"}
     empty = client.get(PATH, headers=headers)
