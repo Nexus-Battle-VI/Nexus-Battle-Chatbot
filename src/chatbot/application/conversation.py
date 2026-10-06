@@ -29,6 +29,7 @@ class TextCipherPort(Protocol):
 class TranscriptTurn:
     question: str
     answer: str | None
+    model_version: str | None = None
 
 
 class ConversationSession:
@@ -70,21 +71,42 @@ class ConversationSession:
         self.allow(actor)
         assert_acceptable(text)
         stored_question = redact_sensitive(text)
-        answer = await self._answers.execute(stored_question, view)
-        self._remember(actor, stored_question, answer.answer)
+        answer = await self._answers.execute(stored_question, view, actor)
+        self._remember(actor, stored_question, answer.answer, answer.model_version)
         return answer
 
     def history(self, actor: str) -> tuple[TranscriptTurn, ...]:
         turns: list[TranscriptTurn] = []
         for token in self._turns.get(actor, []):
             plain = self._cipher.decrypt(token)
-            question, separator, reply = plain.partition("\n---\n")
-            turns.append(TranscriptTurn(question, reply if separator else None))
+            question, separator, rest = plain.partition("\n---\n")
+            if separator == "":
+                turns.append(TranscriptTurn(question, None))
+                continue
+            reply, version_separator, version = rest.partition("\n---\n")
+            stored_answer = None if version_separator and reply == "" else reply
+            turns.append(
+                TranscriptTurn(
+                    question,
+                    stored_answer,
+                    version if version_separator else None,
+                )
+            )
         return tuple(turns)
 
     def clear(self, actor: str) -> None:
         self._turns.pop(actor, None)
 
-    def _remember(self, actor: str, question: str, answer: str | None) -> None:
-        payload = question if answer is None else f"{question}\n---\n{answer}"
+    def _remember(
+        self,
+        actor: str,
+        question: str,
+        answer: str | None,
+        model_version: str | None,
+    ) -> None:
+        if model_version is None:
+            payload = question if answer is None else f"{question}\n---\n{answer}"
+        else:
+            reply = "" if answer is None else answer
+            payload = f"{question}\n---\n{reply}\n---\n{model_version}"
         self._turns[actor].append(self._cipher.encrypt(payload))

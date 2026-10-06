@@ -125,6 +125,21 @@ MIGRATIONS: Sequence[Migration] = (
         insert into model_training_lease (id, until) values (1, '-infinity');
         """,
     ),
+    Migration(
+        "004-model-experiment",
+        """
+        alter table model_versions
+          add column in_experiment boolean not null default false;
+        create unique index model_versions_one_experiment
+          on model_versions (in_experiment) where in_experiment;
+        create table model_answer_outcomes (
+          id uuid primary key default gen_random_uuid(),
+          version_id uuid not null references model_versions (id),
+          useful boolean,
+          created_at timestamptz not null default now()
+        );
+        """,
+    ),
 )
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")

@@ -54,6 +54,7 @@ class AppConfig:
     internal_service_auth_secret: str | None
     training_scheduler_enabled: bool
     training_interval_seconds: int
+    ab_candidate_percent: int
 
 
 RawEnv = Mapping[str, str | None]
@@ -148,6 +149,7 @@ def load_config(env: RawEnv) -> AppConfig:
             "TRAINING_INTERVAL_SECONDS debe ser al menos 60 cuando "
             "TRAINING_SCHEDULER_ENABLED es true."
         )
+    candidate_percent = _read_integer(env, "AB_CANDIDATE_PERCENT", 0, 0, 100)
 
     return AppConfig(
         app_env=app_env,
@@ -166,4 +168,5 @@ def load_config(env: RawEnv) -> AppConfig:
         internal_service_auth_secret=None if secret == "" else secret,
         training_scheduler_enabled=training_enabled,
         training_interval_seconds=training_interval,
+        ab_candidate_percent=candidate_percent,
     )

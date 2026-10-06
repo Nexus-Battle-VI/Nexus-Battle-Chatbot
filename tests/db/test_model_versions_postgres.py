@@ -80,3 +80,23 @@ async def test_el_arrendamiento_impide_dos_entrenos_a_la_vez(postgres_url: str) 
         assert await repository.try_acquire(_NOW, _NOW + timedelta(minutes=15)) is True
     finally:
         await pool.close()
+
+
+async def test_la_candidata_en_prueba_y_la_precision(postgres_url: str) -> None:
+    repository, pool = await _repository(postgres_url)
+    try:
+        first = _version("41")
+        second = _version("42")
+        await repository.add_candidate(first)
+        await repository.add_candidate(second)
+        assert await repository.mark_experiment(first.id) is True
+        assert await repository.mark_experiment(second.id) is True
+        current = await repository.experiment_candidate()
+        assert current is not None
+        assert current.id == second.id
+        await repository.record_answer(second.id, True)
+        await repository.record_answer(second.id, None)
+        counts = await repository.rating_counts()
+        assert counts[second.id] == (1, 0)
+    finally:
+        await pool.close()

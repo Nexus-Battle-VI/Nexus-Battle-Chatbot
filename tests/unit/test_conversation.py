@@ -26,7 +26,8 @@ class _Clock:
 
 
 class _Answers:
-    async def execute(self, text: str, view: str | None) -> Answer:
+    async def execute(self, text: str, view: str | None, actor: str | None = None) -> Answer:
+        del actor
         return Answer(True, "regla_turno", "es", 0.9, "30 segundos", "direct", (), view)
 
 

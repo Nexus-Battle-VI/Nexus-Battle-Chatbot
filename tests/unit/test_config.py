@@ -25,6 +25,7 @@ def test_valores_por_defecto_de_desarrollo() -> None:
     assert config.database_url is None
     assert config.internal_service_auth_secret is None
     assert config.training_scheduler_enabled is False
+    assert config.ab_candidate_percent == 0
 
 
 def test_configuracion_de_produccion_completa() -> None:
@@ -92,3 +93,9 @@ def test_el_reentrenamiento_exige_un_intervalo() -> None:
         {"TRAINING_SCHEDULER_ENABLED": "true", "TRAINING_INTERVAL_SECONDS": "3600"}
     )
     assert config.training_interval_seconds == 3600
+
+
+def test_el_porcentaje_ab_nace_en_cero() -> None:
+    assert load_config({}).ab_candidate_percent == 0
+    with pytest.raises(ConfigurationError, match="AB_CANDIDATE_PERCENT"):
+        load_config({"AB_CANDIDATE_PERCENT": "101"})
