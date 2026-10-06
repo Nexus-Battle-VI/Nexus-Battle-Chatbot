@@ -18,6 +18,7 @@ from chatbot.adapters.inbound.http.errors import register_error_handlers
 from chatbot.adapters.inbound.http.knowledge import knowledge_router
 from chatbot.adapters.inbound.http.messages import messages_router
 from chatbot.adapters.inbound.http.precision import precision_router
+from chatbot.adapters.inbound.http.training import training_router
 from chatbot.adapters.outbound.identity.cognito_token_verifier import (
     CognitoTokenVerifier,
     CognitoTokenVerifierOptions,
@@ -122,18 +123,15 @@ def create_app(
         else InMemoryModelVersionRepository()
     )
     model_factory = SklearnIntentModelFactory()
+    retrain = RetrainModel(
+        entries,
+        EmptyReviewedConversations(),
+        model_factory,
+        versions,
+        app_clock,
+    )
     scheduler = (
-        TrainingScheduler(
-            RetrainModel(
-                entries,
-                EmptyReviewedConversations(),
-                model_factory,
-                versions,
-                app_clock,
-            ),
-            config.training_interval_seconds,
-            log,
-        )
+        TrainingScheduler(retrain, config.training_interval_seconds, log)
         if config.training_scheduler_enabled
         else None
     )
@@ -209,6 +207,10 @@ def create_app(
     )
     app.include_router(
         precision_router(ReadModelPrecision(versions)),
+        prefix="/api/v1/chatbot",
+    )
+    app.include_router(
+        training_router(retrain),
         prefix="/api/v1/chatbot",
     )
     app.include_router(

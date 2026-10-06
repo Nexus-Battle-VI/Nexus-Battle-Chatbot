@@ -11,6 +11,8 @@ class VersionPrecision:
     version_id: str
     state: str
     in_experiment: bool
+    accuracy: float
+    macro_f1: float
     useful: int
     not_useful: int
     precision: float | None
@@ -30,6 +32,8 @@ class ReadModelPrecision:
                     version.id,
                     version.state,
                     version.in_experiment,
+                    version.accuracy,
+                    version.macro_f1,
                     useful,
                     not_useful,
                     live_precision(useful, not_useful),
