@@ -42,3 +42,34 @@ def test_limpiar_el_historial_de_un_visitante(client: TestClient) -> None:
     history = client.get("/api/v1/chatbot/messages/history", params={"sessionId": session_id})
     assert history.status_code == 200
     assert history.json()["turns"] == []
+
+
+def test_el_historial_conserva_el_camino_de_la_accion(client: TestClient) -> None:
+    created = client.post(
+        "/api/v1/chatbot/admin/knowledge",
+        json={
+            "intent": "mi_inventario",
+            "language": "es",
+            "priority": 1,
+            "answer": "El inventario se consulta en el momento.",
+            "variations": ["que tengo en el inventario"],
+        },
+    )
+    assert created.status_code == 201
+    opened = client.get("/api/v1/chatbot/messages/history")
+    session_id = opened.json()["sessionId"]
+    asked = client.post(
+        PATH,
+        json={"text": "que tengo en el inventario", "sessionId": session_id},
+    )
+    assert asked.status_code == 200
+    assert asked.json()["assistedAction"] == {
+        "name": "buscar_inventario",
+        "path": "/inventory",
+    }
+    history = client.get("/api/v1/chatbot/messages/history", params={"sessionId": session_id})
+    assert history.status_code == 200
+    assert history.json()["turns"][0]["assistedAction"] == {
+        "name": "buscar_inventario",
+        "path": "/inventory",
+    }

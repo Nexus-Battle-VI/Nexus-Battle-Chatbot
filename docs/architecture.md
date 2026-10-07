@@ -78,3 +78,4 @@ HU-53 → HU-47 → HU-54 → HU-48 → HU-50 → HU-49 → HU-51 → HU-52.
 - Qué es «generar reportes de actividad» (HU-50).
 - Retención del historial de conversaciones.
 - Alcance mínimo aceptable de A/B y reentrenamiento en este sprint.
+- Actualización programada del diccionario. La importación y la exportación del esquema 1 ya existen. La semilla publicada se carga con `python -m chatbot.infrastructure.persistence.seed`, un paso explícito y repetible. El calendario automático no está definido.

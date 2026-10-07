@@ -45,7 +45,12 @@ def client() -> Iterator[TestClient]:
         state="CANDIDATE",
         accuracy=1.0,
         macro_f1=1.0,
-        metrics=ValidationMetrics(1.0, 1.0, (), ()),
+        metrics=ValidationMetrics(
+            1.0,
+            1.0,
+            (("es:otro", 0.0), ("es:turno", 1.0)),
+            (("es:turno", "es:otro", 1), ("es:turno", "es:turno", 2)),
+        ),
         single_example_labels=(),
         artifact=b"activa",
         created_at=datetime(2026, 10, 5, tzinfo=UTC),
@@ -93,3 +98,11 @@ def test_el_administrador_ve_la_precision_de_cada_version(client: TestClient) ->
     assert body[0]["useful"] == 1
     assert body[0]["notUseful"] == 1
     assert body[0]["precision"] == 0.5
+    assert body[0]["perIntentF1"] == [
+        {"label": "es:otro", "score": 0.0},
+        {"label": "es:turno", "score": 1.0},
+    ]
+    assert body[0]["confusion"] == [
+        {"actual": "es:turno", "predicted": "es:otro", "count": 1},
+        {"actual": "es:turno", "predicted": "es:turno", "count": 2},
+    ]

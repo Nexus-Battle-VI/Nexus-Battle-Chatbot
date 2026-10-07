@@ -55,6 +55,7 @@ from chatbot.application.conversation import ConversationSession
 from chatbot.application.knowledge import (
     CreateKnowledgeEntry,
     DeleteKnowledgeEntry,
+    ImportKnowledgeEntries,
     ListKnowledgeEntries,
     UpdateKnowledgeEntry,
 )
@@ -245,6 +246,7 @@ def create_app(
             update=UpdateKnowledgeEntry(entries),
             delete=DeleteKnowledgeEntry(entries),
             list_entries=ListKnowledgeEntries(entries),
+            import_entries=ImportKnowledgeEntries(entries),
         ),
         prefix="/api/v1/chatbot",
     )

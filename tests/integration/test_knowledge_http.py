@@ -109,3 +109,64 @@ def test_editar_o_borrar_una_entrada_ausente_responde_404(client: TestClient) ->
     missing = "00000000-0000-4000-8000-000000000001"
     assert client.put(f"{PATH}/{missing}", json=BODY, headers=headers).status_code == 404
     assert client.delete(f"{PATH}/{missing}", headers=headers).status_code == 404
+
+
+def test_importa_la_semilla_y_no_duplica_al_repetirla(client: TestClient) -> None:
+    headers = {"authorization": "Bearer token-admin"}
+    document = {
+        "schemaVersion": 1,
+        "description": "recorte",
+        "entries": [
+            {
+                "intent": "regla_turno",
+                "language": "es",
+                "priority": 10,
+                "liveData": None,
+                "question": "¿Cuánto dura un turno?",
+                "variations": ["cuanto dura un turno"],
+                "answer": "Cada turno dura 30 segundos.",
+            },
+            {
+                "intent": "regla_turno",
+                "language": "en",
+                "priority": 10,
+                "question": "How long is a turn?",
+                "variations": ["turn length"],
+                "answer": "Each turn lasts 30 seconds.",
+            },
+        ],
+    }
+    denied = client.post(
+        f"{PATH}/import", json=document, headers={"authorization": "Bearer token-jugador"}
+    )
+    assert denied.status_code == 403
+    imported = client.post(f"{PATH}/import", json=document, headers=headers)
+    assert imported.status_code == 200
+    assert imported.json() == {"created": 2, "skipped": 0}
+    again = client.post(f"{PATH}/import", json=document, headers=headers)
+    assert again.json() == {"created": 0, "skipped": 2}
+    exported = client.get(f"{PATH}/export", headers=headers)
+    assert exported.status_code == 200
+    assert exported.json()["schemaVersion"] == 1
+    spanish = next(item for item in exported.json()["entries"] if item["language"] == "es")
+    assert spanish["question"] == "¿Cuánto dura un turno?"
+    assert spanish["variations"] == ["cuanto dura un turno"]
+    broken = client.post(
+        f"{PATH}/import",
+        json={
+            "schemaVersion": 1,
+            "entries": [
+                {**document["entries"][0], "intent": "nueva"},
+                {**document["entries"][1], "language": "fr"},
+            ],
+        },
+        headers=headers,
+    )
+    assert broken.status_code == 400
+    assert len(client.get(PATH, headers=headers).json()) == 2
+    assert (
+        client.post(
+            f"{PATH}/import", json={"schemaVersion": 2, "entries": []}, headers=headers
+        ).status_code
+        == 400
+    )
