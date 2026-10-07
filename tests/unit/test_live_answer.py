@@ -31,21 +31,23 @@ class _Entries:
 
 
 class _Model:
-    def __init__(self, label: str) -> None:
+    def __init__(self, label: str, confidence: float = 0.9) -> None:
         self._label = label
+        self._confidence = confidence
 
     def predict(self, text: str) -> tuple[str | None, float, tuple[str, ...]]:
         del text
-        return self._label, 0.9, ()
+        return self._label, self._confidence, ()
 
 
 class _Factory:
-    def __init__(self, label: str) -> None:
+    def __init__(self, label: str, confidence: float = 0.9) -> None:
         self._label = label
+        self._confidence = confidence
 
     def train(self, examples: tuple[tuple[str, str], ...]) -> _Model:
         del examples
-        return _Model(self._label)
+        return _Model(self._label, self._confidence)
 
 
 class _Player:
@@ -73,6 +75,19 @@ async def test_el_inventario_usa_el_token_y_el_total_real() -> None:
     answer = await question.execute("que tengo", None, access_token="token-del-jugador")
     assert answer.answer == ("El inventario tiene 1 objeto. En esta página: Espada de Hierro x 2.")
     assert player.calls == [("inventory", "token-del-jugador")]
+
+
+async def test_un_dato_propio_dudoso_no_pide_sesion() -> None:
+    player = _Player({"totalItems": 1, "items": []})
+    question = AnswerQuestion(
+        _Entries(),  # type: ignore[arg-type]
+        _Factory("es:mi_inventario", 0.2),
+        player_data=player,
+    )
+    answer = await question.execute("el trafico de hoy", None)
+    assert answer.answered is False
+    assert answer.answer is None
+    assert player.calls == []
 
 
 async def test_sin_sesion_no_consulta_el_servicio() -> None:

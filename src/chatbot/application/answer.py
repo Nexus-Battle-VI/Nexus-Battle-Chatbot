@@ -177,8 +177,11 @@ class AnswerQuestion:
         source = None
         label = None
         if self._model is not None and normalized != "":
-            label = self._model.predict(normalized)[0]
-            source = live_source(label)
+            label, confidence, _others = self._model.predict(normalized)
+            # Un dato propio solo se consulta si el clasificador llega al umbral.
+            # Si no, la respuesta no puede decir «inicia sesión» como si estuviera segura.
+            if live_source(label) is not None and confidence >= CONFIDENCE_THRESHOLD:
+                source = live_source(label)
         if source is not None:
             result = await self._live(source, access_token, label)
             result = replace(

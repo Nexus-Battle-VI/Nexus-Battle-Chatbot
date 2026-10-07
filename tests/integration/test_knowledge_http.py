@@ -142,9 +142,9 @@ def test_importa_la_semilla_y_no_duplica_al_repetirla(client: TestClient) -> Non
     assert denied.status_code == 403
     imported = client.post(f"{PATH}/import", json=document, headers=headers)
     assert imported.status_code == 200
-    assert imported.json() == {"created": 2, "skipped": 0}
+    assert imported.json() == {"created": 2, "skipped": 0, "reinforced": 0}
     again = client.post(f"{PATH}/import", json=document, headers=headers)
-    assert again.json() == {"created": 0, "skipped": 2}
+    assert again.json() == {"created": 0, "skipped": 2, "reinforced": 0}
     exported = client.get(f"{PATH}/export", headers=headers)
     assert exported.status_code == 200
     assert exported.json()["schemaVersion"] == 1
