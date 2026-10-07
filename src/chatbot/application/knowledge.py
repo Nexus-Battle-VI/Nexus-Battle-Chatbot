@@ -4,11 +4,12 @@ Clases planas: no conocen FastAPI ni el motor. El identificador lo genera el
 servicio, nunca el cliente.
 """
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from uuid import uuid4
 
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
-from chatbot.domain.errors import DomainError
+from chatbot.domain.errors import DomainError, InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import KnowledgeEntry, knowledge_entry
 
 
@@ -148,6 +149,41 @@ def export_document(entries: tuple[KnowledgeEntry, ...]) -> dict[str, object]:
             }
         )
     return {"schemaVersion": 1, "entries": rows}
+
+
+def rows_from_document(document: Mapping[str, object]) -> tuple[ImportRow, ...]:
+    """Lee un documento de esquema 1. La semilla publicada usa esta forma."""
+    if document.get("schemaVersion") != 1:
+        raise InvalidKnowledgeEntryError("El documento no es el esquema 1.")
+    raw_entries = document.get("entries")
+    if not isinstance(raw_entries, list):
+        raise InvalidKnowledgeEntryError("El documento no trae entradas.")
+    rows: list[ImportRow] = []
+    for raw in raw_entries:
+        if not isinstance(raw, dict):
+            raise InvalidKnowledgeEntryError("Una entrada del documento no es un objeto.")
+        variations = raw.get("variations", [])
+        if not isinstance(variations, list) or any(
+            not isinstance(item, str) for item in variations
+        ):
+            raise InvalidKnowledgeEntryError("Cada variacion debe ser texto.")
+        question = raw.get("question")
+        view = raw.get("view")
+        priority = raw.get("priority")
+        if isinstance(priority, bool) or not isinstance(priority, int):
+            raise InvalidKnowledgeEntryError("La prioridad debe ser un entero.")
+        rows.append(
+            ImportRow(
+                intent=str(raw.get("intent", "")),
+                language=str(raw.get("language", "")),
+                priority=priority,
+                answer=str(raw.get("answer", "")),
+                variations=tuple(variations),
+                question=question if isinstance(question, str) else None,
+                view=view if isinstance(view, str) else None,
+            )
+        )
+    return tuple(rows)
 
 
 def _imported(row: ImportRow) -> KnowledgeEntry:

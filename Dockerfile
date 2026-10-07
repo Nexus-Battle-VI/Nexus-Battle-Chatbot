@@ -24,6 +24,7 @@ RUN uv sync --frozen --no-dev --no-install-project
 
 COPY README.md ./
 COPY src ./src
+COPY docs/diccionario/semilla-v1.json ./docs/diccionario/semilla-v1.json
 # `--no-editable`: el servicio se instala dentro del entorno, sin depender de `src`.
 RUN uv sync --frozen --no-dev --no-editable
 
@@ -45,6 +46,7 @@ RUN groupadd --system --gid 1000 chatbot \
 WORKDIR /app
 
 COPY --from=build --chown=chatbot:chatbot /app/.venv /app/.venv
+COPY --from=build --chown=chatbot:chatbot /app/docs /app/docs
 
 USER chatbot
 
