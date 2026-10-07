@@ -19,6 +19,7 @@ from chatbot.application.conversation import (
 from chatbot.application.ports.model_version_repository import ModelVersionRepository
 from chatbot.application.ports.token_verifier import TokenVerificationError, VerifiedIdentity
 from chatbot.application.support_ticket import OpenSupportTicket
+from chatbot.domain.assisted_action import assisted_action
 from chatbot.domain.errors import InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import question_view
 from chatbot.domain.message_guard import (
@@ -78,6 +79,14 @@ def _assisted(answer: Answer) -> dict[str, str] | None:
     if answer.assisted_action is None:
         return None
     name, path = answer.assisted_action
+    return {"name": name, "path": path}
+
+
+def _assisted_intent(intent: str | None) -> dict[str, str] | None:
+    action = assisted_action(None if intent is None else f":{intent}")
+    if action is None:
+        return None
+    name, path = action
     return {"name": name, "path": path}
 
 
@@ -187,6 +196,7 @@ def messages_router(session: ConversationSession, tickets: OpenSupportTicket) ->
                 "answer": turn.answer,
                 "modelVersion": turn.model_version,
                 "useful": turn.useful,
+                "assistedAction": _assisted_intent(turn.intent),
             }
             for turn in await session.history(actor)
         ]
