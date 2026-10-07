@@ -11,6 +11,7 @@ from uuid import uuid4
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
 from chatbot.domain.errors import DomainError, InvalidKnowledgeEntryError
 from chatbot.domain.knowledge_entry import KnowledgeEntry, knowledge_entry
+from chatbot.domain.normalize import normalize_question
 
 
 class KnowledgeEntryNotFoundError(DomainError):
@@ -111,26 +112,39 @@ class ImportRow:
 
 
 class ImportKnowledgeEntries:
-    """Carga un documento. Si una entrada ya existe, no la pisa ni la duplica."""
+    """Carga un documento.
+
+    Una entrada nueva se inserta. Si ya existe la misma intencion, idioma y
+    vista, se conserva la respuesta guardada y solo se suman las frases que
+    aun no estaban. La misma carga, repetida, no cambia nada.
+    """
 
     def __init__(self, entries: KnowledgeEntryRepositoryPort) -> None:
         self._entries = entries
 
-    async def execute(self, rows: tuple[ImportRow, ...]) -> tuple[int, int]:
+    async def execute(self, rows: tuple[ImportRow, ...]) -> tuple[int, int, int]:
         prepared = tuple(_imported(row) for row in rows)
         stored = await self._entries.list_all()
-        known = {(entry.intent, entry.language, entry.view) for entry in stored}
+        by_key = {(entry.intent, entry.language, entry.view): entry for entry in stored}
         created = 0
         skipped = 0
+        reinforced = 0
         for entry in prepared:
             key = (entry.intent, entry.language, entry.view)
-            if key in known:
+            current = by_key.get(key)
+            if current is None:
+                await self._entries.add(entry)
+                by_key[key] = entry
+                created += 1
+                continue
+            merged = _with_new_phrases(current, entry.variations)
+            if merged is None:
                 skipped += 1
                 continue
-            await self._entries.add(entry)
-            known.add(key)
-            created += 1
-        return created, skipped
+            await self._entries.save(merged)
+            by_key[key] = merged
+            reinforced += 1
+        return created, skipped, reinforced
 
 
 def export_document(entries: tuple[KnowledgeEntry, ...]) -> dict[str, object]:
@@ -184,6 +198,34 @@ def rows_from_document(document: Mapping[str, object]) -> tuple[ImportRow, ...]:
             )
         )
     return tuple(rows)
+
+
+def _with_new_phrases(
+    stored: KnowledgeEntry,
+    incoming: tuple[str, ...],
+) -> KnowledgeEntry | None:
+    """Suma frases nuevas. No cambia la respuesta ni la prioridad guardadas."""
+    known = {normalize_question(phrase) for phrase in stored.variations}
+    added: list[str] = []
+    for phrase in incoming:
+        normal = normalize_question(phrase)
+        if normal == "" or normal in known:
+            continue
+        added.append(phrase.strip())
+        known.add(normal)
+        if len(stored.variations) + len(added) >= 30:
+            break
+    if len(added) == 0:
+        return None
+    return knowledge_entry(
+        entry_id=stored.id,
+        intent=stored.intent,
+        language=stored.language,
+        priority=stored.priority,
+        answer=stored.answer,
+        variations=[*stored.variations, *added],
+        view=stored.view,
+    )
 
 
 def _imported(row: ImportRow) -> KnowledgeEntry:

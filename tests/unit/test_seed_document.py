@@ -22,12 +22,14 @@ async def test_la_semilla_publicada_entra_una_sola_vez() -> None:
     repository = InMemoryKnowledgeEntryRepository()
     importer = ImportKnowledgeEntries(repository)
 
-    created, skipped = await importer.execute(rows)
+    created, skipped, reinforced = await importer.execute(rows)
     assert skipped == 0
+    assert reinforced == 0
     assert created == len(document["entries"])
 
-    created_again, skipped_again = await importer.execute(rows)
+    created_again, skipped_again, reinforced_again = await importer.execute(rows)
     assert created_again == 0
+    assert reinforced_again == 0
     assert skipped_again == created
 
     stored = await repository.list_all()
@@ -40,3 +42,50 @@ async def test_la_semilla_publicada_entra_una_sola_vez() -> None:
 def test_un_esquema_distinto_no_se_lee() -> None:
     with pytest.raises(InvalidKnowledgeEntryError, match="esquema"):
         rows_from_document({"schemaVersion": 2, "entries": []})
+
+
+async def test_una_segunda_carga_suma_frases_y_conserva_la_respuesta() -> None:
+    repository = InMemoryKnowledgeEntryRepository()
+    importer = ImportKnowledgeEntries(repository)
+    first = rows_from_document(
+        {
+            "schemaVersion": 1,
+            "entries": [
+                {
+                    "intent": "regla_turno",
+                    "language": "es",
+                    "priority": 10,
+                    "question": "¿Cómo funciona el turno?",
+                    "variations": ["cuanto dura un turno"],
+                    "answer": "El combate es por turnos.",
+                }
+            ],
+        }
+    )
+    created, skipped, reinforced = await importer.execute(first)
+    assert (created, skipped, reinforced) == (1, 0, 0)
+
+    second = rows_from_document(
+        {
+            "schemaVersion": 1,
+            "entries": [
+                {
+                    "intent": "regla_turno",
+                    "language": "es",
+                    "priority": 1,
+                    "question": "¿Cómo funciona el turno?",
+                    "variations": ["cuanto dura un turno", "en que orden juegan los equipos"],
+                    "answer": "Esta respuesta no debe reemplazar la guardada.",
+                }
+            ],
+        }
+    )
+    created, skipped, reinforced = await importer.execute(second)
+    assert (created, skipped, reinforced) == (0, 0, 1)
+    stored = (await repository.list_all())[0]
+    assert stored.answer == "El combate es por turnos."
+    assert stored.priority == 10
+    assert "en que orden juegan los equipos" in stored.variations
+
+    created, skipped, reinforced = await importer.execute(second)
+    assert (created, skipped, reinforced) == (0, 1, 0)
