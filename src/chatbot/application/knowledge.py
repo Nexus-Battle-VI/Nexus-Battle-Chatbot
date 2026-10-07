@@ -4,6 +4,7 @@ Clases planas: no conocen FastAPI ni el motor. El identificador lo genera el
 servicio, nunca el cliente.
 """
 
+from dataclasses import dataclass
 from uuid import uuid4
 
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
@@ -95,3 +96,73 @@ class ListKnowledgeEntries:
 
     async def execute(self) -> tuple[KnowledgeEntry, ...]:
         return await self._entries.list_all()
+
+
+@dataclass(frozen=True)
+class ImportRow:
+    intent: str
+    language: str
+    priority: int
+    answer: str
+    variations: tuple[str, ...]
+    question: str | None = None
+    view: str | None = None
+
+
+class ImportKnowledgeEntries:
+    """Carga un documento. Si una entrada ya existe, no la pisa ni la duplica."""
+
+    def __init__(self, entries: KnowledgeEntryRepositoryPort) -> None:
+        self._entries = entries
+
+    async def execute(self, rows: tuple[ImportRow, ...]) -> tuple[int, int]:
+        prepared = tuple(_imported(row) for row in rows)
+        stored = await self._entries.list_all()
+        known = {(entry.intent, entry.language, entry.view) for entry in stored}
+        created = 0
+        skipped = 0
+        for entry in prepared:
+            key = (entry.intent, entry.language, entry.view)
+            if key in known:
+                skipped += 1
+                continue
+            await self._entries.add(entry)
+            known.add(key)
+            created += 1
+        return created, skipped
+
+
+def export_document(entries: tuple[KnowledgeEntry, ...]) -> dict[str, object]:
+    """Documento de esquema 1. La primera variacion viaja como pregunta."""
+    rows: list[dict[str, object]] = []
+    for entry in entries:
+        question, *rest = entry.variations
+        rows.append(
+            {
+                "intent": entry.intent,
+                "language": entry.language,
+                "priority": entry.priority,
+                "question": question,
+                "variations": rest,
+                "view": entry.view,
+            }
+        )
+    return {"schemaVersion": 1, "entries": rows}
+
+
+def _imported(row: ImportRow) -> KnowledgeEntry:
+    phrases = list(row.variations)
+    question = row.question
+    if question is not None:
+        stripped = question.strip()
+        if stripped != "" and stripped not in {item.strip() for item in phrases}:
+            phrases = [question, *phrases]
+    return knowledge_entry(
+        entry_id=str(uuid4()),
+        intent=row.intent,
+        language=row.language,
+        priority=row.priority,
+        answer=row.answer,
+        variations=phrases,
+        view=row.view,
+    )
