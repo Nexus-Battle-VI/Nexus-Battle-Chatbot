@@ -19,6 +19,11 @@ def _view(row: VersionPrecision) -> dict[str, object]:
         "useful": row.useful,
         "notUseful": row.not_useful,
         "precision": row.precision,
+        "perIntentF1": [{"label": label, "score": score} for label, score in row.per_intent_f1],
+        "confusion": [
+            {"actual": actual, "predicted": predicted, "count": count}
+            for actual, predicted, count in row.confusion
+        ],
     }
 
 

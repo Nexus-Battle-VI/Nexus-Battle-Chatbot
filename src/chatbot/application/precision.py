@@ -16,6 +16,8 @@ class VersionPrecision:
     useful: int
     not_useful: int
     precision: float | None
+    per_intent_f1: tuple[tuple[str, float], ...]
+    confusion: tuple[tuple[str, str, int], ...]
 
 
 class ReadModelPrecision:
@@ -37,6 +39,8 @@ class ReadModelPrecision:
                     useful,
                     not_useful,
                     live_precision(useful, not_useful),
+                    version.metrics.per_intent_f1,
+                    version.metrics.confusion,
                 )
             )
         return tuple(rows)

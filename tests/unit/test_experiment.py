@@ -140,3 +140,5 @@ async def test_la_precision_ignora_lo_que_no_se_valoro() -> None:
     assert active_row.useful == 2
     assert active_row.not_useful == 1
     assert active_row.precision == 2 / 3
+    assert active_row.per_intent_f1 == ()
+    assert active_row.confusion == ()
