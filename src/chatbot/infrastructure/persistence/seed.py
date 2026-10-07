@@ -41,12 +41,12 @@ async def main() -> int:
     pool = AsyncConnectionPool(config.database_url, min_size=0, max_size=1, open=False)
     await pool.open(wait=True)
     try:
-        created, skipped = await ImportKnowledgeEntries(
+        created, skipped, reinforced = await ImportKnowledgeEntries(
             PostgresKnowledgeEntryRepository(pool)
         ).execute(rows)
     finally:
         await pool.close()
-    logger.info("seed_loaded", {"created": created, "skipped": skipped})
+    logger.info("seed_loaded", {"created": created, "skipped": skipped, "reinforced": reinforced})
     return 0
 
 

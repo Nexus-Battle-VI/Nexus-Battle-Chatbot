@@ -108,10 +108,10 @@ def knowledge_router(
             for item in body.entries
         )
         try:
-            created, skipped = await import_entries.execute(rows)
+            created, skipped, reinforced = await import_entries.execute(rows)
         except InvalidKnowledgeEntryError as error:
             raise _invalid(error) from error
-        return {"created": created, "skipped": skipped}
+        return {"created": created, "skipped": skipped, "reinforced": reinforced}
 
     @router.post("", status_code=status.HTTP_201_CREATED, dependencies=_ADMIN)
     async def create_knowledge(body: KnowledgeEntryBody) -> dict[str, object]:
