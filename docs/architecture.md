@@ -18,7 +18,7 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 
 - **Clasificador**: `TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5))` + `LogisticRegression`.
   - Los n-gramas de caracteres toleran errores ortográficos y no necesitan un tokenizador por idioma.
-  - `max_features` acotado, para que el modelo y su memoria tengan techo.
+  - `max_features` acotado, para que el modelo y su memoria tengan techo. Los números del primer entreno (`max_features` 20000, confianza 0,55, exactitud mínima 0,80) están en [parametros-entrenamiento-v1.md](parametros-entrenamiento-v1.md). La semilla de intenciones de texto está en [diccionario/semilla-v1.json](diccionario/semilla-v1.json).
 - **Datos de entrenamiento**: las variaciones de pregunta de la base de conocimiento (HU-53) y las conversaciones etiquetadas tras revisión (HU-51). **Ninguna conversación entra al entrenamiento sin revisión.**
 - **Ciclo de vida (HU-54)**:
   1. Entrenar produce una versión `CANDIDATE`, con métricas sobre un conjunto de validación separado: exactitud, F1 por intención y matriz de confusión.
@@ -28,6 +28,18 @@ Pregunta -> normalizar -> clasificador de intencion -> confianza >= umbral ?
 - **Almacenamiento del modelo**: `bytea` versionado en la propia base. El nodo `app` no guarda estado y S3 está prohibido (ADR-007). «Solo una versión `ACTIVE`» es un índice único parcial.
 - **Entrenamiento dentro del proceso**, en segundo plano. Sigue el patrón de temporizadores de ADR-019: estado en la base y una sola ejecución a la vez.
 - **Caché de respuestas frecuentes**: LRU en proceso, con clave (versión del modelo, pregunta normalizada). Cambiar de versión la invalida.
+
+## Historial y valoración (HU-51)
+
+Cada consulta se guarda cifrada, ligada al `player:{sub}` o al `visitor:{sesión}` que el servicio emitió. `GET /api/v1/chatbot/messages/history` devuelve solo ese historial. `POST /api/v1/chatbot/messages/{id}/rating` con `{useful}` califica esa respuesta una vez: útil entra al siguiente entrenamiento con su intención; no útil queda revisada y no se suma como ejemplo. Borrar el historial lo saca del conjunto. La preferencia que ya existe, mostrar la hora, se guarda por persona en `PUT /api/v1/chatbot/preferences`. El diccionario no tiene una variante breve y otra extensa, así que el texto de la respuesta no cambia de longitud. Una pregunta sin resolver sigue siendo el ticket de HU-49; no se inserta sola en el diccionario.
+
+## Analíticas (HU-52)
+
+`GET /api/v1/chatbot/admin/analytics` exige `ADMINISTRATOR` y un periodo `from`/`to` de hasta 366 días. Cuenta conversaciones cuyo primer turno cae en el periodo, las preguntas y las intenciones más repetidas, la tasa de turnos que sí trajeron respuesta, el promedio de los milisegundos medidos al responder, la satisfacción entre valoraciones útiles y no útiles, los tickets de HU-49 y, por día UTC, las consultas y las resueltas. Las palabras salen del texto ya normalizado, sin partículas gramaticales. No hay cifra cuando no hay turnos, duraciones o valoraciones. El listado no incluye al actor.
+
+## Tickets (HU-49)
+
+Si `answered` es falso, la respuesta incluye `ticketId` y el servicio guarda la pregunta ya redactada, la vista y el actor (`player:{sub}` o `visitor:{sesión}`). `POST /api/v1/chatbot/tickets` abre un ticket con el texto que envía el widget al transferir. `GET /api/v1/chatbot/admin/tickets` lista esos tickets y exige `ADMINISTRATOR`. No se envía correo y la pregunta no entra al diccionario.
 
 ## Datos del jugador y acciones (HU-48, HU-50)
 
@@ -62,7 +74,7 @@ HU-53 → HU-47 → HU-54 → HU-48 → HU-50 → HU-49 → HU-51 → HU-52.
 
 ## Decisiones abiertas (Product Owner)
 
-- Destino de los tickets de HU-49. La propuesta: los guarda este servicio, un administrador los atiende desde su panel y Notifications avisa por correo.
+- Aviso por correo de los tickets de HU-49. El servicio ya guarda el ticket y un administrador lo lista; Notifications sigue sin un destino definido.
 - Qué es «generar reportes de actividad» (HU-50).
 - Retención del historial de conversaciones.
 - Alcance mínimo aceptable de A/B y reentrenamiento en este sprint.

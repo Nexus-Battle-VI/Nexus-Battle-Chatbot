@@ -99,6 +99,7 @@ Ver [.env.example](.env.example). `APP_ENV` cumple el papel de `NODE_ENV` en los
 | `APP_ENV=production` con `AUTH_MODE=disabled` | **No arranca** (ADR-004) |
 | `APP_ENV=production` con `PERSISTENCE_DRIVER=memory` | **No arranca** (ADR-022) |
 | `PERSISTENCE_DRIVER=postgres` sin `DATABASE_URL` | **No arranca** |
+| `APP_ENV=production` con PostgreSQL sin `CONVERSATION_CIPHER_KEY` | **No arranca** |
 | `AUTH_MODE=jwt` sin pool o cliente | **No arranca** |
 
 ## Paridad con los servicios NestJS

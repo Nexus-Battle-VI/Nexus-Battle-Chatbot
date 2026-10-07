@@ -1,0 +1,1031 @@
+{
+  "schemaVersion": 1,
+  "description": "Semilla de intenciones de texto. Las intenciones mi_* leen el /me del jugador (HU-48); su respuesta de aqui no se usa: la sustituye el dato vigente.",
+  "parameters": "docs/parametros-entrenamiento-v1.md",
+  "entries": [
+    {
+      "intent": "producto_heroe",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué héroes hay?",
+      "variations": [
+        "cuales son los tipos de heroe",
+        "explicame las clases",
+        "que ero puedo elegir",
+        "diferencia entre guerrero mago picaro y sanador",
+        "el chaman pega o solo cura"
+      ],
+      "answer": "Hay ocho subtipos: guerrero tanque, guerrero armas, mago fuego, mago hielo, pícaro veneno, pícaro machete, chamán y médico. Chamán y médico no tienen ataque ni daño: solo usan habilidades de soporte. El nivel va de 1 a 8 y multiplica vida, poder, defensa y ataque. El daño en dados se tira igual y después el resultado se multiplica por el nivel."
+    },
+    {
+      "intent": "producto_heroe",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What heroes are there?",
+      "variations": [
+        "which hero classes exist",
+        "explain the character types",
+        "wat hero can i pick",
+        "difference between warrior mage rogue and healer",
+        "does the shaman deal damage or only heal"
+      ],
+      "answer": "There are eight subtypes: tank warrior, weapons warrior, fire mage, ice mage, poison rogue, machete rogue, shaman and doctor. Shaman and doctor have no attack and no damage: they only use support skills. Level runs from 1 to 8 and multiplies health, power, defense and attack. Damage dice are rolled as written and the result is then multiplied by level."
+    },
+    {
+      "intent": "producto_habilidad",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo funcionan las habilidades?",
+      "variations": [
+        "que hace una habilidad en el turno",
+        "cuanto poder gasta un skill",
+        "si no tengo poder que pasa",
+        "la abilidad pega al aliado o al rival",
+        "como se usa la epica"
+      ],
+      "answer": "Cada héroe trae las habilidades de su clase. En el turno se elige una: gasta poder y después entra en recarga. Si el poder no alcanza, no se gasta y el turno pasa a ataque básico. Una habilidad ofensiva va a un rival. Curar o revivir va a un aliado distinto de ti. La épica, si está equipada, es otra acción del turno: cuesta 0 de poder y queda 2 turnos propios en recarga."
+    },
+    {
+      "intent": "producto_habilidad",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How do skills work?",
+      "variations": [
+        "what does an ability do on my turn",
+        "how much power does a skill cost",
+        "what if i dont have enough power",
+        "does the abilty hit an ally or an enemy",
+        "how do i use the epic"
+      ],
+      "answer": "Each hero has the skills of their class. On your turn you pick one: it spends power and then goes on cooldown. If you cannot pay the power, nothing is spent and the turn becomes a basic attack. An offensive skill targets an opponent. Healing or reviving targets a different ally. The epic, if equipped, is another turn action: it costs 0 power and then needs 2 of your own turns to recharge."
+    },
+    {
+      "intent": "producto_arma",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Para qué sirve el arma?",
+      "variations": [
+        "como se equipa un arma",
+        "el arma se usa durante el turno",
+        "que cambia el arma en las stats",
+        "puedo cambiar de arma en plena pelea",
+        "el arma suma ataque o dano"
+      ],
+      "answer": "El arma se equipa antes de la batalla. Sus efectos permanentes ya quedan dentro de las estadísticas con las que empiezas. En el turno no hay una acción de «usar el arma»: atacas, usas una habilidad o usas la épica. Cambiar el arma después de empezar no modifica esa batalla."
+    },
+    {
+      "intent": "producto_arma",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What is a weapon for?",
+      "variations": [
+        "how do i equip a weapon",
+        "do i use the weapon during the turn",
+        "what stats does a weapon change",
+        "can i swap weapons mid fight",
+        "does the wepon add attack or damage"
+      ],
+      "answer": "You equip the weapon before the battle. Its permanent effects are already inside the stats you start with. There is no «use weapon» action on a turn: you attack, use a skill or use the epic. Swapping the weapon after the battle starts does not change that battle."
+    },
+    {
+      "intent": "producto_armadura",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué hace la armadura?",
+      "variations": [
+        "para que sirve la armadura",
+        "la armadura sube la defensa",
+        "se equipa antes o durante el combate",
+        "puedo quitarmela en el turno",
+        "la armadura cambia el dano que recibo"
+      ],
+      "answer": "La armadura se equipa antes de combatir. Lo que suma de forma permanente, incluida la defensa, ya va en el perfil congelado al empezar. No se activa como acción del turno y cambiarla a mitad de la pelea no altera el combate en curso."
+    },
+    {
+      "intent": "producto_armadura",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What does armor do?",
+      "variations": [
+        "what is armor for",
+        "does armor raise defense",
+        "do i equip it before or during combat",
+        "can i take it off on my turn",
+        "does armour change the damage i take"
+      ],
+      "answer": "Armor is equipped before combat. Whatever it adds permanently, including defense, is already in the profile frozen at the start. It is not a turn action, and changing it mid-fight does not alter the battle in progress."
+    },
+    {
+      "intent": "producto_item",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cuántos ítems puedo llevar?",
+      "variations": [
+        "que es un item",
+        "cuantos objetos se equipan",
+        "el item se usa en el turno como pocion",
+        "los items afectan al rival",
+        "puedo llevar tres itms"
+      ],
+      "answer": "Puedes equipar hasta dos ítems. Mejoran o debilitan al héroe, al arma, a la armadura y, en algunos casos, alcanzan al oponente. Se fijan antes de la batalla. En el turno no existe una acción de usar ítem: el efecto ya está en el perfil o en las reglas de ese objeto."
+    },
+    {
+      "intent": "producto_item",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How many items can I equip?",
+      "variations": [
+        "what is an item",
+        "how many trinkets can i wear",
+        "do i use an item on my turn like a potion",
+        "can items affect the opponent",
+        "can i carry three itms"
+      ],
+      "answer": "You can equip up to two items. They strengthen or weaken the hero, the weapon, the armor and, in some cases, reach the opponent. They are fixed before the battle. There is no use-item action on a turn: the effect is already in the profile or in that object's rules."
+    },
+    {
+      "intent": "producto_precio_disponibilidad",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Dónde veo el precio de un producto?",
+      "variations": [
+        "cuanto cuesta un heroe",
+        "hay productos en promocion",
+        "como se si esta disponible",
+        "el precio esta en la vitrina",
+        "el presio sale en dolares o en creditos"
+      ],
+      "answer": "El precio, la moneda según tu ubicación y si el producto está disponible o en promoción se ven en la vitrina del catálogo. Una promoción muestra el porcentaje de descuento. Esta respuesta no mira tu inventario ni una publicación tuya en la subasta."
+    },
+    {
+      "intent": "producto_precio_disponibilidad",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Where do I see a product's price?",
+      "variations": [
+        "how much does a hero cost",
+        "are there products on sale",
+        "how do i know if it is available",
+        "is the price on the storefront",
+        "is the prise in dollars or credits"
+      ],
+      "answer": "Price, the currency for your location, and whether a product is available or on sale are shown on the catalog storefront. A promotion shows the discount percentage. This answer does not look at your inventory or at one of your auction listings."
+    },
+    {
+      "intent": "producto_sinergia",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué es una sinergia?",
+      "variations": [
+        "que combinacion de equipo conviene",
+        "como combino arma y armadura",
+        "hay sets recomendados",
+        "la sinergia se calcula sola en la pelea",
+        "que sinerjia pega mas"
+      ],
+      "answer": "Una sinergia es una combinación recomendada de héroe, arma, armadura e ítems. El combate no inventa un bono aparte por «llevar sinergia»: cuenta lo que ese equipo ya dejó en las estadísticas, en los efectos y en las habilidades al empezar."
+    },
+    {
+      "intent": "producto_sinergia",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What is a synergy?",
+      "variations": [
+        "which gear combination is recommended",
+        "how do i combine weapon and armor",
+        "are there recommended sets",
+        "does synergy calculate itself in the fight",
+        "which synnergy hits harder"
+      ],
+      "answer": "A synergy is a recommended combination of hero, weapon, armor and items. Combat does not add an extra bonus just for «having a synergy»: it uses whatever that loadout already put into stats, effects and skills at the start."
+    },
+    {
+      "intent": "regla_turno",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo funciona el turno?",
+      "variations": [
+        "cuanto dura un turno",
+        "cuanto dura la batalla",
+        "en que orden se juega",
+        "que puedo hacer en mi turno",
+        "cuanto poder recupero cada truno"
+      ],
+      "answer": "El combate es por turnos. El orden se sortea una vez y después se alternan los equipos. Cada turno dura 30 segundos y la batalla, como máximo, 6 minutos. En tu turno atacas, usas una habilidad o usas la épica. Al empezar tu turno recuperas 2 de poder, sin pasar del máximo. Los dos equipos tienen que ser del mismo tamaño: 1, 2 o 3."
+    },
+    {
+      "intent": "regla_turno",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How does a turn work?",
+      "variations": [
+        "how long is a turn",
+        "how long is the battle",
+        "what order do we play in",
+        "what can i do on my turn",
+        "how much power do i get back each trun"
+      ],
+      "answer": "Combat is turn-based. Order is drawn once, then the teams alternate. Each turn lasts 30 seconds and the battle lasts at most 6 minutes. On your turn you attack, use a skill or use the epic. When your turn starts you regain 2 power, up to your maximum. Both teams must be the same size: 1, 2 or 3."
+    },
+    {
+      "intent": "regla_dano_efectos",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cuándo un golpe hace daño?",
+      "variations": [
+        "si el ataque iguala la defensa pasa algo",
+        "que es la tabla de efectos",
+        "que porcentaje tiene el critico",
+        "evadir quita todo el dano",
+        "el daño puede dejar la vida en negativo"
+      ],
+      "answer": "El golpe solo existe si el ataque es estrictamente mayor que la defensa. Si son iguales, no hay daño. Si golpea, un índice del 1 al 8000 elige el efecto: daño al 100 %, crítico entre 120 % y 180 % según la fila, evasión al 80 %, resistencia al 60 %, escape al 20 % o nada. La vida no baja de 0."
+    },
+    {
+      "intent": "regla_dano_efectos",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "When does a hit deal damage?",
+      "variations": [
+        "if attack equals defense does anything happen",
+        "what is the effect table",
+        "what percent is a critical",
+        "does evading remove all dammage",
+        "can damage push health below zero"
+      ],
+      "answer": "A hit only lands if attack is strictly higher than defense. If they are equal, there is no damage. If it hits, an index from 1 to 8000 picks the effect: damage at 100%, a critical between 120% and 180% depending on the row, evade at 80%, resist at 60%, escape at 20%, or nothing. Health does not go below 0."
+    },
+    {
+      "intent": "regla_progresion",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo sube de nivel un héroe?",
+      "variations": [
+        "que hace el nivel",
+        "hasta que nivel se llega",
+        "el nivel cambia el dado de dano",
+        "donde consigo experiencia",
+        "el nibel multiplica la vida"
+      ],
+      "answer": "El nivel del héroe va de 1 a 8. Multiplica vida, poder, defensa y ataque. El dado de daño se tira igual que en el nivel 1 y el resultado se multiplica por el nivel. La experiencia de una batalla o de una misión la otorga ese módulo. Este chat no suma experiencia ni sube el nivel."
+    },
+    {
+      "intent": "regla_progresion",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How does a hero level up?",
+      "variations": [
+        "what does level do",
+        "what is the max level",
+        "does level change the damage die",
+        "where do i get experience",
+        "does the levle multiply health"
+      ],
+      "answer": "Hero level runs from 1 to 8. It multiplies health, power, defense and attack. The damage die is rolled the same as at level 1 and the result is multiplied by level. Experience from a battle or a mission is granted by that module. This chat does not add experience or raise level."
+    },
+    {
+      "intent": "regla_restriccion",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué no se puede hacer en combate?",
+      "variations": [
+        "puedo pegarle a mi companero",
+        "se puede apostar contra la maquina",
+        "un heroe en mision puede entrar a jcj",
+        "el medico puede hacer ataque basico",
+        "hay fuego amigo en el equipo"
+      ],
+      "answer": "No puedes dañar a tu propio equipo, salvo una habilidad de curación dirigida a un aliado distinto de ti. Una sala contra la máquina no admite apuesta. Un héroe que está en una misión no entra a una batalla de jugador contra jugador. Chamán y médico no hacen ataque básico."
+    },
+    {
+      "intent": "regla_restriccion",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What is not allowed in combat?",
+      "variations": [
+        "can i hit my teammate",
+        "can i bet against the ai",
+        "can a hero on a mission join pvp",
+        "can the doctor use a basic attack",
+        "is there friendly fire on a team"
+      ],
+      "answer": "You cannot damage your own team, except a healing skill aimed at a different ally. A match against the machine does not allow a stake. A hero who is on a mission cannot join a player-versus-player battle. Shaman and doctor cannot basic attack."
+    },
+    {
+      "intent": "modo_jcj",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué es el jugador contra jugador?",
+      "variations": [
+        "como funciona el jcj",
+        "cuanta gente entra en una sala pvp",
+        "se puede apostar creditos",
+        "quien gana si se acaba el tiempo",
+        "el pvp es por turnos igual"
+      ],
+      "answer": "Jugador contra jugador enfrenta a dos equipos del mismo tamaño, de 1 a 3 personas. Las reglas de golpe son las del combate por turnos. Se pueden apostar créditos. Gana quien elimina al otro equipo o, si se acaban los 6 minutos, quien conserve mayor porcentaje de vida."
+    },
+    {
+      "intent": "modo_jcj",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What is player versus player?",
+      "variations": [
+        "how does pvp work",
+        "how many people fit in a pvp room",
+        "can i stake credits",
+        "who wins if time runs out",
+        "is pvp the same turn sistem"
+      ],
+      "answer": "Player versus player is two teams of the same size, from 1 to 3 people. Hit rules are the turn-based combat rules. Credits can be staked. The winner is whoever eliminates the other team or, when the 6 minutes run out, whoever keeps the higher percentage of health."
+    },
+    {
+      "intent": "modo_jce",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué es jugar contra la máquina?",
+      "variations": [
+        "como es el jce",
+        "el pve usa otras reglas de dano",
+        "puedo apostar en una sala contra la ia",
+        "quien controla al rival",
+        "la sala pve es para practicar"
+      ],
+      "answer": "Jugar contra la máquina usa las mismas reglas de golpe que jugador contra jugador: ataque, habilidad y épica, con el mismo turno. El rival lo controla el servidor. En esas salas no se apuesta."
+    },
+    {
+      "intent": "modo_jce",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What is playing against the machine?",
+      "variations": [
+        "how does pve work",
+        "does player versus ai use different damage rules",
+        "can i stake in a match against the ai",
+        "who controls the opponent",
+        "is a pve room for practice"
+      ],
+      "answer": "Playing against the machine uses the same hit rules as player versus player: attack, skill and epic, on the same turn clock. The server controls the opponent. Those rooms do not allow a stake."
+    },
+    {
+      "intent": "modo_mision",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo funciona una misión?",
+      "variations": [
+        "que pasa cuando mando un heroe a una mision",
+        "que son las rotaciones alta media y baja",
+        "el heroe queda bloqueado",
+        "que dificultades hay",
+        "la dificiltad hace a la ia mas lista"
+      ],
+      "answer": "Tú eliges la misión, el héroe y hasta tres rotaciones: alta, media y baja. Mientras la misión sigue, ese héroe no puede usarse en jugador contra jugador. La simulación la resuelve el servicio de combate siguiendo esas rotaciones. Las dificultades son Normal, Heroico, Legendario y Mítico, en ese orden de desbloqueo. La dificultad sube las estadísticas de los enemigos. No cambia la forma de elegir la acción."
+    },
+    {
+      "intent": "modo_mision",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How does a mission work?",
+      "variations": [
+        "what happens when i send a hero on a mission",
+        "what are high medium and low rotations",
+        "is the hero locked",
+        "which difficulties exist",
+        "does dificulty make the ai smarter"
+      ],
+      "answer": "You pick the mission, the hero and up to three rotations: high, medium and low. While the mission runs, that hero cannot be used in player versus player. The combat service simulates it by following those rotations. Difficulties are Normal, Heroic, Legendary and Mythic, unlocked in that order. Difficulty raises enemy stats. It does not change how the action is chosen."
+    },
+    {
+      "intent": "modo_torneo",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo es el torneo?",
+      "variations": [
+        "cuantos equipos entran al torneo",
+        "que es el arbol de ganadores",
+        "hay cuadro de perdedores",
+        "quien juega la batalla de una justa",
+        "si faltan equipos los llena la ia"
+      ],
+      "answer": "El torneo inscribe equipos y arma un cuadro de ocho cupos, con árbol de ganadores y árbol de secundarios. La batalla de cada justa la juega el mismo servicio de combate, con las reglas de una sala. Si faltan equipos, el diseño del torneo prevé completarlos con equipos de la máquina."
+    },
+    {
+      "intent": "modo_torneo",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How does the tournament work?",
+      "variations": [
+        "how many teams enter the tournament",
+        "what is the winners bracket",
+        "is there a losers bracket",
+        "who plays the match of a bout",
+        "if teams are missing does ai fill them"
+      ],
+      "answer": "The tournament registers teams and builds a bracket of eight slots, with a winners tree and a secondary tree. Each bout's battle is played by the same combat service, under room rules. If teams are missing, the tournament design allows filling them with machine teams."
+    },
+    {
+      "intent": "cuenta_registro",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo creo una cuenta?",
+      "variations": [
+        "donde me registro",
+        "hace falta cuenta para jugar",
+        "puedo usar el chat sin registrarme",
+        "el registro pide contrasena aqui",
+        "como creo el usurio"
+      ],
+      "answer": "Para jugar hace falta una cuenta en el registro del juego. Sin cuenta puedes leer esta ayuda pública. Con cuenta, y solo con la tuya, el asistente podrá consultar tus datos cuando esa función exista. No escribas la contraseña en el chat: aquí no se guarda."
+    },
+    {
+      "intent": "cuenta_registro",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How do I create an account?",
+      "variations": [
+        "where do i sign up",
+        "do i need an account to play",
+        "can i use the chat without registering",
+        "does signup ask for my password here",
+        "how do i create the acount"
+      ],
+      "answer": "To play you need an account in the game's sign-up. Without an account you can still read this public help. With an account, and only your own, the assistant will be able to look up your data when that feature exists. Do not type your password in the chat: it is not stored here."
+    },
+    {
+      "intent": "cuenta_gestion",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "configuracion_cuenta",
+      "question": "¿Dónde gestiono mi cuenta?",
+      "variations": [
+        "quiero ir a la configuracion",
+        "como cambio los datos del perfil",
+        "donde cierro sesion",
+        "llevame a los ajustes de la cuenta",
+        "la configuracion de la cuentta"
+      ],
+      "answer": "La cuenta se gestiona en su propia pantalla: perfil y sesión. Puedo indicarte el camino a la configuración. No cambio la contraseña desde aquí ni guardo datos de pago."
+    },
+    {
+      "intent": "cuenta_gestion",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "configuracion_cuenta",
+      "question": "Where do I manage my account?",
+      "variations": [
+        "i want to open settings",
+        "how do i change profile details",
+        "where do i log out",
+        "take me to account settings",
+        "the acount configuration screen"
+      ],
+      "answer": "The account is managed on its own screen: profile and session. I can point you to settings. I do not change the password from here and I do not store payment data."
+    },
+    {
+      "intent": "subasta_como_funciona",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cómo funciona la subasta?",
+      "variations": [
+        "que es una puja",
+        "hay compra inmediata",
+        "con que se paga la subasta",
+        "puedes publicar por mi",
+        "la suvasta usa creditos"
+      ],
+      "answer": "En la subasta publicas productos de tu inventario para que otros pujen. Hay subasta por tiempo, con pujas, y compra inmediata a precio fijo. Se paga con créditos del juego. Este chat explica la regla: no publica ni puja por ti."
+    },
+    {
+      "intent": "subasta_como_funciona",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "How does the auction work?",
+      "variations": [
+        "what is a bid",
+        "is there a buyout price",
+        "what do i pay with",
+        "can you list an item for me",
+        "the auktion uses credits"
+      ],
+      "answer": "On the auction you list products from your inventory so others can bid. There is a timed auction with bids, and an instant buy at a fixed price. Payment is in game credits. This chat explains the rule: it does not list or bid for you."
+    },
+    {
+      "intent": "comercio_creditos",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Para qué sirven los créditos?",
+      "variations": [
+        "donde se ganan los creditos",
+        "puedo apostarlos en una batalla",
+        "los creditos sirven en la subasta",
+        "me dices mi saldo",
+        "puedes transferir creditos"
+      ],
+      "answer": "Los créditos se ganan al jugar y sirven para apostar en jugador contra jugador y para pagar en la subasta. El saldo real solo lo muestra el módulo de créditos, con tu sesión. Este chat no consulta ni mueve créditos."
+    },
+    {
+      "intent": "comercio_creditos",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What are credits for?",
+      "variations": [
+        "where do i earn credits",
+        "can i stake them on a battle",
+        "do credits work on the auction",
+        "tell me my balance",
+        "can you transfer credets"
+      ],
+      "answer": "Credits are earned by playing and are used to stake in player versus player and to pay on the auction. Your real balance is shown only by the credits module, with your session. This chat does not look up or move credits."
+    },
+    {
+      "intent": "soporte_tecnico",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "La página no carga, ¿qué hago?",
+      "variations": [
+        "el juego se quedo trabado",
+        "no puedo entrar a la sala",
+        "sale un error y no se que hacer",
+        "puedo mandar una captura",
+        "la pajina no abre"
+      ],
+      "answer": "Cierra sesión y vuelve a entrar. Si el fallo sigue, adjunta una captura por el chat y pasa el caso a soporte. No improvisos un arreglo que no esté escrito aquí: si no reconozco el problema, abro el escalamiento en lugar de inventar la causa."
+    },
+    {
+      "intent": "soporte_tecnico",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "The page will not load. What do I do?",
+      "variations": [
+        "the game is stuck",
+        "i cannot enter the room",
+        "i get an error and do not know what to do",
+        "can i send a screenshot",
+        "the pagge will not open"
+      ],
+      "answer": "Sign out and sign in again. If it still fails, attach a screenshot in the chat and hand the case to support. I will not invent a fix that is not written here: if I do not recognize the problem, I escalate instead of guessing the cause."
+    },
+    {
+      "intent": "soporte_requisitos",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué necesito para jugar?",
+      "variations": [
+        "hace falta instalar algo",
+        "funciona en el navegador",
+        "requisitos del sistema",
+        "puedo jugar sin cuenta",
+        "nececito una aplicacion de escritorio"
+      ],
+      "answer": "Nexus Battles se usa en el navegador. Para jugar hace falta una cuenta y un héroe preparado cuando la sala lo exige. Esta ayuda se consulta en la misma web, con o sin sesión. No hay un cliente de escritorio que instalar para leer estas respuestas."
+    },
+    {
+      "intent": "soporte_requisitos",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What do I need in order to play?",
+      "variations": [
+        "do i have to install something",
+        "does it run in the browser",
+        "system requirements",
+        "can i play without an account",
+        "do i nead a desktop app"
+      ],
+      "answer": "Nexus Battles runs in the browser. To play you need an account and a prepared hero when the room requires one. This help is read on the same site, with or without a session. There is no desktop client to install in order to read these answers."
+    },
+    {
+      "intent": "soporte_recuperar_cuenta",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "No puedo entrar a mi cuenta",
+      "variations": [
+        "olvide la contrasena",
+        "como recupero el acceso",
+        "te dicto mi clave",
+        "el inicio de sesion falla",
+        "perdi el aceso"
+      ],
+      "answer": "Usa la recuperación de cuenta de la pantalla de acceso. No escribas la contraseña en este chat: no la guardo ni la cambio. Si el flujo de recuperación no te deja entrar, el caso se escala a soporte con el texto de tu consulta, sin la clave."
+    },
+    {
+      "intent": "soporte_recuperar_cuenta",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "I cannot sign in to my account",
+      "variations": [
+        "i forgot my password",
+        "how do i recover access",
+        "i will dictate my password",
+        "sign in keeps failing",
+        "i lost acsess"
+      ],
+      "answer": "Use account recovery on the sign-in screen. Do not type the password in this chat: I do not store it or change it. If recovery still does not let you in, the case is escalated to support with the text of your question, and without the password."
+    },
+    {
+      "intent": "soporte_mantenimiento",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Hay mantenimiento?",
+      "variations": [
+        "el servidor esta caido",
+        "cuando vuelven a abrir",
+        "hay una ventana de actualizacion",
+        "donde avisan los cortes",
+        "estan en manteniminto"
+      ],
+      "answer": "Un mantenimiento puede dejar el servicio sin respuesta durante esa ventana. El aviso oficial sale por las notificaciones del juego. Este chat no afirma que haya un corte si esa notificación no está en la base. Si no puedes entrar y no hay un aviso escrito, escala el caso."
+    },
+    {
+      "intent": "soporte_mantenimiento",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Is there maintenance?",
+      "variations": [
+        "is the server down",
+        "when does it open again",
+        "is there an update window",
+        "where are outages announced",
+        "are you in maintainance"
+      ],
+      "answer": "Maintenance can leave the service unable to answer during that window. The official notice goes out through the game's notifications. This chat does not claim there is an outage unless that notice is in the knowledge base. If you cannot get in and there is no written notice, escalate the case."
+    },
+    {
+      "intent": "terminos_uso",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Cuáles son los términos de uso?",
+      "variations": [
+        "reglas de la plataforma",
+        "puedo compartir la cuenta",
+        "que pasa si hago trampa",
+        "donde esta el texto legal",
+        "los terminos de uso del juego"
+      ],
+      "answer": "El juego se usa con tu propia cuenta y bajo las reglas de combate, misiones y subasta. El texto legal completo está en la sección de términos del servicio. Esta respuesta no lo reemplaza: si necesitas el documento, ábrelo desde ahí."
+    },
+    {
+      "intent": "terminos_uso",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What are the terms of use?",
+      "variations": [
+        "platform rules",
+        "can i share my account",
+        "what happens if i cheat",
+        "where is the legal text",
+        "the terms of use of the game"
+      ],
+      "answer": "You play with your own account and under the combat, mission and auction rules. The full legal text is in the service's terms section. This answer does not replace it: if you need the document, open it there."
+    },
+    {
+      "intent": "terminos_privacidad",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "¿Qué datos guarda el chat?",
+      "variations": [
+        "puedo borrar el historial",
+        "guardas mi contrasena",
+        "ves los datos de otro jugador",
+        "sin sesion que puedes leer",
+        "politica de privacidad del asistente"
+      ],
+      "answer": "Puedes borrar tu historial de conversación. No guardo contraseñas ni datos de pago. Sin sesión solo uso esta base pública. Con sesión, cuando esa consulta exista, solo veré lo que tú ya puedes ver. Nunca los datos de otra persona."
+    },
+    {
+      "intent": "terminos_privacidad",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "What data does the chat store?",
+      "variations": [
+        "can i delete the history",
+        "do you store my password",
+        "can you see another player's data",
+        "without a session what can you read",
+        "the assistant privacy policy"
+      ],
+      "answer": "You can delete your conversation history. I do not store passwords or payment data. Without a session I only use this public knowledge base. With a session, when that lookup exists, I will only see what you can already see. Never another person's data."
+    },
+    {
+      "intent": "mi_inventario",
+      "language": "es",
+      "priority": 10,
+      "liveData": "inventory",
+      "assistedAction": null,
+      "question": "¿Qué tengo en el inventario?",
+      "variations": [
+        "que tengo en el inventario",
+        "cuantos objetos tengo",
+        "muestra mi inventario",
+        "que heroes tengo",
+        "lista lo que poseo"
+      ],
+      "answer": "El inventario se consulta en el momento."
+    },
+    {
+      "intent": "mi_inventario",
+      "language": "en",
+      "priority": 10,
+      "liveData": "inventory",
+      "assistedAction": null,
+      "question": "What is in my inventory?",
+      "variations": [
+        "what do i have in my inventory",
+        "how many items do i own",
+        "show my inventory",
+        "which heroes do i have",
+        "list what i own"
+      ],
+      "answer": "Inventory is read at the moment of the question."
+    },
+    {
+      "intent": "mi_mision",
+      "language": "es",
+      "priority": 10,
+      "liveData": "missions",
+      "assistedAction": null,
+      "question": "¿Cómo van mis misiones?",
+      "variations": [
+        "que misiones tengo activas",
+        "como va mi mision",
+        "progreso de mis misiones",
+        "tengo alguna mision en curso",
+        "cuanto falta de mi mision"
+      ],
+      "answer": "Las misiones en curso se consultan en el momento."
+    },
+    {
+      "intent": "mi_mision",
+      "language": "en",
+      "priority": 10,
+      "liveData": "missions",
+      "assistedAction": null,
+      "question": "How are my missions going?",
+      "variations": [
+        "which missions are active",
+        "how is my mission going",
+        "progress of my missions",
+        "do i have a mission in progress",
+        "how much is left on my mission"
+      ],
+      "answer": "Active missions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_subasta",
+      "language": "es",
+      "priority": 10,
+      "liveData": "auction",
+      "assistedAction": null,
+      "question": "¿Cómo van mis subastas?",
+      "variations": [
+        "que subastas tengo publicadas",
+        "estado de mis subastas",
+        "mis publicaciones de subasta",
+        "tengo alguna subasta abierta",
+        "como van mis ventas"
+      ],
+      "answer": "Las subastas propias se consultan en el momento."
+    },
+    {
+      "intent": "mi_subasta",
+      "language": "en",
+      "priority": 10,
+      "liveData": "auction",
+      "assistedAction": null,
+      "question": "How are my auctions?",
+      "variations": [
+        "which auctions did i publish",
+        "status of my auctions",
+        "my auction listings",
+        "do i have an open auction",
+        "how are my sales"
+      ],
+      "answer": "Own auctions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_notificacion",
+      "language": "es",
+      "priority": 10,
+      "liveData": "notifications",
+      "assistedAction": null,
+      "question": "¿Tengo notificaciones?",
+      "variations": [
+        "tengo avisos pendientes",
+        "que notificaciones tengo",
+        "hay alertas para mi",
+        "muestra mis notificaciones",
+        "tengo algo sin leer"
+      ],
+      "answer": "Las notificaciones pendientes se consultan en el momento."
+    },
+    {
+      "intent": "mi_notificacion",
+      "language": "en",
+      "priority": 10,
+      "liveData": "notifications",
+      "assistedAction": null,
+      "question": "Do I have notifications?",
+      "variations": [
+        "do i have pending alerts",
+        "what notifications do i have",
+        "are there alerts for me",
+        "show my notifications",
+        "do i have anything unread"
+      ],
+      "answer": "Pending notifications are read at the moment of the question."
+    },
+    {
+      "intent": "mi_transaccion",
+      "language": "es",
+      "priority": 10,
+      "liveData": "transactions",
+      "assistedAction": null,
+      "question": "¿Cuáles son mis transacciones?",
+      "variations": [
+        "historial de mis transacciones",
+        "mis movimientos de subasta",
+        "que transacciones tengo",
+        "movimientos recientes de creditos en subasta",
+        "lista mis operaciones"
+      ],
+      "answer": "Las transacciones de subasta se consultan en el momento."
+    },
+    {
+      "intent": "mi_transaccion",
+      "language": "en",
+      "priority": 10,
+      "liveData": "transactions",
+      "assistedAction": null,
+      "question": "What are my transactions?",
+      "variations": [
+        "my transaction history",
+        "my auction movements",
+        "which transactions do i have",
+        "recent auction credit movements",
+        "list my operations"
+      ],
+      "answer": "Auction transactions are read at the moment of the question."
+    },
+    {
+      "intent": "mi_torneo",
+      "language": "es",
+      "priority": 10,
+      "liveData": "tournament",
+      "assistedAction": null,
+      "question": "¿Cómo va mi torneo?",
+      "variations": [
+        "en que torneo estoy",
+        "estado de mi torneo",
+        "tengo un torneo en curso",
+        "como va mi justa",
+        "informa mi torneo"
+      ],
+      "answer": "El torneo propio se consulta en el momento."
+    },
+    {
+      "intent": "mi_torneo",
+      "language": "en",
+      "priority": 10,
+      "liveData": "tournament",
+      "assistedAction": null,
+      "question": "How is my tournament?",
+      "variations": [
+        "which tournament am i in",
+        "status of my tournament",
+        "do i have a tournament in progress",
+        "how is my match",
+        "tell me my tournament"
+      ],
+      "answer": "The player's tournament is read at the moment of the question."
+    },
+    {
+      "intent": "reporte_actividad",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "reporte_actividad",
+      "question": "¿Dónde veo mi reporte de actividad?",
+      "variations": [
+        "quiero ver mi historial de misiones",
+        "genera el reporte de lo que jugue",
+        "donde esta mi actividad",
+        "muestrame el historial de partidas de mision",
+        "reporte de mi actividad"
+      ],
+      "answer": "El historial de misiones está en su pantalla. Puedo llevarte ahí. No genero otro reporte desde el chat."
+    },
+    {
+      "intent": "reporte_actividad",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": "reporte_actividad",
+      "question": "Where is my activity report?",
+      "variations": [
+        "i want my mission history",
+        "generate the report of what i played",
+        "where is my activity",
+        "show my mission match history",
+        "report of my activity"
+      ],
+      "answer": "Mission history is on its own screen. I can take you there. I do not generate another report from the chat."
+    }
+  ]
+}

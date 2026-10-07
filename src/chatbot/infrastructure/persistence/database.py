@@ -69,9 +69,133 @@ class Migration:
     sql: str
 
 
-# Vacio a proposito: el andamiaje no inventa tablas. Cada Historia de Usuario
-# anade aqui su migracion, en orden.
-MIGRATIONS: Sequence[Migration] = ()
+# Cada Historia de Usuario anade aqui su migracion, en orden de nombre.
+MIGRATIONS: Sequence[Migration] = (
+    Migration(
+        "001-knowledge-entries",
+        """
+        create table knowledge_entries (
+          id uuid primary key,
+          intent text not null,
+          language text not null,
+          priority integer not null,
+          answer text not null,
+          variations jsonb not null,
+          constraint knowledge_entries_idioma check (language in ('es', 'en')),
+          constraint knowledge_entries_intencion
+            check (intent ~ '^[a-z][a-z0-9_]{0,63}$'),
+          constraint knowledge_entries_respuesta
+            check (char_length(btrim(answer)) > 0 and char_length(answer) <= 8000),
+          constraint knowledge_entries_variaciones check (
+            jsonb_typeof(variations) = 'array' and jsonb_array_length(variations) >= 1
+          )
+        )
+        """,
+    ),
+    Migration(
+        "002-knowledge-entry-view",
+        """
+        alter table knowledge_entries
+          add column view text,
+          add constraint knowledge_entries_vista check (
+            view is null or view ~ '^[a-z][a-z0-9_-]{0,39}$'
+          )
+        """,
+    ),
+    Migration(
+        "003-model-versions",
+        """
+        create table model_versions (
+          id uuid primary key,
+          state text not null,
+          accuracy double precision not null,
+          macro_f1 double precision not null,
+          report jsonb not null,
+          artifact bytea not null,
+          created_at timestamptz not null,
+          constraint model_versions_estado check (state in ('CANDIDATE', 'ACTIVE'))
+        );
+        create unique index model_versions_one_active
+          on model_versions (state) where state = 'ACTIVE';
+        create table model_training_lease (
+          id integer primary key,
+          until timestamptz not null,
+          constraint model_training_lease_unica check (id = 1)
+        );
+        insert into model_training_lease (id, until) values (1, '-infinity');
+        """,
+    ),
+    Migration(
+        "004-model-experiment",
+        """
+        alter table model_versions
+          add column in_experiment boolean not null default false;
+        create unique index model_versions_one_experiment
+          on model_versions (in_experiment) where in_experiment;
+        create table model_answer_outcomes (
+          id uuid primary key default gen_random_uuid(),
+          version_id uuid not null references model_versions (id),
+          useful boolean,
+          created_at timestamptz not null default now()
+        );
+        """,
+    ),
+    Migration(
+        "005-support-tickets",
+        """
+        create table support_tickets (
+          id uuid primary key,
+          actor text not null,
+          question text not null,
+          view text,
+          created_at timestamptz not null,
+          constraint support_tickets_pregunta check (char_length(btrim(question)) > 0),
+          constraint support_tickets_vista check (
+            view is null or view ~ '^[a-z][a-z0-9_-]{0,39}$'
+          )
+        );
+        """,
+    ),
+    Migration(
+        "006-conversation-history",
+        """
+        create table conversation_turns (
+          id uuid primary key,
+          actor text not null,
+          question text not null,
+          answer text,
+          language text,
+          intent text,
+          model_version text,
+          useful boolean,
+          deleted boolean not null default false,
+          created_at timestamptz not null,
+          constraint conversation_turns_pregunta check (char_length(btrim(question)) > 0)
+        );
+        create index conversation_turns_actor
+          on conversation_turns (actor, created_at);
+        create table visitor_sessions (
+          id text primary key,
+          constraint visitor_sessions_id check (char_length(id) between 1 and 80)
+        );
+        create table chat_preferences (
+          actor text primary key,
+          show_time boolean not null
+        );
+        """,
+    ),
+    Migration(
+        "007-response-time",
+        """
+        alter table conversation_turns
+          add column duration_ms integer;
+        alter table conversation_turns
+          add constraint conversation_turns_duracion check (
+            duration_ms is null or duration_ms >= 0
+          );
+        """,
+    ),
+)
 
 MIGRATIONS_TABLE = sql.Identifier("_migrations")
 # Clave del bloqueo consultivo que serializa dos migradores concurrentes.
