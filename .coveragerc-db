@@ -1,10 +1,13 @@
 # Cobertura de la suite `db`: SU propia superficie, la infraestructura de
 # persistencia, que la suite por defecto no puede ver sin un motor real.
+# `migrate` y `seed` son comandos de un solo uso: no forman parte de esa
+# superficie. La carga de la semilla se prueba contra el importador, en memoria.
 [run]
 branch = true
 source = chatbot.infrastructure.persistence
 omit =
     */chatbot/infrastructure/persistence/migrate.py
+    */chatbot/infrastructure/persistence/seed.py
 
 [report]
 fail_under = 80

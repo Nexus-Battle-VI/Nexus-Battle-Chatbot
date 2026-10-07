@@ -88,6 +88,7 @@ Para arrancar el servicio en local:
 ```bash
 uv run python -m chatbot.main                          # puerto 3011
 uv run python -m chatbot.infrastructure.persistence.migrate   # con PERSISTENCE_DRIVER=postgres
+uv run python -m chatbot.infrastructure.persistence.seed      # carga la semilla publicada, una sola vez
 ```
 
 ## Configuración

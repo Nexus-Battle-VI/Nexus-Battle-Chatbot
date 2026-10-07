@@ -9,7 +9,10 @@
 .coverage*
 htmlcov
 tests
-docs
+docs/*
+!docs/diccionario
+docs/diccionario/*
+!docs/diccionario/semilla-v1.json
 *.md
 !README.md
 .env
