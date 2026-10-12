@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from chatbot.application.ports.knowledge_entry_repository import KnowledgeEntryRepositoryPort
 from chatbot.domain.errors import DomainError, InvalidKnowledgeEntryError
-from chatbot.domain.knowledge_entry import KnowledgeEntry, knowledge_entry
+from chatbot.domain.knowledge_entry import MAX_VARIATIONS, KnowledgeEntry, knowledge_entry
 from chatbot.domain.normalize import normalize_question
 
 
@@ -213,7 +213,7 @@ def _with_new_phrases(
             continue
         added.append(phrase.strip())
         known.add(normal)
-        if len(stored.variations) + len(added) >= 30:
+        if len(stored.variations) + len(added) >= MAX_VARIATIONS:
             break
     if len(added) == 0:
         return None

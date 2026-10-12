@@ -39,7 +39,23 @@
         "el medico pega o nomas cura",
         "el picaro de machete es un subtipo que si pega",
         "picaro machete existe y es un heroe que ataca",
-        "el medico y el chaman no pegan, son de soporte"
+        "el medico y el chaman no pegan, son de soporte",
+        "que clases de personaje hay",
+        "el medico ataca o solo cura",
+        "el chaman hace dano",
+        "cuantos subtipos de heroe existen",
+        "el nivel del personaje llega a 8",
+        "guerrero tanque y guerrero armas son lo mismo",
+        "mago fuego y mago hielo que son",
+        "picaro veneno y picaro machete pegan",
+        "la vida del heroe crece con el nivel",
+        "el dano de los dados se multiplica por el nivel",
+        "que ero puedo escoger",
+        "el sanador pega o no",
+        "q clases de personaje hay",
+        "guerrero tanq y guerrero armas son lo mismo",
+        "mago fuego y mago hielo q son",
+        "q ero puedo escoger"
       ],
       "answer": "Hay ocho subtipos: guerrero tanque, guerrero armas, mago fuego, mago hielo, pícaro veneno, pícaro machete, chamán y médico. Chamán y médico no tienen ataque ni daño: solo usan habilidades de soporte. El nivel va de 1 a 8 y multiplica vida, poder, defensa y ataque. El daño en dados se tira igual y después el resultado se multiplica por el nivel."
     },
@@ -79,7 +95,15 @@
         "which hero classes exist pls",
         "explain the cahracter types",
         "explain the chrctr types",
-        "idk explain the character types"
+        "idk explain the character types",
+        "what character classes are there",
+        "does the doctor attack or only heal",
+        "does the shaman deal damage",
+        "how many hero subtypes exist",
+        "hero level goes up to 8",
+        "tank warrior and weapons warrior the same",
+        "what are fire mage and ice mage",
+        "poison rogue and machete rogue hit"
       ],
       "answer": "There are eight subtypes: tank warrior, weapons warrior, fire mage, ice mage, poison rogue, machete rogue, shaman and doctor. Shaman and doctor have no attack and no damage: they only use support skills. Level runs from 1 to 8 and multiplies health, power, defense and attack. Damage dice are rolled as written and the result is then multiplied by level."
     },
@@ -119,7 +143,22 @@
         "mano cuantos turnos recarga la epica",
         "si no hay poder la habilidad no se gasta y pasa a ataque basico",
         "sin poder el turno se va a basico porque la habilidad no alcanza",
-        "la habilidad ofensiva va dirigida a un rival"
+        "la habilidad ofensiva va dirigida a un rival",
+        "la habilidad gasta poder y luego recarga",
+        "si no me alcanza el poder que pasa con el turno",
+        "puedo curar a un companero que no sea yo",
+        "la epica cuesta poder o es gratis",
+        "cuantos turnos tarda la epica en volver",
+        "una skill ofensiva a quien le pega",
+        "revivir va a un aliado",
+        "sin poder se gasta la habilidad o no",
+        "la epica es otra accion de mi turno",
+        "cuando puedo volver a lanzar la habilidad",
+        "el ataque basico sale si no hay poder",
+        "la abilidad pega al enemigo o al amigo",
+        "si no me alcanza el poder q pasa con el turno",
+        "la epica custa poder o es gratis",
+        "el ataq basico sale si no hay poder"
       ],
       "answer": "Cada héroe trae las habilidades de su clase. En el turno se elige una: gasta poder y después entra en recarga. Si el poder no alcanza, no se gasta y el turno pasa a ataque básico. Una habilidad ofensiva va a un rival. Curar o revivir va a un aliado distinto de ti. La épica, si está equipada, es otra acción del turno: cuesta 0 de poder y queda 2 turnos propios en recarga."
     },
@@ -159,7 +198,15 @@
         "what does an ability do on my turn pls",
         "how much pwoer does a skill cost",
         "how much pwr does a skill cost",
-        "idk how much power does a skill cost"
+        "idk how much power does a skill cost",
+        "a skill spends power and then recharges",
+        "what happens on my turn if i lack power",
+        "can i heal a teammate who is not me",
+        "does the epic cost power or is it free",
+        "how many turns until the epic is back",
+        "who does an offensive skill hit",
+        "revive goes to an ally",
+        "the epic is another action on my turn"
       ],
       "answer": "Each hero has the skills of their class. On your turn you pick one: it spends power and then goes on cooldown. If you cannot pay the power, nothing is spent and the turn becomes a basic attack. An offensive skill targets an opponent. Healing or reviving targets a different ally. The epic, if equipped, is another turn action: it costs 0 power and then needs 2 of your own turns to recharge."
     },
@@ -199,7 +246,20 @@
         "cambiar arma a mitad no cambia esa batalla",
         "el arma queda equipada antes d empezar",
         "no se usa el arma dentro del turno",
-        "kmo se pone el arma, antes o durante"
+        "kmo se pone el arma, antes o durante",
+        "el arma se equipa antes de pelear",
+        "hay un boton para usar el arma en el turno",
+        "si cambio de arma a mitad cuenta en esa pelea",
+        "los efectos del arma ya estan en las stats iniciales",
+        "en el turno uso el arma o solo ataco habilidad y epica",
+        "el arma se activa durante el combate",
+        "puedo swappear el arma ya empezada la batalla",
+        "para que sirve equipar el arma si no se usa en el turno",
+        "el arma queda en el perfil con el que empiezo",
+        "cambiar el arma despues de empezar modifica el combate",
+        "hay un boton pa usar el arma en el turno",
+        "pa q sirve equipar el arma si no se usa en el turno",
+        "el arma queda en el perfil con el q empiezo"
       ],
       "answer": "El arma se equipa antes de la batalla. Sus efectos permanentes ya quedan dentro de las estadísticas con las que empiezas. En el turno no hay una acción de «usar el arma»: atacas, usas una habilidad o usas la épica. Cambiar el arma después de empezar no modifica esa batalla."
     },
@@ -239,7 +299,15 @@
         "do i use the waepon during the turn",
         "do i use the wpn during the turn",
         "idk do i use the weapon during the turn",
-        "do i use the weapon during the turn pls"
+        "do i use the weapon during the turn pls",
+        "the weapon is equipped before the fight",
+        "is there a button to use the weapon on my turn",
+        "does swapping weapons mid fight count",
+        "weapon effects are already in the starting stats",
+        "on my turn do i use the weapon or just attack skill and epic",
+        "the weapon activates during combat",
+        "can i swap weapons after the battle started",
+        "the weapon sits in the profile i start with"
       ],
       "answer": "You equip the weapon before the battle. Its permanent effects are already inside the stats you start with. There is no «use weapon» action on a turn: you attack, use a skill or use the epic. Swapping the weapon after the battle starts does not change that battle."
     },
@@ -279,7 +347,20 @@
         "a mitad de pelea cambiar armdr sirve",
         "la armdr se aprieta en el turno o ya va",
         "no es una accion la armdr verdad",
-        "me la pongo antes de cmbtr"
+        "me la pongo antes de cmbtr",
+        "la armadura se pone antes de combatir",
+        "la armadura se activa en mi turno",
+        "cambiar la armadura a mitad altera esa pelea",
+        "la defensa de la armadura ya va congelada al empezar",
+        "puedo quitarmela durante el combate y que cambie",
+        "la armadura es una accion o ya va puesta",
+        "lo que suma la armadura entra al perfil inicial",
+        "se usa la armadura como golpe",
+        "equipar armadura es antes de la batalla",
+        "a mitad de pelea la armadura nueva cuenta",
+        "puedo quitarmela durante el combate y q cambie",
+        "lo q suma la armadura entra al perfil inicial",
+        "se usa la armadura komo golpe"
       ],
       "answer": "La armadura se equipa antes de combatir. Lo que suma de forma permanente, incluida la defensa, ya va en el perfil congelado al empezar. No se activa como acción del turno y cambiarla a mitad de la pelea no altera el combate en curso."
     },
@@ -319,7 +400,15 @@
         "idk what is armor for",
         "what is armor for pls",
         "does armor raise dfeense",
-        "does armor raise dfns"
+        "does armor raise dfns",
+        "armor is put on before fighting",
+        "does armor activate on my turn",
+        "does changing armor halfway alter that fight",
+        "armor defense is already frozen at the start",
+        "can i take it off during combat and have it change",
+        "is armor an action or already worn",
+        "what armor adds goes into the starting profile",
+        "equipping armor happens before the battle"
       ],
       "answer": "Armor is equipped before combat. Whatever it adds permanently, including defense, is already in the profile frozen at the start. It is not a turn action, and changing it mid-fight does not alter the battle in progress."
     },
@@ -359,7 +448,15 @@
         "en el turno no hay usar ojbeto",
         "bro en el turno no hay usar objeto no se",
         "son 2 items maximo no 3",
-        "el item no se toma como pocion en el turno"
+        "el item no se toma como pocion en el turno",
+        "cuantos items puedo equipar",
+        "un item puede pegarle al rival",
+        "el item mejora o debilita arma y armadura",
+        "en el turno hay accion de usar item",
+        "maximo de items equipados",
+        "se gastan los items durante la pelea",
+        "el item se usa en el turno komo pocion",
+        "el efecto del item ya sta en el perfil"
       ],
       "answer": "Puedes equipar hasta dos ítems. Mejoran o debilitan al héroe, al arma, a la armadura y, en algunos casos, alcanzan al oponente. Se fijan antes de la batalla. En el turno no existe una acción de usar ítem: el efecto ya está en el perfil o en las reglas de ese objeto."
     },
@@ -399,7 +496,13 @@
         "how many trinkets can i wear pls",
         "do i use an item on my turn like a ptoion",
         "do i use an item on my turn like a ptn",
-        "idk do i use an item on my turn like a potion"
+        "idk do i use an item on my turn like a potion",
+        "can i carry three objects",
+        "is an item used on the turn like a potion",
+        "items are locked before the battle",
+        "can an item hit the opponent",
+        "an item buffs or weakens weapon and armor",
+        "is there a use item action on the turn"
       ],
       "answer": "You can equip up to two items. They strengthen or weaken the hero, the weapon, the armor and, in some cases, reach the opponent. They are fixed before the battle. There is no use-item action on a turn: the effect is already in the profile or in that object's rules."
     },
@@ -439,7 +542,21 @@
         "sabes la vitrina dice si esta agotado",
         "la promocion del catalogo trae el porcentaje de descuento",
         "la promo se mira en la vitrina no en mis misiones",
-        "la promo trae el porcentaje de descuento en la vitrina del catalogo"
+        "la promo trae el porcentaje de descuento en la vitrina del catalogo",
+        "donde veo el precio",
+        "la promo muestra el porcentaje",
+        "el chat me dice cuanto cuesta",
+        "la moneda depende de donde estoy",
+        "si esta agotado donde lo miro",
+        "el precio esta en la vitrina del catalogo",
+        "esto revisa mi inventario para el precio",
+        "hay descuento como lo veo",
+        "disponible o no sale en la tienda",
+        "no me inventes el costo, donde esta",
+        "si sta agotado donde lo miro",
+        "el precio sta en la vitrina del catalogo",
+        "esto revisa mi inventario pa el precio",
+        "hay descuento komo lo veo"
       ],
       "answer": "El precio, la moneda según tu ubicación y si el producto está disponible o en promoción se ven en la vitrina del catálogo. Una promoción muestra el porcentaje de descuento. Esta respuesta no mira tu inventario ni una publicación tuya en la subasta."
     },
@@ -479,7 +596,15 @@
         "r there products on sale",
         "idk are there products on sale",
         "are there products on sale pls",
-        "how do i know if it is aavilable"
+        "how do i know if it is aavilable",
+        "where do i see the price",
+        "the sale shows the percent",
+        "does the chat tell me the cost",
+        "currency depends on where i am",
+        "if it is sold out where do i look",
+        "the price is on the catalog showcase",
+        "does this check my inventory for the price",
+        "how do i see a discount"
       ],
       "answer": "Price, the currency for your location, and whether a product is available or on sale are shown on the catalog storefront. A promotion shows the discount percentage. This answer does not look at your inventory or at one of your auction listings."
     },
@@ -519,7 +644,21 @@
         "al empezar entran efectos y habilidades o q",
         "sabes es solo el equipo recomendado",
         "el combate no inventa un bono extra por llevar sinergia",
-        "sinergia no es un premio, es la combinacion recomendada"
+        "sinergia no es un premio, es la combinacion recomendada",
+        "que es una sinergia",
+        "llevar la sinergia me da un bono extra",
+        "es solo una combinacion recomendada",
+        "el combate inventa premio por sinergia",
+        "cuenta heroe arma armadura e items",
+        "hay un multiplicador que se llama sinergia",
+        "armar el set da dano oculto",
+        "al empezar que cuenta de la sinergia",
+        "sinergia es un efecto nuevo o las stats del equipo",
+        "que piezas recomienda",
+        "q es una sinergia",
+        "hay un multiplicador q se llama sinergia",
+        "al empezar q cuenta de la sinergia",
+        "q piezas recomienda"
       ],
       "answer": "Una sinergia es una combinación recomendada de héroe, arma, armadura e ítems. El combate no inventa un bono aparte por «llevar sinergia»: cuenta lo que ese equipo ya dejó en las estadísticas, en los efectos y en las habilidades al empezar."
     },
@@ -559,7 +698,14 @@
         "which gear combination is recommended pls",
         "how do i cmobine weapon and armor",
         "how do i cmbn weapon and armor",
-        "idk how do i combine weapon and armor"
+        "idk how do i combine weapon and armor",
+        "does wearing the synergy give an extra bonus",
+        "is it only a recommended combination",
+        "does combat invent a prize for synergy",
+        "it counts hero weapon armor and items",
+        "is there a multiplier called synergy",
+        "does building the set give hidden damage",
+        "what counts from the synergy at the start"
       ],
       "answer": "A synergy is a recommended combination of hero, weapon, armor and items. Combat does not add an extra bonus just for «having a synergy»: it uses whatever that loadout already put into stats, effects and skills at the start."
     },
@@ -599,7 +745,19 @@
         "el turno son 30 seg y la pelea 6 min",
         "al empezar el turno recupero 2 de poder",
         "el orden se sortea una vez y despues se turnan",
-        "en el turno ataco o uso habilidad o la epica"
+        "en el turno ataco o uso habilidad o la epica",
+        "cuanto dura mi turno",
+        "el orden se sortea o es fijo",
+        "recupero poder al empezar el turno",
+        "cuanto poder recupero, son 2",
+        "en mi turno que puedo hacer",
+        "se alternan los equipos despues del sorteo",
+        "la pelea pasa de 6 minutos",
+        "el turno es de 30 segundos",
+        "ataco uso habilidad o uso la epica",
+        "el poder recuperado puede pasar el maximo",
+        "quien empieza se rifa una vez",
+        "en mi turno q puedo hacer"
       ],
       "answer": "El combate es por turnos. El orden se sortea una vez y después se alternan los equipos. Cada turno dura 30 segundos y la batalla, como máximo, 6 minutos. En tu turno atacas, usas una habilidad o usas la épica. Al empezar tu turno recuperas 2 de poder, sin pasar del máximo. Los dos equipos tienen que ser del mismo tamaño: 1, 2 o 3."
     },
@@ -639,7 +797,13 @@
         "idk how long is the battle",
         "how long is the battle pls",
         "what odrer do we play in",
-        "what ordr do we play in"
+        "what ordr do we play in",
+        "how long is my turn",
+        "is turn order rolled or fixed",
+        "do i recover power when my turn starts",
+        "how much power do i get back, is it 2",
+        "teams alternate after the roll",
+        "can the fight go past 6 minutes"
       ],
       "answer": "Combat is turn-based. Order is drawn once, then the teams alternate. Each turn lasts 30 seconds and the battle lasts at most 6 minutes. On your turn you attack, use a skill or use the epic. When your turn starts you regain 2 power, up to your maximum. Both teams must be the same size: 1, 2 or 3."
     },
@@ -679,7 +843,22 @@
         "si el ataque no le gana a la defensa no hay golpe",
         "ataque igual a defensa es cero dano",
         "la vida no baja de cero",
-        "el indice del 1 al 8000 elige el efecto"
+        "el indice del 1 al 8000 elige el efecto",
+        "cuando un golpe hace dano",
+        "si ataque y defensa empatan hay dano",
+        "hay que superar la defensa para que exista el golpe",
+        "que es el indice del 1 al 8000",
+        "la vida puede quedar negativa",
+        "el critico de cuanto a cuanto",
+        "evasion resistencia y escape que son",
+        "si no le gano a la defensa pega",
+        "el efecto no siempre es dano",
+        "defensa igual ataque anula el golpe",
+        "si ataq y defensa empatan hay dano",
+        "hay q superar la defensa pa q exista el golpe",
+        "q es el indice del 1 al 8000",
+        "evasion resistencia y escape q son",
+        "defensa igual ataq anula el golpe"
       ],
       "answer": "El golpe solo existe si el ataque es estrictamente mayor que la defensa. Si son iguales, no hay daño. Si golpea, un índice del 1 al 8000 elige el efecto: daño al 100 %, crítico entre 120 % y 180 % según la fila, evasión al 80 %, resistencia al 60 %, escape al 20 % o nada. La vida no baja de 0."
     },
@@ -719,7 +898,14 @@
         "wat is the effect table",
         "idk what is the effect table",
         "what is the effect table pls",
-        "what percent is a cirtical"
+        "what percent is a cirtical",
+        "if attack and defense tie is there damage",
+        "do i have to beat defense for the hit to exist",
+        "what is the index from 1 to 8000",
+        "can health go negative",
+        "how much is a crit",
+        "what are evasion resistance and escape",
+        "if i do not beat defense does it hit"
       ],
       "answer": "A hit only lands if attack is strictly higher than defense. If they are equal, there is no damage. If it hits, an index from 1 to 8000 picks the effect: damage at 100%, a critical between 120% and 180% depending on the row, evade at 80%, resist at 60%, escape at 20%, or nothing. Health does not go below 0."
     },
@@ -759,7 +945,20 @@
         "el dado no cambia de caras al subir",
         "la exp la da la batalla o la mision no este chat",
         "el nivel multiplica vida poder defensa y ataque",
-        "puedo pasar de nivel 8 o no"
+        "puedo pasar de nivel 8 o no",
+        "como sube de nivel el heroe",
+        "el dado cambia cuando subo",
+        "este chat me da experiencia",
+        "el maximo de nivel es 8 o 10",
+        "el nivel multiplica el resultado del dado",
+        "quien otorga la exp la mision o el chat",
+        "subir de nivel cambia las caras del dado",
+        "vida poder defensa y ataque crecen con el nivel",
+        "puedes subirme el nivel desde aqui",
+        "el dado se tira igual que en nivel 1",
+        "komo sube de nivel el heroe",
+        "vida poder defensa y ataq crecen con el nivel",
+        "el dado se tira igual q en nivel 1"
       ],
       "answer": "El nivel del héroe va de 1 a 8. Multiplica vida, poder, defensa y ataque. El dado de daño se tira igual que en el nivel 1 y el resultado se multiplica por el nivel. La experiencia de una batalla o de una misión la otorga ese módulo. Este chat no suma experiencia ni sube el nivel."
     },
@@ -799,7 +998,14 @@
         "what does level do pls",
         "what is the max lveel",
         "what is the max lvl",
-        "wat is the max level"
+        "wat is the max level",
+        "does the die change when i level",
+        "does this chat give me experience",
+        "is the max level 8 or 10",
+        "level multiplies the die result",
+        "who grants xp the mission or the chat",
+        "does leveling change the die faces",
+        "can you level me up from here"
       ],
       "answer": "Hero level runs from 1 to 8. It multiplies health, power, defense and attack. The damage die is rolled the same as at level 1 and the result is multiplied by level. Experience from a battle or a mission is granted by that module. This chat does not add experience or raise level."
     },
@@ -839,7 +1045,18 @@
         "curar a otro del equipo si, danar a un companero no",
         "si mi heroe esta en una mision no entra a una batalla de jcj",
         "el medico no hace ataque basico",
-        "la cura va para otro no para mi y eso no mueve creditos"
+        "la cura va para otro no para mi y eso no mueve creditos",
+        "el chaman tiene ataque basico",
+        "el medico pega basico",
+        "curarme a mi mismo esta permitido",
+        "que esta prohibido en la pelea",
+        "la cura tiene que ir a otro",
+        "hay fuego amigo",
+        "dano a mi equipo se puede",
+        "el chaman tiene ataq basico",
+        "curarme a mi mismo sta permitido",
+        "q sta prohibido en la pelea",
+        "la cura tiene q ir a otro"
       ],
       "answer": "No puedes dañar a tu propio equipo, salvo una habilidad de curación dirigida a un aliado distinto de ti. Una sala contra la máquina no admite apuesta. Un héroe que está en una misión no entra a una batalla de jugador contra jugador. Chamán y médico no hacen ataque básico."
     },
@@ -879,7 +1096,13 @@
         "can i bet aaginst the ai",
         "can i bet agnst the ai",
         "idk can i bet against the ai",
-        "can i bet against the ai pls"
+        "can i bet against the ai pls",
+        "does the shaman have a basic attack",
+        "does the doctor basic attack",
+        "can you bet against the machine",
+        "is healing myself allowed",
+        "what is forbidden in the fight",
+        "the heal has to go to someone else"
       ],
       "answer": "You cannot damage your own team, except a healing skill aimed at a different ally. A match against the machine does not allow a stake. A hero who is on a mission cannot join a player-versus-player battle. Shaman and doctor cannot basic attack."
     },
@@ -919,7 +1142,18 @@
         "es contra personas no contra el server o q",
         "en el pvp si se acaba el tiempo gana el mayor porcentaje de vida",
         "el pvp es gente contra gente y usa las reglas de golpe",
-        "jugador contra jugador si puede apostar creditos"
+        "jugador contra jugador si puede apostar creditos",
+        "que es el pvp",
+        "cuanta gente por equipo en jcj",
+        "se apuestan creditos en jugador contra jugador",
+        "si se acaban los 6 minutos quien gana",
+        "el pvp es contra personas",
+        "las reglas de golpe del jcj cuales son",
+        "puedo ir de a 3 en el pvp",
+        "gana el que tenga mas vida al acabar el tiempo",
+        "q es el pvp",
+        "los equipos tienen q ser del mismo tamano",
+        "gana el q tenga mas vida al acabar el tiempo"
       ],
       "answer": "Jugador contra jugador enfrenta a dos equipos del mismo tamaño, de 1 a 3 personas. Las reglas de golpe son las del combate por turnos. Se pueden apostar créditos. Gana quien elimina al otro equipo o, si se acaban los 6 minutos, quien conserve mayor porcentaje de vida."
     },
@@ -959,7 +1193,15 @@
         "how many people fit in a pvp room pls",
         "can i stake cerdits",
         "can i stake crdts",
-        "idk can i stake credits"
+        "idk can i stake credits",
+        "what is pvp",
+        "how many people per team in pvp",
+        "are credits staked in player versus player",
+        "if the 6 minutes run out who wins",
+        "i wipe the other team and i win",
+        "pvp is against people",
+        "teams have to be the same size",
+        "can we be 3 in pvp"
       ],
       "answer": "Player versus player is two teams of the same size, from 1 to 3 people. Hit rules are the turn-based combat rules. Credits can be staked. The winner is whoever eliminates the other team or, when the 6 minutes run out, whoever keeps the higher percentage of health."
     },
@@ -999,7 +1241,20 @@
         "contra la maquina no se juegan creditos y el rival lo mueve el servidor",
         "la maquina no apuesta, el server controla al otro equipo",
         "jce tiene epica y habilidad igual que el pvp pero no se apuesta",
-        "la maquina no juega con creditos, el servidor mueve al rival"
+        "la maquina no juega con creditos, el servidor mueve al rival",
+        "que es jugar contra la maquina",
+        "quien controla al rival en jce",
+        "se puede apostar contra la ia",
+        "jce usa las mismas reglas que el pvp",
+        "el servidor mueve al otro equipo",
+        "contra la pc hay epica y habilidad",
+        "en esas salas se apuesta o no",
+        "el turno contra la maquina es distinto",
+        "la maquina pone creditos",
+        "jce es pvp o no",
+        "q es jugar contra la maquina",
+        "jce usa las mismas reglas q el pvp",
+        "en esas salas se apusta o no"
       ],
       "answer": "Jugar contra la máquina usa las mismas reglas de golpe que jugador contra jugador: ataque, habilidad y épica, con el mismo turno. El rival lo controla el servidor. En esas salas no se apuesta."
     },
@@ -1039,7 +1294,13 @@
         "how does pve work pls",
         "does player versus ai use dfiferent damage rules",
         "does player versus ai use dffrnt damage rules",
-        "idk does player versus ai use different damage rules"
+        "idk does player versus ai use different damage rules",
+        "who controls the rival in pve",
+        "pve uses the same rules as pvp",
+        "the server moves the other team",
+        "against the pc there is epic and skill",
+        "do those rooms allow a bet",
+        "is pve the same as pvp"
       ],
       "answer": "Playing against the machine uses the same hit rules as player versus player: attack, skill and epic, on the same turn clock. The server controls the opponent. Those rooms do not allow a stake."
     },
@@ -1079,7 +1340,21 @@
         "normal hreoico y lo demas en que orden",
         "normal heroico y lo demas en que orden o q",
         "bro normal heroico y lo demas en que orden no se",
-        "rotaciones alta media y baja cuantas meto"
+        "rotaciones alta media y baja cuantas meto",
+        "como armo una mision",
+        "el heroe de la mision puede ir a jcj",
+        "mitico y legendario que hacen",
+        "la dificultad cambia como elijo la accion",
+        "cuantas rotaciones puedo meter",
+        "normal heroico legendario y mitico",
+        "mientras la mision sigue el heroe queda bloqueado",
+        "la dificultad sube las stats de los enemigos",
+        "yo elijo mision y heroe",
+        "komo armo una mision",
+        "q son las rotaciones alta media y baja",
+        "q dificultades hay",
+        "mitico y legendario q hacen",
+        "la dificultad cambia komo elijo la accion"
       ],
       "answer": "Tú eliges la misión, el héroe y hasta tres rotaciones: alta, media y baja. Mientras la misión sigue, ese héroe no puede usarse en jugador contra jugador. La simulación la resuelve el servicio de combate siguiendo esas rotaciones. Las dificultades son Normal, Heroico, Legendario y Mítico, en ese orden de desbloqueo. La dificultad sube las estadísticas de los enemigos. No cambia la forma de elegir la acción."
     },
@@ -1119,7 +1394,14 @@
         "what are high medium and low rtoations",
         "what are high medium and low rttns",
         "wat r high medium and low rotations",
-        "idk what are high medium and low rotations"
+        "idk what are high medium and low rotations",
+        "how do i build a mission",
+        "can the mission hero go to pvp",
+        "what difficulties are there",
+        "what do mythic and legendary do",
+        "does difficulty change how i pick the action",
+        "who simulates the mission",
+        "how many rotations can i put"
       ],
       "answer": "You pick the mission, the hero and up to three rotations: high, medium and low. While the mission runs, that hero cannot be used in player versus player. The combat service simulates it by following those rotations. Difficulties are Normal, Heroic, Legendary and Mythic, unlocked in that order. Difficulty raises enemy stats. It does not change how the action is chosen."
     },
@@ -1159,7 +1441,20 @@
         "bro las reglas de la justa son de una sala no se",
         "como inscrb al equipo",
         "si faltan eqps los llena la maquina",
-        "explicame como inscribo al equipo"
+        "explicame como inscribo al equipo",
+        "como funciona el torneo",
+        "el cuadro es de 8 o de 16",
+        "hay arbol de ganadores y de secundarios",
+        "si faltan equipos que pasa",
+        "los llena la maquina",
+        "como inscribo un equipo",
+        "la justa usa las reglas de una sala",
+        "que es el repechaje del torneo",
+        "ocho cupos tiene el bracket",
+        "komo funciona el torneo",
+        "si faltan equipos q pasa",
+        "komo inscribo un equipo",
+        "q es el repechaje del torneo"
       ],
       "answer": "El torneo inscribe equipos y arma un cuadro de ocho cupos, con árbol de ganadores y árbol de secundarios. La batalla de cada justa la juega el mismo servicio de combate, con las reglas de una sala. Si faltan equipos, el diseño del torneo prevé completarlos con equipos de la máquina."
     },
@@ -1199,7 +1494,14 @@
         "how many teams enter the tournament pls",
         "what is the wniners bracket",
         "what is the wnnrs bracket",
-        "wat is the winners bracket"
+        "wat is the winners bracket",
+        "is the bracket 8 or 16",
+        "is there a winners and a secondary tree",
+        "who plays a match battle",
+        "what if teams are missing",
+        "does the machine fill them",
+        "how do i sign a team up",
+        "a match uses room rules"
       ],
       "answer": "The tournament registers teams and builds a bracket of eight slots, with a winners tree and a secondary tree. Each bout's battle is played by the same combat service, under room rules. If teams are missing, the tournament design allows filling them with machine teams."
     },
@@ -1239,7 +1541,19 @@
         "es que la ayuda publica no pide cuenta",
         "sin rgstrrm puedo jugar o solo leer",
         "amigo ve donde creo la cuenta del juego",
-        "para jugar hace falta registrarse, recuperar la clave es otra pantalla"
+        "para jugar hace falta registrarse, recuperar la clave es otra pantalla",
+        "como creo una cuenta",
+        "puedo jugar sin registrarme",
+        "sin cuenta que puedo hacer",
+        "escribo la contrasena en el chat al registrarme",
+        "donde me doy de alta",
+        "el navegador basta o hace falta cuenta",
+        "con mi cuenta puedes ver mis datos",
+        "la ayuda publica pide registro",
+        "aqui se guarda la clave del alta",
+        "hace falta cuenta en el registro del juego",
+        "komo creo una cuenta",
+        "sin cuenta q puedo hacer"
       ],
       "answer": "Para jugar hace falta una cuenta en el registro del juego. Sin cuenta puedes leer esta ayuda pública. Con cuenta, y solo con la tuya, el asistente podrá consultar tus datos cuando esa función exista. No escribas la contraseña en el chat: aquí no se guarda."
     },
@@ -1279,7 +1593,12 @@
         "idk where do i sign up",
         "where do i sign up pls",
         "do i need an accnt to play",
-        "do i need an account 2 play"
+        "do i need an account 2 play",
+        "can i play without registering",
+        "what can i do without an account",
+        "is the browser enough or do i need an account",
+        "with my account can you see my data",
+        "does public help require registration"
       ],
       "answer": "To play you need an account in the game's sign-up. Without an account you can still read this public help. With an account, and only your own, the assistant will be able to look up your data when that feature exists. Do not type your password in the chat: it is not stored here."
     },
@@ -1319,7 +1638,17 @@
         "cambias mi clave desde el asistente",
         "no guardo tu tarjeta ni cambio la clave, eso es la pantalla de la cuenta",
         "editar la cuenta no se hace en este chat",
-        "si edito la cuenta este chat no guarda mi tarjeta ni la clave"
+        "si edito la cuenta este chat no guarda mi tarjeta ni la clave",
+        "donde cambio mi perfil",
+        "me cambias la contrasena desde el chat",
+        "llevame a la configuracion de la cuenta",
+        "guardas mi tarjeta si edito la cuenta",
+        "perfil y sesion en que pantalla estan",
+        "la clave se cambia aqui o en ajustes",
+        "no actualices mi usuario desde el asistente",
+        "la cuenta se administra en su pantalla",
+        "desde aqui no guardas datos de pago",
+        "perfil y sesion en q pantalla estan"
       ],
       "answer": "La cuenta se gestiona en su propia pantalla: perfil y sesión. Puedo indicarte el camino a la configuración. No cambio la contraseña desde aquí ni guardo datos de pago."
     },
@@ -1359,7 +1688,13 @@
         "how do i change porfile details",
         "how do i change prfl details",
         "idk how do i change profile details",
-        "how do i change profile details pls"
+        "how do i change profile details pls",
+        "where do i change my profile",
+        "can you change my password from chat",
+        "what screen has profile and session",
+        "is the password changed here or in settings",
+        "where do i sign out",
+        "the account is managed on its own screen"
       ],
       "answer": "The account is managed on its own screen: profile and session. I can point you to settings. I do not change the password from here and I do not store payment data."
     },
@@ -1399,7 +1734,20 @@
         "se paga con cerditos del juego",
         "oye se paga con creditos del juego",
         "mira ve compra ya es precio fijo",
-        "la verdad compra ya es precio fijo"
+        "la verdad compra ya es precio fijo",
+        "como funciona la subasta",
+        "puedo publicar un producto para que pujen",
+        "se paga con creditos",
+        "tu pujas por mi",
+        "el chat publica el item o solo explica",
+        "subasta por tiempo que es",
+        "precio fijo es comprar ya",
+        "sale de mi inventario lo que publico",
+        "puedes ofertar tu",
+        "komo funciona la subasta",
+        "puedo publicar un producto pa q pujen",
+        "subasta por tiempo q es",
+        "sale de mi inventario lo q publico"
       ],
       "answer": "En la subasta publicas productos de tu inventario para que otros pujen. Hay subasta por tiempo, con pujas, y compra inmediata a precio fijo. Se paga con créditos del juego. Este chat explica la regla: no publica ni puja por ti."
     },
@@ -1439,7 +1787,14 @@
         "what is a bid pls",
         "is there a byuout price",
         "is there a byt price",
-        "idk is there a buyout price"
+        "idk is there a buyout price",
+        "can i list a product for bids",
+        "is there buy now",
+        "is it paid with credits",
+        "do you bid for me",
+        "does the chat list the item or only explain",
+        "what is a timed auction",
+        "fixed price means buy now"
       ],
       "answer": "On the auction you list products from your inventory so others can bid. There is a timed auction with bids, and an instant buy at a fixed price. Payment is in game credits. This chat explains the rule: it does not list or bid for you."
     },
@@ -1479,7 +1834,18 @@
         "este chat consulta la billetera",
         "este chat consulta la bliletera",
         "oye este chat consulta la billetera",
-        "este chat consulta la billetera o q"
+        "este chat consulta la billetera o q",
+        "para que sirven los creditos",
+        "me dices cuantos creditos tengo",
+        "el saldo lo muestra este chat",
+        "sirven para apostar y para la subasta",
+        "puedes mover mis creditos",
+        "el modulo de creditos muestra el numero",
+        "con la sesion el saldo se ve en otro lado",
+        "aqui consultas mi billetera",
+        "no me transfieras creditos",
+        "pa q sirven los creditos",
+        "sirven pa apostar y pa la subasta"
       ],
       "answer": "Los créditos se ganan al jugar y sirven para apostar en jugador contra jugador y para pagar en la subasta. El saldo real solo lo muestra el módulo de créditos, con tu sesión. Este chat no consulta ni mueve créditos."
     },
@@ -1519,7 +1885,14 @@
         "idk where do i earn credits",
         "where do i earn credits pls",
         "can i stake them on a btatle",
-        "can i stake them on a bttl"
+        "can i stake them on a bttl",
+        "tell me how many credits i have",
+        "does this chat show the balance",
+        "are they earned by playing",
+        "they are for betting and for the auction",
+        "can you move my credits",
+        "the credits module shows the number",
+        "do you look at my wallet here"
       ],
       "answer": "Credits are earned by playing and are used to stake in player versus player and to pay on the auction. Your real balance is shown only by the credits module, with your session. This chat does not look up or move credits."
     },
@@ -1559,7 +1932,18 @@
         "jajaja si no sabes que es lo escalas",
         "si no sabes que es lo escls",
         "mando cptr si sigue igual",
-        "pagina en blanco, cierro sesion y si sigue mando captura"
+        "pagina en blanco, cierro sesion y si sigue mando captura",
+        "la pagina no carga que hago",
+        "se queda en blanco",
+        "cierro sesion y vuelvo a entrar",
+        "mando una captura si sigue",
+        "si no sabes el problema que haces",
+        "el juego no abre",
+        "reingreso y si no se escala",
+        "paso el caso a soporte con la imagen",
+        "no hay un truco, se escala",
+        "la pagina no carga q hago",
+        "si no sabes el problema q haces"
       ],
       "answer": "Cierra sesión y vuelve a entrar. Si el fallo sigue, adjunta una captura por el chat y pasa el caso a soporte. No improvisos un arreglo que no esté escrito aquí: si no reconozco el problema, abro el escalamiento en lugar de inventar la causa."
     },
@@ -1599,7 +1983,14 @@
         "idk the game is stuck",
         "the game is stuck pls",
         "i cnanot enter the room",
-        "i cnnt enter the room"
+        "i cnnt enter the room",
+        "it stays blank",
+        "i sign out and back in",
+        "i send a screenshot if it continues",
+        "will you invent a fix",
+        "if you do not know the problem what do you do",
+        "the game will not open",
+        "the case goes to support with the image"
       ],
       "answer": "Sign out and sign in again. If it still fails, attach a screenshot in the chat and hand the case to support. I will not invent a fix that is not written here: if I do not recognize the problem, I escalate instead of guessing the cause."
     },
@@ -1639,7 +2030,30 @@
         "la verdad corre en el navegador solo",
         "no hay un cliente de escritorio, se juega en el navegador",
         "hace falta cuenta para jugar y a veces el heroe listo, sin instalar nada",
-        "cuenta hace falta para jugar y se entra por el navegador sin instalar"
+        "cuenta hace falta para jugar y se entra por el navegador sin instalar",
+        "que necesito para jugar",
+        "tengo que instalar algo",
+        "se juega en el navegador",
+        "hay cliente de escritorio",
+        "hace falta cuenta",
+        "la sala pide heroe preparado",
+        "puedo leer la ayuda sin sesion",
+        "sin descargar puedo entrar",
+        "nexus battles es una app o la web",
+        "que hace falta para una sala",
+        "q necesito pa jugar",
+        "tengo q instalar algo",
+        "q hace falta pa una sala",
+        "como juego",
+        "como se juega",
+        "como se juega esto",
+        "como empiezo a jugar",
+        "como puedo jugar",
+        "de que va esto para jugar",
+        "explicame como jugar",
+        "como le hago para jugar",
+        "como se juega nexus",
+        "por donde empiezo a jugar"
       ],
       "answer": "Nexus Battles se usa en el navegador. Para jugar hace falta una cuenta y un héroe preparado cuando la sala lo exige. Esta ayuda se consulta en la misma web, con o sin sesión. No hay un cliente de escritorio que instalar para leer estas respuestas."
     },
@@ -1679,7 +2093,18 @@
         "idk do i have to install something",
         "do i have to install something pls",
         "does it run in the borwser",
-        "does it run in the brwsr"
+        "does it run in the brwsr",
+        "what do i need to play",
+        "is there a desktop client",
+        "do i need an account",
+        "the room asks for a prepared hero",
+        "can i read help without a session",
+        "can i enter without downloading",
+        "how do i play",
+        "how do you play",
+        "how do i start playing",
+        "how does this game work",
+        "where do i start playing"
       ],
       "answer": "Nexus Battles runs in the browser. To play you need an account and a prepared hero when the room requires one. This help is read on the same site, with or without a session. There is no desktop client to install in order to read these answers."
     },
@@ -1719,7 +2144,17 @@
         "no entendi no cambias la clave tu",
         "jajaja no cambias la clave tu",
         "olvide la clave, la recupero en la pantalla de acceso",
-        "no pego la password aqui"
+        "no pego la password aqui",
+        "donde recupero el acceso",
+        "pego la clave en el chat",
+        "la recuperacion esta en el login",
+        "si la recuperacion falla que pasa",
+        "tu cambias la clave",
+        "el caso se escala sin la password",
+        "perdi el acceso",
+        "no escribas mi clave aqui",
+        "la recuperacion sta en el login",
+        "si la recuperacion falla q pasa"
       ],
       "answer": "Usa la recuperación de cuenta de la pantalla de acceso. No escribas la contraseña en este chat: no la guardo ni la cambio. Si el flujo de recuperación no te deja entrar, el caso se escala a soporte con el texto de tu consulta, sin la clave."
     },
@@ -1759,7 +2194,15 @@
         "i forgot my password pls",
         "how do i rceover access",
         "how do i rcvr access",
-        "idk how do i recover access"
+        "idk how do i recover access",
+        "i cannot get into my account",
+        "i forgot the password",
+        "where do i recover access",
+        "do i paste the password in chat",
+        "recovery is on the login screen",
+        "if recovery fails what happens",
+        "do you change the password",
+        "i lost access"
       ],
       "answer": "Use account recovery on the sign-in screen. Do not type the password in this chat: I do not store it or change it. If recovery still does not let you in, the case is escalated to support with the text of your question, and without the password."
     },
@@ -1799,7 +2242,17 @@
         "bro escalo si no puedo entrar y no hay aviso no se",
         "hay mntnmnt ahora o no lo sabes",
         "es que no inventes el corte",
-        "no te confirmo que el server este caido, el aviso sale en las notificaciones"
+        "no te confirmo que el server este caido, el aviso sale en las notificaciones",
+        "el server esta caido lo confirmas",
+        "donde avisan el corte",
+        "tu sabes si hay mantenimiento ahora",
+        "durante la ventana el servicio no responde",
+        "no inventes que esta apagado",
+        "escalo si no entro y no hay aviso",
+        "el chat anuncia el mantenimiento",
+        "el server sta caido lo confirmas",
+        "si no hay aviso escrito q hago",
+        "no inventes q sta apagado"
       ],
       "answer": "Un mantenimiento puede dejar el servicio sin respuesta durante esa ventana. El aviso oficial sale por las notificaciones del juego. Este chat no afirma que haya un corte si esa notificación no está en la base. Si no puedes entrar y no hay un aviso escrito, escala el caso."
     },
@@ -1839,7 +2292,14 @@
         "is the server down pls",
         "when does it open aagin",
         "when does it open agn",
-        "idk when does it open again"
+        "idk when does it open again",
+        "the server is down can you confirm",
+        "where do they announce the outage",
+        "the notice goes out in notifications",
+        "if there is no written notice what do i do",
+        "do you know if there is maintenance now",
+        "during the window the service does not answer",
+        "does the chat announce maintenance"
       ],
       "answer": "Maintenance can leave the service unable to answer during that window. The official notice goes out through the game's notifications. This chat does not claim there is an outage unless that notice is in the knowledge base. If you cannot get in and there is no written notice, escalate the case."
     },
@@ -1879,7 +2339,14 @@
         "la verdad donde esta el texto legal completo",
         "no copies el contrato aqui, el texto legal esta en la seccion de terminos",
         "esta respuesta no reemplaza los terminos de uso",
-        "no me copies el contrato aqui, el documento esta en terminos de uso"
+        "no me copies el contrato aqui, el documento esta en terminos de uso",
+        "cuales son los terminos de uso",
+        "esto reemplaza los terminos",
+        "abre el documento de terminos",
+        "no me copies el contrato",
+        "los terminos estan en su seccion",
+        "se usa con mi propia cuenta",
+        "donde sta el texto legal"
       ],
       "answer": "El juego se usa con tu propia cuenta y bajo las reglas de combate, misiones y subasta. El texto legal completo está en la sección de términos del servicio. Esta respuesta no lo reemplaza: si necesitas el documento, ábrelo desde ahí."
     },
@@ -1919,7 +2386,12 @@
         "platform rules pls",
         "can i share my accnt",
         "idk can i share my account",
-        "can i share my account pls"
+        "can i share my account pls",
+        "does this replace the terms",
+        "open the terms document",
+        "the account has to be mine",
+        "do not copy the contract to me",
+        "the terms are in their section"
       ],
       "answer": "You play with your own account and under the combat, mission and auction rules. The full legal text is in the service's terms section. This answer does not replace it: if you need the document, open it there."
     },
@@ -1959,7 +2431,17 @@
         "bro la base publica es lo unico sin sesion no se",
         "no entendi datos de pago se quedan",
         "sabelo borro lo que hable contigo",
-        "puedo borrar lo que hable y no guardas la clave"
+        "puedo borrar lo que hable y no guardas la clave",
+        "que datos guarda el chat",
+        "guardas la tarjeta",
+        "sin sesion que ves",
+        "con sesion ves solo lo mio",
+        "limpiar el chat que borra",
+        "no almacenas pagos",
+        "la base publica es lo de sin sesion",
+        "q datos guarda el chat",
+        "sin sesion q ves",
+        "limpiar el chat q borra"
       ],
       "answer": "Puedes borrar tu historial de conversación. No guardo contraseñas ni datos de pago. Sin sesión solo uso esta base pública. Con sesión, cuando esa consulta exista, solo veré lo que tú ya puedes ver. Nunca los datos de otra persona."
     },
@@ -1999,7 +2481,12 @@
         "can i delete the history pls",
         "do you store my psasword",
         "do you store my psswrd",
-        "do u store my password"
+        "do u store my password",
+        "do you store the card",
+        "without a session what do you see",
+        "do you see another players data",
+        "with a session you only see mine",
+        "what does clearing the chat delete"
       ],
       "answer": "You can delete your conversation history. I do not store passwords or payment data. Without a session I only use this public knowledge base. With a session, when that lookup exists, I will only see what you can already see. Never another person's data."
     },
@@ -2039,7 +2526,21 @@
         "que llevo en la bolsa hoy creo",
         "explicame que llevo en la bolsa hoy",
         "me dices que llevo en la bolsa hoy",
-        "jajaja que llevo en la bolsa hoy"
+        "jajaja que llevo en la bolsa hoy",
+        "muestrame mis cosas",
+        "que hay en mi bolsa ahora",
+        "lista lo que tengo guardado",
+        "mis objetos de este momento",
+        "que llevo equipado",
+        "el contenido de mi inventario",
+        "que productos tengo yo",
+        "dime mi inventario",
+        "mis items actuales",
+        "q tengo en el inventario",
+        "q hay en mi bolsa ahora",
+        "lista lo q tengo guardado",
+        "q llevo equipado",
+        "q productos tengo yo"
       ],
       "answer": "El inventario se consulta en el momento."
     },
@@ -2079,7 +2580,15 @@
         "how many ietms do i own",
         "how many itms do i own",
         "idk how many items do i own",
-        "how many items do i own pls"
+        "how many items do i own pls",
+        "what do i have in the inventory",
+        "show me my stuff",
+        "what is in my bag right now",
+        "list what i have stored",
+        "my objects at this moment",
+        "what am i wearing",
+        "the contents of my inventory",
+        "tell me my inventory"
       ],
       "answer": "Inventory is read at the moment of the question."
     },
@@ -2119,7 +2628,21 @@
         "la que empece que porcentaje o q",
         "bro la que empece que porcentaje no se",
         "tng una en curso si o no",
-        "sabes tengo una en curso si o no"
+        "sabes tengo una en curso si o no",
+        "como van mis misiones",
+        "tengo una mision activa",
+        "en que mision estoy",
+        "progreso de la mision que empece",
+        "mis misiones en curso",
+        "estoy en una mision ahora",
+        "la que ya inicie como va",
+        "que mision tengo abierta",
+        "sigo en una mision",
+        "komo van mis misiones",
+        "en q mision estoy",
+        "progreso de la mision q empece",
+        "la q ya inicie komo va",
+        "q mision tengo abierta"
       ],
       "answer": "Las misiones en curso se consultan en el momento."
     },
@@ -2159,7 +2682,15 @@
         "which missions are active pls",
         "how is my msision going",
         "how is my mssn going",
-        "idk how is my mission going"
+        "idk how is my mission going",
+        "how are my missions",
+        "do i have an active mission",
+        "which mission am i on",
+        "progress of the mission i started",
+        "my missions in progress",
+        "am i on a mission now",
+        "the one i already started how is it",
+        "which mission do i have open"
       ],
       "answer": "Active missions are read at the moment of the question."
     },
@@ -2199,7 +2730,22 @@
         "lo que yo publique como va",
         "mira mis pujas de ahora",
         "sin falta mis pujas de ahora",
-        "dime lo que yo publique como va"
+        "dime lo que yo publique como va",
+        "como van mis subastas",
+        "que tengo publicado",
+        "mis pujas abiertas",
+        "estado de lo que puse a la venta",
+        "se vendio lo mio",
+        "mis lotes de ahora",
+        "lista mis publicaciones",
+        "subastas que son mias",
+        "que estoy vendiendo yo",
+        "mis subastas activas",
+        "komo van mis subastas",
+        "q tengo publicado",
+        "estado de lo q puse a la venta",
+        "subastas q son mias",
+        "q estoy vendiendo yo"
       ],
       "answer": "Las subastas propias se consultan en el momento."
     },
@@ -2239,7 +2785,14 @@
         "idk which auctions did i publish",
         "which auctions did i publish pls",
         "status of my acutions",
-        "status of my actns"
+        "status of my actns",
+        "what do i have listed",
+        "my open bids",
+        "status of what i put up for sale",
+        "did my stuff sell",
+        "my lots right now",
+        "list my listings",
+        "auctions that are mine"
       ],
       "answer": "Own auctions are read at the moment of the question."
     },
@@ -2279,7 +2832,17 @@
         "pls bandeja mia de ahora o no",
         "explicame bandeja mia de ahora",
         "ntfccns que no he abierto",
-        "alrts de mi usuario"
+        "alrts de mi usuario",
+        "avisos sin leer",
+        "que me falta por leer",
+        "mi bandeja de ahora",
+        "llego algo nuevo",
+        "notificaciones pendientes",
+        "muestrame mis avisos",
+        "alertas de mi usuario",
+        "tengo algo sin abrir",
+        "q me falta por leer",
+        "hay alertas pa mi"
       ],
       "answer": "Las notificaciones pendientes se consultan en el momento."
     },
@@ -2319,7 +2882,12 @@
         "what ntoifications do i have",
         "what ntfctns do i have",
         "wat notifications do i have",
-        "idk what notifications do i have"
+        "idk what notifications do i have",
+        "unread notices",
+        "what do i still need to read",
+        "did something new arrive",
+        "pending notifications",
+        "show me my notices"
       ],
       "answer": "Pending notifications are read at the moment of the question."
     },
@@ -2359,7 +2927,19 @@
         "jajaja que compre y que vendi en la subasta",
         "mvmnts mios de la subasta",
         "mis oprcns de hoy",
-        "trnsccns de mi usuario"
+        "trnsccns de mi usuario",
+        "cuales son mis transacciones",
+        "que compre y que vendi",
+        "historial de mis compras en la subasta",
+        "ventas que ya hice",
+        "transacciones mias",
+        "que movi en la subasta",
+        "compras y ventas que son mias",
+        "el registro de mis pagos",
+        "q compre y q vendi",
+        "ventas q ya hice",
+        "q movi en la subasta",
+        "compras y ventas q son mias"
       ],
       "answer": "Las transacciones de subasta se consultan en el momento."
     },
@@ -2399,7 +2979,12 @@
         "idk my transaction history",
         "my transaction history pls",
         "my auction mvoements",
-        "my auction mvmnts"
+        "my auction mvmnts",
+        "what did i buy and sell",
+        "history of my auction purchases",
+        "sales i already made",
+        "my transactions",
+        "what did i move in the auction"
       ],
       "answer": "Auction transactions are read at the moment of the question."
     },
@@ -2439,7 +3024,18 @@
         "no me expliques el cuadro, dime el mio o q",
         "bro no me expliques el cuadro, dime el mio no se",
         "ronda en la que voy yo",
-        "ronda en la q voy yo"
+        "ronda en la q voy yo",
+        "como va mi torneo",
+        "en que fase voy",
+        "mi justa de ahora",
+        "sigo en el torneo",
+        "ronda de mi torneo",
+        "el torneo donde yo estoy",
+        "mi participacion como va",
+        "quede fuera o sigo",
+        "komo va mi torneo",
+        "en q fase voy",
+        "mi participacion komo va"
       ],
       "answer": "El torneo propio se consulta en el momento."
     },
@@ -2479,7 +3075,14 @@
         "status of my tuornament",
         "status of my trnmnt",
         "idk status of my tournament",
-        "status of my tournament pls"
+        "status of my tournament pls",
+        "am i signed up for a tournament",
+        "which phase am i in",
+        "my match right now",
+        "do not explain the bracket, tell me mine",
+        "am i still in the tournament",
+        "my tournament round",
+        "the tournament i am in"
       ],
       "answer": "The player's tournament is read at the moment of the question."
     },
@@ -2519,7 +3122,20 @@
         "kiero el historial no un archivo nuevo",
         "la actividad se ve en esa pantalla",
         "misiones pasadas, no las de ahora",
-        "llevame a lo que ya jugue de misiones"
+        "llevame a lo que ya jugue de misiones",
+        "donde veo mi historial de misiones",
+        "no me generes un reporte, llevame",
+        "las misiones que ya termine",
+        "abre la pantalla del historial",
+        "el chat arma un informe o no",
+        "actividad de lo que jugue",
+        "misiones pasadas donde estan",
+        "quiero el historial no un archivo nuevo",
+        "llevame a lo que ya hice",
+        "el reporte es esa pantalla",
+        "las misiones q ya termine",
+        "actividad de lo q jugue",
+        "llevame a lo q ya hice"
       ],
       "answer": "El historial de misiones está en su pantalla. Puedo llevarte ahí. No genero otro reporte desde el chat."
     },
@@ -2559,7 +3175,15 @@
         "generate the report of wat i played",
         "idk generate the report of what i played",
         "generate the report of what i played pls",
-        "where is my atcivity"
+        "where is my atcivity",
+        "where do i see my mission history",
+        "do not generate a report, take me there",
+        "missions i already finished",
+        "open the history screen",
+        "does the chat build a report or not",
+        "activity of what i played",
+        "where are past missions",
+        "i want the history not a new file"
       ],
       "answer": "Mission history is on its own screen. I can take you there. I do not generate another report from the chat."
     }
