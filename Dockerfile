@@ -7,7 +7,7 @@
 # ---------------------------------------------------------------------------
 # Etapa 1 — entorno virtual con las dependencias de produccion y el servicio
 # ---------------------------------------------------------------------------
-FROM python:3.13.15-slim AS build
+FROM python:3.13.16-slim AS build
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
@@ -31,7 +31,7 @@ RUN uv sync --frozen --no-dev --no-editable
 # ---------------------------------------------------------------------------
 # Etapa 2 — imagen final
 # ---------------------------------------------------------------------------
-FROM python:3.13.15-slim AS runtime
+FROM python:3.13.16-slim AS runtime
 
 ENV APP_ENV=production \
     PORT=3011 \
