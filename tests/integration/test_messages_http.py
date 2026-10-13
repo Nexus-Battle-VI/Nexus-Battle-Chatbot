@@ -104,7 +104,7 @@ def test_un_visitante_recibe_la_respuesta_del_diccionario(client: TestClient) ->
     assert body["ticketId"] is None
     assert body["intent"] == "regla_turno"
     assert body["language"] == "es"
-    assert body["confidence"] >= 0.55
+    assert body["confidence"] >= 0.10
     assert "30 segundos" in body["answer"]
     assert "subject" not in body
     listed = client.get(

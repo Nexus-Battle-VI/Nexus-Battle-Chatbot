@@ -81,7 +81,7 @@ async def test_un_dato_propio_dudoso_no_pide_sesion() -> None:
     player = _Player({"totalItems": 1, "items": []})
     question = AnswerQuestion(
         _Entries(),  # type: ignore[arg-type]
-        _Factory("es:mi_inventario", 0.2),
+        _Factory("es:mi_inventario", 0.05),
         player_data=player,
     )
     answer = await question.execute("el trafico de hoy", None)

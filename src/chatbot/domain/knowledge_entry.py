@@ -14,7 +14,8 @@ from chatbot.domain.errors import InvalidKnowledgeEntryError
 _INTENT = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 _LANGUAGES = frozenset({"es", "en"})
 _MAX_ANSWER = 8_000
-_MAX_VARIATIONS = 30
+MAX_VARIATIONS = 80
+_MAX_VARIATIONS = MAX_VARIATIONS
 _MAX_VARIATION = 500
 _VIEW = re.compile(r"^[a-z][a-z0-9_-]{0,39}$")
 

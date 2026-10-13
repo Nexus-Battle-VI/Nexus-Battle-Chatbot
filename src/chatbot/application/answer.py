@@ -27,7 +27,7 @@ from chatbot.domain.live_summary import (
 )
 from chatbot.domain.normalize import normalize_question
 
-CONFIDENCE_THRESHOLD = 0.55
+CONFIDENCE_THRESHOLD = 0.10
 _CACHE_LIMIT = 128
 
 
