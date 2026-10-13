@@ -19,7 +19,7 @@ Decisión de diseño para el clasificador de intención de ADR-022. No cambia el
 | `max_features` | `20000` | Techo de memoria. Con pocas variaciones por clase, subirlo no separa mejor. |
 | `C` | `1.0` | Valor de partida de la regresión. |
 | `class_weight` | `balanced` | Unas intenciones tendrán más frases que otras. |
-| Umbral de confianza | `0.55` | Por debajo, el bot no responde: sugiere preguntas y escala. Se mueve solo con la matriz de confusión. |
+| Umbral de confianza | `0.10` | Por debajo, el bot no responde: sugiere preguntas y escala. En 10.000 preguntas mal escritas ninguna llegó a 0,55. Desde 0,10 salen unos 4.300 párrafos, 98 de cada 100 en el tema correcto, y los disparates siguen callados. |
 | Exactitud mínima de la primera `ACTIVE` | `0.80` en validación | Si no se alcanza, faltan variaciones. No se cambia de algoritmo. |
 | Promociones siguientes | el F1 macro de validación no baja respecto de la `ACTIVE` | Además de la exactitud mínima. |
 | Reparto entrenamiento / validación | `80 / 20`, estratificado por intención | Cada clase aparece en los dos conjuntos. |

@@ -79,7 +79,7 @@ class _Factory:
 
 
 async def test_por_debajo_del_umbral_no_hay_respuesta() -> None:
-    factory = _Factory("es:regla_turno", 0.4)
+    factory = _Factory("es:regla_turno", 0.05)
     answer = await AnswerQuestion(_Memory(), factory).execute("cualquier cosa", None)  # type: ignore[arg-type]
     assert answer.answered is False
     assert answer.answer is None
