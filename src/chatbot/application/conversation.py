@@ -141,8 +141,6 @@ class ConversationSession:
         current = await self._transcripts.get(actor, turn_id)
         if current is None:
             return RatingOutcome(False, False, False, None, None)
-        if current.useful is not None and current.useful != useful:
-            return RatingOutcome(True, True, False, current.useful, current.model_version)
         if current.useful == useful:
             return RatingOutcome(True, False, False, useful, current.model_version)
         updated = await self._transcripts.set_useful(actor, turn_id, useful)

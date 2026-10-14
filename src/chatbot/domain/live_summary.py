@@ -3,6 +3,10 @@
 from collections.abc import Mapping
 
 
+def _noun(count: int, singular: str, plural: str) -> str:
+    return singular if count == 1 else plural
+
+
 def summarize_inventory(payload: Mapping[str, object]) -> str | None:
     items = payload.get("items")
     if not isinstance(items, list):
@@ -40,9 +44,10 @@ def summarize_missions(payload: Mapping[str, object]) -> str | None:
         progress = item.get("progressPercent")
         if isinstance(name, str) and isinstance(progress, int) and not isinstance(progress, bool):
             parts.append(f"{name} ({progress}%)")
+    noun = _noun(len(items), "misión", "misiones")
     if len(parts) == 0:
-        return f"Tienes {len(items)} misiones en curso."
-    return f"Tienes {len(items)} misiones en curso: {', '.join(parts)}."
+        return f"Tienes {len(items)} {noun} en curso."
+    return f"Tienes {len(items)} {noun} en curso: {', '.join(parts)}."
 
 
 def summarize_auctions(payload: Mapping[str, object]) -> str | None:
@@ -56,9 +61,10 @@ def summarize_auctions(payload: Mapping[str, object]) -> str | None:
     for item in items[:5]:
         if isinstance(item, Mapping) and isinstance(item.get("status"), str):
             states.append(str(item.get("status")))
+    noun = _noun(total, "subasta", "subastas")
     if len(states) == 0:
-        return f"Tienes {total} subastas."
-    return f"Tienes {total} subastas. Estados en esta página: {', '.join(states)}."
+        return f"Tienes {total} {noun}."
+    return f"Tienes {total} {noun}. Estados en esta página: {', '.join(states)}."
 
 
 def summarize_notifications(payload: Mapping[str, object]) -> str | None:
@@ -67,7 +73,8 @@ def summarize_notifications(payload: Mapping[str, object]) -> str | None:
         return None
     if len(items) == 0:
         return "No tienes notificaciones pendientes."
-    return f"Tienes {len(items)} notificaciones pendientes."
+    noun = _noun(len(items), "notificación pendiente", "notificaciones pendientes")
+    return f"Tienes {len(items)} {noun}."
 
 
 def summarize_transactions(payload: Mapping[str, object]) -> str | None:
@@ -81,6 +88,7 @@ def summarize_transactions(payload: Mapping[str, object]) -> str | None:
     for item in items[:5]:
         if isinstance(item, Mapping) and isinstance(item.get("type"), str):
             kinds.append(str(item.get("type")))
+    noun = _noun(total, "transacción", "transacciones")
     if len(kinds) == 0:
-        return f"Tienes {total} transacciones de subasta."
-    return f"Tienes {total} transacciones de subasta. En esta página: {', '.join(kinds)}."
+        return f"Tienes {total} {noun} de subasta."
+    return f"Tienes {total} {noun} de subasta. En esta página: {', '.join(kinds)}."
