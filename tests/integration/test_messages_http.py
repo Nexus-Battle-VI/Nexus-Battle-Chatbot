@@ -202,7 +202,7 @@ def test_la_semilla_de_dominio_sigue_aceptando_la_entrada_sin_vista() -> None:
     assert entry.view is None
 
 
-def test_el_historial_queda_en_su_dueno_y_la_valoracion_no_cambia(client: TestClient) -> None:
+def test_el_historial_queda_en_su_dueno_y_la_valoracion_se_puede_cambiar(client: TestClient) -> None:
     own = {"authorization": "Bearer token-jugador"}
     other = {"authorization": "Bearer token-otro"}
     asked = client.post(PATH, json={"text": "hola"}, headers=own)
@@ -216,8 +216,9 @@ def test_el_historial_queda_en_su_dueno_y_la_valoracion_no_cambia(client: TestCl
     assert denied.status_code == 404
     rated = client.post(f"{PATH}/{turn_id}/rating", json={"useful": True}, headers=own)
     assert rated.status_code == 200
-    conflict = client.post(f"{PATH}/{turn_id}/rating", json={"useful": False}, headers=own)
-    assert conflict.status_code == 409
+    changed = client.post(f"{PATH}/{turn_id}/rating", json={"useful": False}, headers=own)
+    assert changed.status_code == 200
+    assert changed.json()["useful"] is False
     saved = client.put(
         "/api/v1/chatbot/preferences",
         json={"showTime": False},
