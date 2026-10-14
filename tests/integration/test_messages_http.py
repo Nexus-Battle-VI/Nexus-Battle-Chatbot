@@ -202,7 +202,7 @@ def test_la_semilla_de_dominio_sigue_aceptando_la_entrada_sin_vista() -> None:
     assert entry.view is None
 
 
-def test_el_historial_queda_en_su_dueno_y_la_valoracion_se_puede_cambiar(client: TestClient) -> None:
+def test_el_historial_queda_en_su_dueno_y_la_valoracion_cambia(client: TestClient) -> None:
     own = {"authorization": "Bearer token-jugador"}
     other = {"authorization": "Bearer token-otro"}
     asked = client.post(PATH, json={"text": "hola"}, headers=own)
