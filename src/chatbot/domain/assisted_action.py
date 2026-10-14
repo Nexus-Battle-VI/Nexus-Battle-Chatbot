@@ -9,6 +9,7 @@ ASSISTED_ACTIONS: dict[str, tuple[str, str]] = {
     "modo_jce": ("ir_a_jugar", "/play"),
     "modo_torneo": ("ir_a_torneo", "/tournament"),
     "mi_subasta": ("ir_a_subasta", "/auction"),
+    "producto_compra": ("ir_a_ecommerce", "/ecommerce"),
     "reporte_actividad": ("reporte_actividad", "/missions/history"),
 }
 
