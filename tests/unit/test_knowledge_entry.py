@@ -69,6 +69,6 @@ def test_la_semilla_es_un_conjunto_valido_de_entradas() -> None:
         key = (entry.intent, entry.language)
         assert key not in seen
         seen.add(key)
-    assert len(seen) == 52 + len(LIVE_SOURCES) * 2 + 2
+    assert len(seen) == 56 + len(LIVE_SOURCES) * 2 + 2
     assert "reporte_actividad" in ASSISTED_ACTIONS
     assert "producto_compra" in ASSISTED_ACTIONS

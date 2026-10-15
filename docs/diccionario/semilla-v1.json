@@ -55,7 +55,12 @@
         "q clases de personaje hay",
         "guerrero tanq y guerrero armas son lo mismo",
         "mago fuego y mago hielo q son",
-        "q ero puedo escoger"
+        "q ero puedo escoger",
+        "como funcionan los heroes",
+        "como funciona un heroe",
+        "como funcionan las clases",
+        "komo funcionan los heroes",
+        "explicame como funcionan los heroes"
       ],
       "answer": "Hay ocho subtipos: guerrero tanque, guerrero armas, mago fuego, mago hielo, pícaro veneno, pícaro machete, chamán y médico. Chamán y médico no tienen ataque ni daño: solo usan habilidades de soporte. El nivel va de 1 a 8 y multiplica vida, poder, defensa y ataque. El daño en dados se tira igual y después el resultado se multiplica por el nivel."
     },
@@ -103,7 +108,11 @@
         "hero level goes up to 8",
         "tank warrior and weapons warrior the same",
         "what are fire mage and ice mage",
-        "poison rogue and machete rogue hit"
+        "poison rogue and machete rogue hit",
+        "how do heroes work",
+        "how does a hero work",
+        "how do the classes work",
+        "explain how heroes work"
       ],
       "answer": "There are eight subtypes: tank warrior, weapons warrior, fire mage, ice mage, poison rogue, machete rogue, shaman and doctor. Shaman and doctor have no attack and no damage: they only use support skills. Level runs from 1 to 8 and multiplies health, power, defense and attack. Damage dice are rolled as written and the result is then multiplied by level."
     },
@@ -158,7 +167,11 @@
         "la abilidad pega al enemigo o al amigo",
         "si no me alcanza el poder q pasa con el turno",
         "la epica custa poder o es gratis",
-        "el ataq basico sale si no hay poder"
+        "el ataq basico sale si no hay poder",
+        "como funcionan las habilidades",
+        "komo funcionan las habilidades",
+        "como funka una habilidad",
+        "explicame como funcionan las habilidades"
       ],
       "answer": "Cada héroe trae las habilidades de su clase. En el turno se elige una: gasta poder y después entra en recarga. Si el poder no alcanza, no se gasta y el turno pasa a ataque básico. Una habilidad ofensiva va a un rival. Curar o revivir va a un aliado distinto de ti. La épica, si está equipada, es otra acción del turno: cuesta 0 de poder y queda 2 turnos propios en recarga."
     },
@@ -206,7 +219,10 @@
         "how many turns until the epic is back",
         "who does an offensive skill hit",
         "revive goes to an ally",
-        "the epic is another action on my turn"
+        "the epic is another action on my turn",
+        "how do abilities work",
+        "how does a skill work",
+        "explain how skills work"
       ],
       "answer": "Each hero has the skills of their class. On your turn you pick one: it spends power and then goes on cooldown. If you cannot pay the power, nothing is spent and the turn becomes a basic attack. An offensive skill targets an opponent. Healing or reviving targets a different ally. The epic, if equipped, is another turn action: it costs 0 power and then needs 2 of your own turns to recharge."
     },
@@ -259,7 +275,11 @@
         "cambiar el arma despues de empezar modifica el combate",
         "hay un boton pa usar el arma en el turno",
         "pa q sirve equipar el arma si no se usa en el turno",
-        "el arma queda en el perfil con el q empiezo"
+        "el arma queda en el perfil con el q empiezo",
+        "como funciona el arma",
+        "como funcionan las armas",
+        "komo funciona el arma",
+        "explicame como funciona el arma"
       ],
       "answer": "El arma se equipa antes de la batalla. Sus efectos permanentes ya quedan dentro de las estadísticas con las que empiezas. En el turno no hay una acción de «usar el arma»: atacas, usas una habilidad o usas la épica. Cambiar el arma después de empezar no modifica esa batalla."
     },
@@ -307,7 +327,10 @@
         "on my turn do i use the weapon or just attack skill and epic",
         "the weapon activates during combat",
         "can i swap weapons after the battle started",
-        "the weapon sits in the profile i start with"
+        "the weapon sits in the profile i start with",
+        "how does a weapon work",
+        "how do weapons work",
+        "explain how a weapon works"
       ],
       "answer": "You equip the weapon before the battle. Its permanent effects are already inside the stats you start with. There is no «use weapon» action on a turn: you attack, use a skill or use the epic. Swapping the weapon after the battle starts does not change that battle."
     },
@@ -360,7 +383,11 @@
         "a mitad de pelea la armadura nueva cuenta",
         "puedo quitarmela durante el combate y q cambie",
         "lo q suma la armadura entra al perfil inicial",
-        "se usa la armadura komo golpe"
+        "se usa la armadura komo golpe",
+        "como funciona la armadura",
+        "como funcionan las armaduras",
+        "komo funciona la armadura",
+        "explicame como funciona la armadura"
       ],
       "answer": "La armadura se equipa antes de combatir. Lo que suma de forma permanente, incluida la defensa, ya va en el perfil congelado al empezar. No se activa como acción del turno y cambiarla a mitad de la pelea no altera el combate en curso."
     },
@@ -408,7 +435,10 @@
         "can i take it off during combat and have it change",
         "is armor an action or already worn",
         "what armor adds goes into the starting profile",
-        "equipping armor happens before the battle"
+        "equipping armor happens before the battle",
+        "how does armor work",
+        "how does the armour work",
+        "explain how armor works"
       ],
       "answer": "Armor is equipped before combat. Whatever it adds permanently, including defense, is already in the profile frozen at the start. It is not a turn action, and changing it mid-fight does not alter the battle in progress."
     },
@@ -456,7 +486,11 @@
         "maximo de items equipados",
         "se gastan los items durante la pelea",
         "el item se usa en el turno komo pocion",
-        "el efecto del item ya sta en el perfil"
+        "el efecto del item ya sta en el perfil",
+        "como funcionan los items",
+        "como funciona un item",
+        "komo funcionan los items",
+        "explicame como funcionan los objetos"
       ],
       "answer": "Puedes equipar hasta dos ítems. Mejoran o debilitan al héroe, al arma, a la armadura y, en algunos casos, alcanzan al oponente. Se fijan antes de la batalla. En el turno no existe una acción de usar ítem: el efecto ya está en el perfil o en las reglas de ese objeto."
     },
@@ -502,7 +536,10 @@
         "items are locked before the battle",
         "can an item hit the opponent",
         "an item buffs or weakens weapon and armor",
-        "is there a use item action on the turn"
+        "is there a use item action on the turn",
+        "how do items work",
+        "how does an item work",
+        "explain how items work"
       ],
       "answer": "You can equip up to two items. They strengthen or weaken the hero, the weapon, the armor and, in some cases, reach the opponent. They are fixed before the battle. There is no use-item action on a turn: the effect is already in the profile or in that object's rules."
     },
@@ -572,7 +609,10 @@
         "antes de comprar dime si se puede",
         "cuanto cuesta un heroe en la vitrina",
         "el costo del heroe donde esta",
-        "cuanto sale un producto"
+        "cuanto sale un producto",
+        "como funciona el precio",
+        "como funciona ver el precio",
+        "explicame como funciona el precio de la vitrina"
       ],
       "answer": "El precio, la moneda según tu ubicación y si el producto está disponible o en promoción se ven en la vitrina del catálogo. Una promoción muestra el porcentaje de descuento. Esta respuesta no mira tu inventario ni una publicación tuya en la subasta."
     },
@@ -631,7 +671,10 @@
         "how do i know if i can buy this product",
         "how do i know i can buy it from the catalog",
         "tell me if i can buy it not how",
-        "is this product something i can buy"
+        "is this product something i can buy",
+        "how does the price work",
+        "how does seeing the price work",
+        "explain how the showcase price works"
       ],
       "answer": "Price, the currency for your location, and whether a product is available or on sale are shown on the catalog storefront. A promotion shows the discount percentage. This answer does not look at your inventory or at one of your auction listings."
     },
@@ -676,7 +719,17 @@
         "la compra del catalogo no la haces tu",
         "abrir el producto y anadirlo",
         "como se compra en la tienda de nexus",
-        "ecommerce como compro"
+        "ecommerce como compro",
+        "como funciona el ecommerce",
+        "como funciona el e commerce",
+        "como funciona la tienda",
+        "como funciona la vitrina",
+        "de que va el ecommerce",
+        "explicame el ecommerce",
+        "como funciona el catalogo de la tienda",
+        "komo funciona el ecommerce",
+        "que es el ecommerce",
+        "como se usa el ecommerce"
       ],
       "answer": "En el e-commerce abres el producto en la vitrina y lo añades al carrito. Para añadirlo hace falta iniciar sesión. En el carrito eliges Proceder al pago y confirmas el pago. Este chat no compra por ti."
     },
@@ -719,7 +772,14 @@
         "you do not make the catalog purchase for me",
         "open the product and add it",
         "how do i buy in the nexus store",
-        "ecommerce how do i buy"
+        "ecommerce how do i buy",
+        "how does the ecommerce work",
+        "how does the store work",
+        "how does the showcase work",
+        "what is the ecommerce",
+        "how does the store catalog work",
+        "explain the ecommerce",
+        "how is the store used"
       ],
       "answer": "In the store you open the product on the showcase and add it to the cart. Adding it requires you to be signed in. In the cart you choose Proceed to payment and confirm the payment. This chat does not buy for you."
     },
@@ -773,7 +833,11 @@
         "q es una sinergia",
         "hay un multiplicador q se llama sinergia",
         "al empezar q cuenta de la sinergia",
-        "q piezas recomienda"
+        "q piezas recomienda",
+        "como funciona la sinergia",
+        "como funcionan las sinergias",
+        "komo funciona la sinergia",
+        "explicame como funciona la sinergia"
       ],
       "answer": "Una sinergia es una combinación recomendada de héroe, arma, armadura e ítems. El combate no inventa un bono aparte por «llevar sinergia»: cuenta lo que ese equipo ya dejó en las estadísticas, en los efectos y en las habilidades al empezar."
     },
@@ -820,7 +884,10 @@
         "it counts hero weapon armor and items",
         "is there a multiplier called synergy",
         "does building the set give hidden damage",
-        "what counts from the synergy at the start"
+        "what counts from the synergy at the start",
+        "how does synergy work",
+        "how do synergies work",
+        "explain how synergy works"
       ],
       "answer": "A synergy is a recommended combination of hero, weapon, armor and items. Combat does not add an extra bonus just for «having a synergy»: it uses whatever that loadout already put into stats, effects and skills at the start."
     },
@@ -872,7 +939,12 @@
         "ataco uso habilidad o uso la epica",
         "el poder recuperado puede pasar el maximo",
         "quien empieza se rifa una vez",
-        "en mi turno q puedo hacer"
+        "en mi turno q puedo hacer",
+        "como funciona el turno en la batalla",
+        "explicame como funciona el turno",
+        "komo funciona el turno",
+        "como funka el turno",
+        "como funciona un turno"
       ],
       "answer": "El combate es por turnos. El orden se sortea una vez y después se alternan los equipos. Cada turno dura 30 segundos y la batalla, como máximo, 6 minutos. En tu turno atacas, usas una habilidad o usas la épica. Al empezar tu turno recuperas 2 de poder, sin pasar del máximo. Los dos equipos tienen que ser del mismo tamaño: 1, 2 o 3."
     },
@@ -973,7 +1045,11 @@
         "hay q superar la defensa pa q exista el golpe",
         "q es el indice del 1 al 8000",
         "evasion resistencia y escape q son",
-        "defensa igual ataq anula el golpe"
+        "defensa igual ataq anula el golpe",
+        "como funciona el dano",
+        "como funcionan los efectos",
+        "komo funciona el dano",
+        "explicame como funciona un golpe"
       ],
       "answer": "El golpe solo existe si el ataque es estrictamente mayor que la defensa. Si son iguales, no hay daño. Si golpea, un índice del 1 al 8000 elige el efecto: daño al 100 %, crítico entre 120 % y 180 % según la fila, evasión al 80 %, resistencia al 60 %, escape al 20 % o nada. La vida no baja de 0."
     },
@@ -1020,7 +1096,10 @@
         "can health go negative",
         "how much is a crit",
         "what are evasion resistance and escape",
-        "if i do not beat defense does it hit"
+        "if i do not beat defense does it hit",
+        "how does damage work",
+        "how do effects work",
+        "explain how a hit works"
       ],
       "answer": "A hit only lands if attack is strictly higher than defense. If they are equal, there is no damage. If it hits, an index from 1 to 8000 picks the effect: damage at 100%, a critical between 120% and 180% depending on the row, evade at 80%, resist at 60%, escape at 20%, or nothing. Health does not go below 0."
     },
@@ -1073,7 +1152,11 @@
         "el dado se tira igual que en nivel 1",
         "komo sube de nivel el heroe",
         "vida poder defensa y ataq crecen con el nivel",
-        "el dado se tira igual q en nivel 1"
+        "el dado se tira igual q en nivel 1",
+        "como funciona el nivel",
+        "como funciona subir de nivel",
+        "komo funciona la progresion",
+        "explicame como funciona el nivel del heroe"
       ],
       "answer": "El nivel del héroe va de 1 a 8. Multiplica vida, poder, defensa y ataque. El dado de daño se tira igual que en el nivel 1 y el resultado se multiplica por el nivel. La experiencia de una batalla o de una misión la otorga ese módulo. Este chat no suma experiencia ni sube el nivel."
     },
@@ -1120,7 +1203,10 @@
         "level multiplies the die result",
         "who grants xp the mission or the chat",
         "does leveling change the die faces",
-        "can you level me up from here"
+        "can you level me up from here",
+        "how does leveling work",
+        "how does hero progression work",
+        "explain how leveling works"
       ],
       "answer": "Hero level runs from 1 to 8. It multiplies health, power, defense and attack. The damage die is rolled the same as at level 1 and the result is multiplied by level. Experience from a battle or a mission is granted by that module. This chat does not add experience or raise level."
     },
@@ -1171,7 +1257,14 @@
         "el chaman tiene ataq basico",
         "curarme a mi mismo sta permitido",
         "q sta prohibido en la pelea",
-        "la cura tiene q ir a otro"
+        "la cura tiene q ir a otro",
+        "como funcionan las restricciones",
+        "como funciona lo prohibido en combate",
+        "komo funcionan las restricciones",
+        "explicame como funcionan las restricciones",
+        "como funcionan las restricciones del combate",
+        "como funcionan las reglas de lo que no se puede",
+        "restricciones como funcionan"
       ],
       "answer": "No puedes dañar a tu propio equipo, salvo una habilidad de curación dirigida a un aliado distinto de ti. Una sala contra la máquina no admite apuesta. Un héroe que está en una misión no entra a una batalla de jugador contra jugador. Chamán y médico no hacen ataque básico."
     },
@@ -1217,7 +1310,13 @@
         "can you bet against the machine",
         "is healing myself allowed",
         "what is forbidden in the fight",
-        "the heal has to go to someone else"
+        "the heal has to go to someone else",
+        "how do restrictions work",
+        "how does what is forbidden work",
+        "explain how combat restrictions work",
+        "how do the restrictions work",
+        "how restrictions work",
+        "how do combat restrictions work"
       ],
       "answer": "You cannot damage your own team, except a healing skill aimed at a different ally. A match against the machine does not allow a stake. A hero who is on a mission cannot join a player-versus-player battle. Shaman and doctor cannot basic attack."
     },
@@ -1268,7 +1367,10 @@
         "gana el que tenga mas vida al acabar el tiempo",
         "q es el pvp",
         "los equipos tienen q ser del mismo tamano",
-        "gana el q tenga mas vida al acabar el tiempo"
+        "gana el q tenga mas vida al acabar el tiempo",
+        "como funciona el jugador contra jugador",
+        "explicame como funciona el jcj",
+        "komo funciona el jcj"
       ],
       "answer": "Jugador contra jugador enfrenta a dos equipos del mismo tamaño, de 1 a 3 personas. Las reglas de golpe son las del combate por turnos. Se pueden apostar créditos. Gana quien elimina al otro equipo o, si se acaban los 6 minutos, quien conserve mayor porcentaje de vida."
     },
@@ -1316,7 +1418,9 @@
         "i wipe the other team and i win",
         "pvp is against people",
         "teams have to be the same size",
-        "can we be 3 in pvp"
+        "can we be 3 in pvp",
+        "how does player versus player work",
+        "explain how pvp works"
       ],
       "answer": "Player versus player is two teams of the same size, from 1 to 3 people. Hit rules are the turn-based combat rules. Credits can be staked. The winner is whoever eliminates the other team or, when the 6 minutes run out, whoever keeps the higher percentage of health."
     },
@@ -1369,7 +1473,11 @@
         "jce es pvp o no",
         "q es jugar contra la maquina",
         "jce usa las mismas reglas q el pvp",
-        "en esas salas se apusta o no"
+        "en esas salas se apusta o no",
+        "como funciona jugar contra la maquina",
+        "como funciona el jce",
+        "komo funciona el jce",
+        "explicame como funciona la partida contra la ia"
       ],
       "answer": "Jugar contra la máquina usa las mismas reglas de golpe que jugador contra jugador: ataque, habilidad y épica, con el mismo turno. El rival lo controla el servidor. En esas salas no se apuesta."
     },
@@ -1415,7 +1523,9 @@
         "the server moves the other team",
         "against the pc there is epic and skill",
         "do those rooms allow a bet",
-        "is pve the same as pvp"
+        "is pve the same as pvp",
+        "how does playing against the machine work",
+        "explain how pve works"
       ],
       "answer": "Playing against the machine uses the same hit rules as player versus player: attack, skill and epic, on the same turn clock. The server controls the opponent. Those rooms do not allow a stake."
     },
@@ -1469,7 +1579,11 @@
         "q son las rotaciones alta media y baja",
         "q dificultades hay",
         "mitico y legendario q hacen",
-        "la dificultad cambia komo elijo la accion"
+        "la dificultad cambia komo elijo la accion",
+        "como funciona una mision",
+        "komo funciona una mision",
+        "como funka una mision",
+        "explicame como funciona una mision"
       ],
       "answer": "Tú eliges la misión, el héroe y hasta tres rotaciones: alta, media y baja. Mientras la misión sigue, ese héroe no puede usarse en jugador contra jugador. La simulación la resuelve el servicio de combate siguiendo esas rotaciones. Las dificultades son Normal, Heroico, Legendario y Mítico, en ese orden de desbloqueo. La dificultad sube las estadísticas de los enemigos. No cambia la forma de elegir la acción."
     },
@@ -1516,7 +1630,9 @@
         "what do mythic and legendary do",
         "does difficulty change how i pick the action",
         "who simulates the mission",
-        "how many rotations can i put"
+        "how many rotations can i put",
+        "explain how a mission works",
+        "how do missions work"
       ],
       "answer": "You pick the mission, the hero and up to three rotations: high, medium and low. While the mission runs, that hero cannot be used in player versus player. The combat service simulates it by following those rotations. Difficulties are Normal, Heroic, Legendary and Mythic, unlocked in that order. Difficulty raises enemy stats. It does not change how the action is chosen."
     },
@@ -1569,7 +1685,9 @@
         "komo funciona el torneo",
         "si faltan equipos q pasa",
         "komo inscribo un equipo",
-        "q es el repechaje del torneo"
+        "q es el repechaje del torneo",
+        "como funcionan los torneos",
+        "explicame como funciona el torneo"
       ],
       "answer": "El torneo inscribe equipos y arma un cuadro de ocho cupos, con árbol de ganadores y árbol de secundarios. La batalla de cada justa la juega el mismo servicio de combate, con las reglas de una sala. Si faltan equipos, el diseño del torneo prevé completarlos con equipos de la máquina."
     },
@@ -1616,7 +1734,9 @@
         "what if teams are missing",
         "does the machine fill them",
         "how do i sign a team up",
-        "a match uses room rules"
+        "a match uses room rules",
+        "explain how the tournament works",
+        "how do tournaments work"
       ],
       "answer": "The tournament registers teams and builds a bracket of eight slots, with a winners tree and a secondary tree. Each bout's battle is played by the same combat service, under room rules. If teams are missing, the tournament design allows filling them with machine teams."
     },
@@ -1668,7 +1788,10 @@
         "aqui se guarda la clave del alta",
         "hace falta cuenta en el registro del juego",
         "komo creo una cuenta",
-        "sin cuenta q puedo hacer"
+        "sin cuenta q puedo hacer",
+        "como funciona el registro",
+        "como funciona crear la cuenta",
+        "komo funciona el registro"
       ],
       "answer": "Para jugar hace falta una cuenta en el registro del juego. Sin cuenta puedes leer esta ayuda pública. Con cuenta, y solo con la tuya, el asistente podrá consultar tus datos cuando esa función exista. No escribas la contraseña en el chat: aquí no se guarda."
     },
@@ -1713,7 +1836,11 @@
         "what can i do without an account",
         "is the browser enough or do i need an account",
         "with my account can you see my data",
-        "does public help require registration"
+        "does public help require registration",
+        "how does registration work",
+        "how does sign up work",
+        "how registration works",
+        "explain how sign up works"
       ],
       "answer": "To play you need an account in the game's sign-up. Without an account you can still read this public help. With an account, and only your own, the assistant will be able to look up your data when that feature exists. Do not type your password in the chat: it is not stored here."
     },
@@ -1763,7 +1890,10 @@
         "no actualices mi usuario desde el asistente",
         "la cuenta se administra en su pantalla",
         "desde aqui no guardas datos de pago",
-        "perfil y sesion en q pantalla estan"
+        "perfil y sesion en q pantalla estan",
+        "como funciona la cuenta",
+        "como funciona gestionar la cuenta",
+        "komo funciona la cuenta"
       ],
       "answer": "La cuenta se gestiona en su propia pantalla: perfil y sesión. Puedo indicarte el camino a la configuración. No cambio la contraseña desde aquí ni guardo datos de pago."
     },
@@ -1809,7 +1939,13 @@
         "what screen has profile and session",
         "is the password changed here or in settings",
         "where do i sign out",
-        "the account is managed on its own screen"
+        "the account is managed on its own screen",
+        "how does the account work",
+        "how does managing the account work",
+        "explain how the account works",
+        "how does my account work",
+        "how the account screen works",
+        "how account settings work"
       ],
       "answer": "The account is managed on its own screen: profile and session. I can point you to settings. I do not change the password from here and I do not store payment data."
     },
@@ -1960,7 +2096,10 @@
         "aqui consultas mi billetera",
         "no me transfieras creditos",
         "pa q sirven los creditos",
-        "sirven pa apostar y pa la subasta"
+        "sirven pa apostar y pa la subasta",
+        "como funcionan los creditos",
+        "komo funcionan los creditos",
+        "explicame como funcionan los creditos"
       ],
       "answer": "Los créditos se ganan al jugar y sirven para apostar en jugador contra jugador y para pagar en la subasta. El saldo real solo lo muestra el módulo de créditos, con tu sesión. Este chat no consulta ni mueve créditos."
     },
@@ -2007,7 +2146,10 @@
         "they are for betting and for the auction",
         "can you move my credits",
         "the credits module shows the number",
-        "do you look at my wallet here"
+        "do you look at my wallet here",
+        "how do credits work",
+        "explain how credits work",
+        "how does game credit work"
       ],
       "answer": "Credits are earned by playing and are used to stake in player versus player and to pay on the auction. Your real balance is shown only by the credits module, with your session. This chat does not look up or move credits."
     },
@@ -2168,7 +2310,10 @@
         "explicame como jugar",
         "como le hago para jugar",
         "como se juega nexus",
-        "por donde empiezo a jugar"
+        "por donde empiezo a jugar",
+        "como funciona el juego",
+        "como funciona para jugar",
+        "explicame como funciona nexus"
       ],
       "answer": "Nexus Battles se usa en el navegador. Para jugar hace falta una cuenta y un héroe preparado cuando la sala lo exige. Esta ayuda se consulta en la misma web, con o sin sesión. No hay un cliente de escritorio que instalar para leer estas respuestas."
     },
@@ -2219,7 +2364,13 @@
         "how do you play",
         "how do i start playing",
         "how does this game work",
-        "where do i start playing"
+        "where do i start playing",
+        "how does the game work",
+        "explain how the game works",
+        "how the game works",
+        "how does nexus battles work",
+        "how playing the game works",
+        "how does nexus work"
       ],
       "answer": "Nexus Battles runs in the browser. To play you need an account and a prepared hero when the room requires one. This help is read on the same site, with or without a session. There is no desktop client to install in order to read these answers."
     },
@@ -3301,6 +3452,130 @@
         "i want the history not a new file"
       ],
       "answer": "Mission history is on its own screen. I can take you there. I do not generate another report from the chat."
+    },
+    {
+      "intent": "saludo",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Hola",
+      "variations": [
+        "hola",
+        "buenos dias",
+        "buenas tardes",
+        "buenas noches",
+        "buenas",
+        "hey",
+        "que tal",
+        "que hubo",
+        "holi",
+        "hola hola",
+        "buen dia",
+        "saludos",
+        "epa",
+        "quiubo",
+        "hola que tal",
+        "muy buenas",
+        "hola a todos",
+        "hey hola",
+        "buenos dias hola",
+        "ola",
+        "holaa",
+        "q tal",
+        "buenas buenas"
+      ],
+      "answer": "Hola. Pregunta por reglas, productos, misiones o tu cuenta."
+    },
+    {
+      "intent": "saludo",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Hello",
+      "variations": [
+        "hello",
+        "hi",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "hi there",
+        "hello there",
+        "hey there",
+        "howdy",
+        "hi hi",
+        "hello hello",
+        "good day",
+        "greetings",
+        "hey hello",
+        "hi hello",
+        "morning",
+        "yo",
+        "hiya",
+        "hello hi"
+      ],
+      "answer": "Hello. Ask about rules, products, missions, or your account."
+    },
+    {
+      "intent": "despedida",
+      "language": "es",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Adiós",
+      "variations": [
+        "adios",
+        "chao",
+        "hasta luego",
+        "nos vemos",
+        "hasta pronto",
+        "me voy",
+        "chau",
+        "hasta la vista",
+        "cuidate",
+        "que estes bien",
+        "ya me voy",
+        "nos vemos luego",
+        "chao chao",
+        "adios adios",
+        "hasta manana",
+        "me despido",
+        "listo me voy",
+        "gracias adios"
+      ],
+      "answer": "Hasta luego."
+    },
+    {
+      "intent": "despedida",
+      "language": "en",
+      "priority": 10,
+      "liveData": null,
+      "assistedAction": null,
+      "question": "Goodbye",
+      "variations": [
+        "goodbye",
+        "bye",
+        "see you",
+        "see you later",
+        "good night",
+        "take care",
+        "i am leaving",
+        "bye bye",
+        "see ya",
+        "later",
+        "farewell",
+        "gotta go",
+        "i have to go",
+        "talk later",
+        "catch you later",
+        "so long",
+        "bye now",
+        "good bye",
+        "see you soon",
+        "i am off"
+      ],
+      "answer": "Goodbye."
     }
   ]
 }
